@@ -1,5 +1,5 @@
 <?php
-
+defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -102,6 +102,42 @@ class tpmeta_admin {
 
 	public function tp_metaboxes(){
 		
+	}
+
+	/**
+	 * Menus
+	 */
+	public function custom_plugin_menu() {
+		// Main menu item
+		add_menu_page(
+			__('Pure MetaFields', 'pure-metafields'), // Page title
+			__('Pure MetaFields', 'pure-metafields'),       // Menu title
+			'manage_options',                    // Capability
+			$this->plugin_name,        // Menu slug
+			'',        // Callback function
+			'dashicons-admin-generic',           // Icon URL
+			6                                    // Position
+		);
+	
+		// Submenu item 1
+		add_submenu_page(
+			$this->plugin_name,        // Parent slug
+			__('All Field Groups', 'pure-metafields'), // Page title
+			__('All Field Groups', 'pure-metafields'),       // Menu title
+			'manage_options',                    // Capability
+			'my_custom_plugin_submenu1',         // Menu slug
+			''     // Callback function
+		);
+	
+		// Submenu item 2
+		add_submenu_page(
+			$this->plugin_name,        // Parent slug
+			__('Add New', 'pure-metafields'), // Page title
+			__('Add New', 'pure-metafields'),       // Menu title
+			'manage_options',                    // Capability
+			'my_custom_plugin_submenu2',         // Menu slug
+			''     // Callback function
+		);
 	}
 
 }

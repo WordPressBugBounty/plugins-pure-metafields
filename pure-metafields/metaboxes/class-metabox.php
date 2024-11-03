@@ -156,33 +156,34 @@ class tpmeta_meta_box {
 		
 		<?php if(isset($meta['post_format']) && $meta['post_format'] != ""): ?>
 		<script type="text/javascript">
-			(function( $, document, wp ){
-				"use scrict";
-				$(document).ready(function(){
-					if(wp.data == undefined){
-						$('#post-formats-select input[name="post_format"]').on('change', function(){
-							if($(this).val() == '<?php echo esc_html($meta['post_format']); ?>'){
-								$('#<?php echo esc_html(esc_html($meta['metabox_id'])); ?>').show()
-							}else{
-								$('#<?php echo esc_html(esc_html($meta['metabox_id'])); ?>').hide()
+			(function($, document, wp) {
+				"use strict";
+				$(document).ready(function() {
+					// Check if wp and wp.data are defined
+					if (typeof wp === 'undefined' || typeof wp.data === 'undefined') {
+						// Fallback for cases where wp.data is not available
+						$('#post-formats-select input[name="post_format"]').on('change', function() {
+							if ($(this).val() == '<?php echo esc_html($meta['post_format']); ?>') {
+								$('#<?php echo esc_html($meta['metabox_id']); ?>').show();
+							} else {
+								$('#<?php echo esc_html($meta['metabox_id']); ?>').hide();
 							}
-						})
-					}else{
-						if(typeof wp !== 'undefined' && wp.data && wp.data.select('core/editor')){
-							wp.data.subscribe( function () {
-								var getFormat = wp.data.select( 'core/editor' ).getEditedPostAttribute( 'format' )
-								if(getFormat == '<?php echo esc_html($meta['post_format']); ?>'){
-									$('#<?php echo esc_html(esc_html($meta['metabox_id'])); ?>').show()
-								}else{
-									$('#<?php echo esc_html(esc_html($meta['metabox_id'])); ?>').hide()
-								}
-							})
-						}
+						});
+					} else {
+						// Use wp.data when available
+						wp.data.subscribe(function() {
+							var getFormat = wp.data.select('core/editor').getEditedPostAttribute('format');
+							if (getFormat == '<?php echo esc_html($meta['post_format']); ?>') {
+								$('#<?php echo esc_html($meta['metabox_id']); ?>').show();
+							} else {
+								$('#<?php echo esc_html($meta['metabox_id']); ?>').hide();
+							}
+						});
 					}
-					
-				})
-			})( jQuery )
+				});
+			})(jQuery, document, wp);
 		</script>
+
 		<?php endif; ?>
 		<?php
 	}

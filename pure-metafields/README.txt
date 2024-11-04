@@ -5,7 +5,7 @@ Tags: Metabox, Metafields, Custom Post Field, Post Metafield, Page Metabox
 Requires PHP: 7.4
 Requires at least: 5.6
 Tested up to: 6.6
-Stable tag: 1.3.6
+Stable tag: 1.3.7
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -590,6 +590,9 @@ Yes, contributions are welcome! If you have any ideas or improvements for the pl
 
 = 1.3.6  =
 * Update: Post Format Issue Fixed
+
+= 1.3.7  =
+* Update: Post Format Issue Fixed and Svg Text Support
 
 == Upgrade Notice ==
 = 1.0.0 =

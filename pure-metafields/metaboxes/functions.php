@@ -200,3 +200,108 @@ function tpmeta_load_template($path, $args = array()){
     include(TPMETA_PATH . $path);
   }
 }
+
+
+/**
+ * Allowed svg tags
+ */
+function tpmeta_allowed_svg_tags(){
+  $allowed_tags = array(
+    'svg' => array(
+      'xmlns' => true,
+      'viewBox' => true,
+      'width' => true,
+      'height' => true,
+      'preserveAspectRatio' => true,
+      'fill' => true,
+      'stroke' => true,
+      'style' => true,
+      // Add any other necessary attributes
+    ),
+    'circle' => array(
+      'cx' => true,
+      'cy' => true,
+      'r' => true,
+      'fill' => true,
+      'stroke' => true,
+      'stroke-width' => true,
+      // Add other attributes as needed
+    ),
+    'rect' => array(
+      'x' => true,
+      'y' => true,
+      'width' => true,
+      'height' => true,
+      'fill' => true,
+      'stroke' => true,
+      'stroke-width' => true,
+    ),
+    'ellipse' => array(
+      'cx' => true,
+      'cy' => true,
+      'rx' => true,
+      'ry' => true,
+      'fill' => true,
+      'stroke' => true,
+      'stroke-width' => true,
+    ),
+    'line' => array(
+      'x1' => true,
+      'y1' => true,
+      'x2' => true,
+      'y2' => true,
+      'stroke' => true,
+      'stroke-width' => true,
+    ),
+    'polyline' => array(
+      'points' => true,
+      'fill' => true,
+      'stroke' => true,
+      'stroke-width' => true,
+    ),
+    'polygon' => array(
+      'points' => true,
+      'fill' => true,
+      'stroke' => true,
+      'stroke-width' => true,
+    ),
+    'path' => array(
+      'd' => true,
+      'fill' => true,
+      'stroke' => true,
+      'stroke-width' => true,
+      'stroke-linecap' => true,
+      'stroke-linejoin' => true,
+    ),
+    'g' => array(
+      'fill' => true,
+      'stroke' => true,
+      // Add other attributes as needed
+    ),
+    'defs' => array(), // No attributes needed
+    'clipPath' => array(), // No attributes needed
+    'linearGradient' => array(
+      'id' => true,
+      'x1' => true,
+      'y1' => true,
+      'x2' => true,
+      'y2' => true,
+    ),
+    'radialGradient' => array(
+      'id' => true,
+      'cx' => true,
+      'cy' => true,
+      'r' => true,
+      'fx' => true,
+      'fy' => true,
+    ),
+    'stop' => array(
+      'offset' => true,
+      'stop-color' => true,
+      'stop-opacity' => true,
+    ),
+    // Add more SVG tags and attributes as needed
+  );
+
+  return apply_filters('tpmeta_allowed_svg_tags', $allowed_tags);
+}

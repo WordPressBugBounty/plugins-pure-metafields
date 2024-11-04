@@ -156,32 +156,34 @@ class tpmeta_meta_box {
 		
 		<?php if(isset($meta['post_format']) && $meta['post_format'] != ""): ?>
 		<script type="text/javascript">
-			(function($, document, wp) {
-				"use strict";
-				$(document).ready(function() {
-					// Check if wp and wp.data are defined
-					if (typeof wp === 'undefined' || typeof wp.data === 'undefined') {
-						// Fallback for cases where wp.data is not available
-						$('#post-formats-select input[name="post_format"]').on('change', function() {
-							if ($(this).val() == '<?php echo esc_html($meta['post_format']); ?>') {
-								$('#<?php echo esc_html($meta['metabox_id']); ?>').show();
-							} else {
-								$('#<?php echo esc_html($meta['metabox_id']); ?>').hide();
-							}
-						});
-					} else {
-						// Use wp.data when available
-						wp.data.subscribe(function() {
-							var getFormat = wp.data.select('core/editor').getEditedPostAttribute('format');
-							if (getFormat == '<?php echo esc_html($meta['post_format']); ?>') {
-								$('#<?php echo esc_html($meta['metabox_id']); ?>').show();
-							} else {
-								$('#<?php echo esc_html($meta['metabox_id']); ?>').hide();
-							}
-						});
-					}
-				});
-			})(jQuery, document, wp);
+			jQuery(document).ready(function($) {
+				// Check if wp is defined
+				if (typeof wp === 'undefined') {
+					console.error('wp is not defined');
+					return; // Exit if wp is not defined
+				}
+				// Check if wp and wp.data are defined
+				if (typeof wp === 'undefined' || typeof wp.data === 'undefined') {
+					// Fallback for cases where wp.data is not available
+					$('#post-formats-select input[name="post_format"]').on('change', function() {
+						if ($(this).val() == '<?php echo esc_html($meta['post_format']); ?>') {
+							$('#<?php echo esc_html($meta['metabox_id']); ?>').show();
+						} else {
+							$('#<?php echo esc_html($meta['metabox_id']); ?>').hide();
+						}
+					});
+				} else {
+					// Use wp.data when available
+					wp.data.subscribe(function() {
+						var getFormat = wp.data.select('core/editor').getEditedPostAttribute('format');
+						if (getFormat == '<?php echo esc_html($meta['post_format']); ?>') {
+							$('#<?php echo esc_html($meta['metabox_id']); ?>').show();
+						} else {
+							$('#<?php echo esc_html($meta['metabox_id']); ?>').hide();
+						}
+					});
+				}
+			});
 		</script>
 
 		<?php endif; ?>
@@ -256,7 +258,9 @@ class tpmeta_meta_box {
 						update_post_meta($post_id, $field['id'], $options);
 					}
 				}elseif($field['type'] == 'textarea' && !empty($_POST[$field['id']])){
-					update_post_meta($post_id, $field['id'], sanitize_textarea_field($_POST[$field['id']]));
+					// Define allowed SVG tags and attributes
+					$allowed_tags = tpmeta_allowed_svg_tags();
+					update_post_meta($post_id, $field['id'], wp_kses($_POST[$field['id']], $allowed_tags));
 				}elseif($field['type'] == 'select'){
 					if(isset($_POST[$field['id']]) && isset($field['multiple']) && $field['multiple'] == true){
 						$array_object = array();

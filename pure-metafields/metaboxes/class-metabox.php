@@ -137,6 +137,10 @@ class tpmeta_meta_box {
 	 * Metabox HTML Render Funtion
 	 */
 	public function tpmeta_metabox_render($post, $metabox){
+		// Enqueue wp-api and wp-editor first
+		wp_enqueue_script( 'wp-api' );
+		wp_enqueue_script( 'wp-editor' );
+
 		$meta = $metabox['args']['meta'];
 		$columns = isset($meta['columns'])? $meta['columns'] : 3; 
 		?>
@@ -174,14 +178,18 @@ class tpmeta_meta_box {
 					});
 				} else {
 					// Use wp.data when available
-					wp.data.subscribe(function() {
-						var getFormat = wp.data.select('core/editor').getEditedPostAttribute('format');
-						if (getFormat == '<?php echo esc_html($meta['post_format']); ?>') {
-							$('#<?php echo esc_html($meta['metabox_id']); ?>').show();
-						} else {
-							$('#<?php echo esc_html($meta['metabox_id']); ?>').hide();
-						}
-					});
+					// console.log(wp.data.select);
+
+					if (typeof wp !== 'undefined' && wp.data && wp.data.select) {
+						wp.data.subscribe(function() {
+							var getFormat = wp.data.select('core/editor').getEditedPostAttribute('format');
+							if (getFormat === '<?php echo esc_html($meta['post_format']); ?>') {
+								$('#<?php echo esc_html($meta['metabox_id']); ?>').show();
+							} else {
+								$('#<?php echo esc_html($meta['metabox_id']); ?>').hide();
+							}
+						});
+					}
 				}
 			});
 		</script>

@@ -100,6 +100,28 @@ class tpmeta_admin {
 
 	}
 
+	/**
+	 * Register the JavaScript for the admin area.
+	 *
+	 * @since    1.3.1
+	 */
+	public function enqueue_editor_scripts() {
+
+		/**
+		 * This function is provided for demonstration purposes only.
+		 *
+		 * An instance of this class should be passed to the run() function
+		 * defined in tpmeta_loader as all of the hooks are defined
+		 * in that particular class.
+		 *
+		 * The tpmeta_loader will then create the relationship
+		 * between the defined hooks and the functions defined in this
+		 * class.
+		 */
+		wp_enqueue_script( 'pure-metafields-admin-editor', plugin_dir_url( __FILE__ ) . 'js/pure-metafields-admin-editor.js', array('wp-element', 'wp-data', 'wp-hooks', 'jquery'), $this->version, false );
+
+	}
+
 	public function tp_metaboxes(){
 		
 	}

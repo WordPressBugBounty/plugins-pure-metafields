@@ -8,6 +8,7 @@ if(!isset($default)){
 }
 
 $allowed_tags = tpmeta_allowed_svg_tags();
+
 ?>
 <?php if(!isset($row_db_value)): ?>
 <textarea

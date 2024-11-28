@@ -144,7 +144,10 @@ class tpmeta_meta_box {
 		$meta = $metabox['args']['meta'];
 		$columns = isset($meta['columns'])? $meta['columns'] : 3; 
 		?>
-		<div class="tm-meta-wrapper tm-meta-column-<?php echo esc_attr($columns); ?>">
+		<div 
+		data-metabox-id="<?php echo esc_attr($meta['metabox_id']); ?>"
+    	data-post-format="<?php echo esc_attr($meta['post_format']); ?>"
+		class="tm-meta-wrapper tm-meta-column-<?php echo esc_attr($columns); ?>">
 			<?php wp_nonce_field( "_nonce_action_tp_metabox", "_nonce_tp_metabox" ); ?>
 			<input type="hidden" name="current_metabox_id[]" value="<?php echo esc_attr($meta['metabox_id']); ?>">
 			<?php 
@@ -157,44 +160,6 @@ class tpmeta_meta_box {
 				}
 			?>
 		</div>
-		
-		<?php if(isset($meta['post_format']) && $meta['post_format'] != ""): ?>
-		<script type="text/javascript">
-			jQuery(document).ready(function($) {
-				// Check if wp is defined
-				if (typeof wp === 'undefined') {
-					console.error('wp is not defined');
-					return; // Exit if wp is not defined
-				}
-				// Check if wp and wp.data are defined
-				if (typeof wp === 'undefined' || typeof wp.data === 'undefined') {
-					// Fallback for cases where wp.data is not available
-					$('#post-formats-select input[name="post_format"]').on('change', function() {
-						if ($(this).val() == '<?php echo esc_html($meta['post_format']); ?>') {
-							$('#<?php echo esc_html($meta['metabox_id']); ?>').show();
-						} else {
-							$('#<?php echo esc_html($meta['metabox_id']); ?>').hide();
-						}
-					});
-				} else {
-					// Use wp.data when available
-					// console.log(wp.data.select);
-
-					if (typeof wp !== 'undefined' && wp.data && wp.data.select) {
-						wp.data.subscribe(function() {
-							var getFormat = wp.data.select('core/editor').getEditedPostAttribute('format');
-							if (getFormat === '<?php echo esc_html($meta['post_format']); ?>') {
-								$('#<?php echo esc_html($meta['metabox_id']); ?>').show();
-							} else {
-								$('#<?php echo esc_html($meta['metabox_id']); ?>').hide();
-							}
-						});
-					}
-				}
-			});
-		</script>
-
-		<?php endif; ?>
 		<?php
 	}
 

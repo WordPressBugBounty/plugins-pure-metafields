@@ -17,7 +17,9 @@ $field['post'] = $post;
 ?>
 
 <?php if(isset($field['post_format']) && $field['post_format'] != ""): ?>
-<div class="tm-field-row <?php echo esc_attr($field['type']); ?> <?php echo esc_attr(esc_html($field['id'])); ?>" style="display:<?php echo !$compare_results || ($format != $field['post_format'])? 'none' : 'block'; ?>">
+<div 
+    class="tm-field-row <?php echo esc_attr($field['type']); ?> <?php echo esc_attr($field['id']); ?>" 
+    style="display:<?php echo !$compare_results || ($format != $field['post_format'])? 'none' : 'block'; ?>">
     <label class="label-<?php echo esc_attr($field['type']); ?>"><?php echo esc_html($field['label']); ?></label>
     <?php tpmeta_load_template('metaboxes/fields/'.$field['type'].'.php', $field); ?>
 </div>

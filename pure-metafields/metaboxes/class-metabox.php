@@ -143,10 +143,12 @@ class tpmeta_meta_box {
 
 		$meta = $metabox['args']['meta'];
 		$columns = isset($meta['columns'])? $meta['columns'] : 3; 
+		$_post_format = isset($meta['post_format'])? sanitize_text_field( wp_unslash($meta['post_format']) ) : '';
+		$_metabox_id = isset($meta['metabox_id'])? sanitize_text_field( wp_unslash($meta['metabox_id']) ) : '';
 		?>
 		<div 
-		data-metabox-id="<?php echo esc_attr($meta['metabox_id']); ?>"
-    	data-post-format="<?php echo esc_attr($meta['post_format']); ?>"
+		data-metabox-id="<?php echo esc_attr($_metabox_id); ?>"
+    	data-post-format="<?php echo esc_attr($_post_format); ?>"
 		class="tm-meta-wrapper tm-meta-column-<?php echo esc_attr($columns); ?>">
 			<?php wp_nonce_field( "_nonce_action_tp_metabox", "_nonce_tp_metabox" ); ?>
 			<input type="hidden" name="current_metabox_id[]" value="<?php echo esc_attr($meta['metabox_id']); ?>">

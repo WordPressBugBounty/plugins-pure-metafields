@@ -180,21 +180,22 @@
                     let attachment, attchmentURL;
                     attachment = frame.state().get('selection').first().toJSON();
                     attchmentURL = attachment.sizes.thumbnail? attachment.sizes.thumbnail.url : attachment.sizes.full.url;
-                    $imageContainer.html(`<div class="tm-gallery-item">
-                        <div class="tm-gallery-img">
+                    $imageContainer.html(`<div class="tm-image-item">
+                        <div class="tm-image-prev">
                             <img src="${attchmentURL}" alt=""/>
                         </div>
                         <div class="tm-image-actions">
-                            <a data-attachment-id="${attachment.id}" href="#" class="tm-delete"><span class="dashicons dashicons-trash"></span></a>
+                            <a data-attachment-id="${attachment.id}" href="#" class="tm-delete"><span class="dashicons dashicons-no-alt"></span></a>
+                            <a data-attachment-id="${attachment.id}" href="#" class="tm-edit"><span class="dashicons dashicons-edit"></span></a>
                         </div>
                     </div>`)
                     
-                    $this.prev('input.tm-image-value').val(attachment.id)
+                    $this.closest('.tm-image-field').find('input.tm-image-value').val(attachment.id)
         
                     $imageContainer.find('.tm-image-actions > a.tm-delete').on('click', function(e){
                         e.preventDefault();
                         var selected = $( e.target ).parent().attr( 'data-attachment-id' );
-                        $(e.target).closest('.tm-gallery-field').find('input.tm-image-value').val('')
+                        $(e.target).closest('.tm-image-field').find('input.tm-image-value').val('')
                         $(e.target).parent().parent().parent().remove()
                     })
                     frame.close();
@@ -230,7 +231,7 @@
 
             $frame.on('select', function(){
                 let attachments = $frame.state().get('selection').toJSON();
-                let ids = $this.prev('input.tm-gallery-value').val() != '' ? $this.prev('input.tm-gallery-value').val().split(',') : [];
+                let ids = $this.closest('.tm-gallery-field').find('input.tm-gallery-value').val() != '' ? $this.closest('.tm-gallery-field').find('input.tm-gallery-value').val().split(',') : [];
                 var attachmentURL;
                
                 attachments.map(function(el, i){
@@ -241,22 +242,22 @@
                         <div class="tm-gallery-img">
                             <img src="${attachmentURL}" alt=""/>
                         </div>
-                        <div class="tm-gallery-img-actions">
-                            <a data-attachment-id="${el.id}" href="#" class="tm-delete"><span class="dashicons dashicons-trash"></span></a>
+                        <div class="tm-gallery-actions">
+                            <a data-attachment-id="${el.id}" href="#" class="tm-delete repeater"><span class="dashicons dashicons-no-alt"></span></a>
                         </div>
                     </div>
                     `)
                 })
-                $this.prev('input.tm-gallery-value').val(ids.join(','))
+                $this.closest('.tm-gallery-field').find('input.tm-gallery-value').val(ids.join(','))
 
 
-                $('.tm-gallery-img-actions > a.tm-delete').on('click', function(e){
+                $(document).on('click', '.tm-gallery-actions > a.tm-delete.repeater', function(e){
                     e.preventDefault();
                     const $this = $(this);
-                    const selected = $( e.target ).parent().attr( 'data-attachment-id' );
+                    const selected = $( e.currentTarget ).data( 'attachment-id' );
                     ids = ids.filter( id => id != selected )
-                    $($this).closest('.tm-gallery-field').find('.tm-gallery-value').val(ids.join(','));
-                    $($this).closest('.tm-gallery-item').remove();
+                    $(e.currentTarget).closest('.tm-gallery-field').find('.tm-gallery-value').val(ids.join(','));
+                    $(e.currentTarget).closest('.tm-gallery-item').remove();
                 });
 
                 $frame.close();
@@ -268,15 +269,15 @@
         })
 
 
-        $('.tm-gallery-img-actions > a.tm-delete').on('click', function(e){
+        $(document).on('click', '.tm-gallery-actions > a.tm-delete.repeater', function(e){
             e.preventDefault();
             const $this = $(this);
-            const selected    = $($this).attr( 'data-attachment-id' );
-            let ids         =  $($this).closest('.tm-gallery-field').find('.tm-gallery-value').val();
+            const selected    = $(e.currentTarget).data( 'attachment-id' );
+            let ids         =  $(e.currentTarget).closest('.tm-gallery-field').find('.tm-gallery-value').val();
             ids = ids.split(',');
             ids = ids.filter( id => id != selected );
-            $($this).closest('.tm-gallery-field').find('.tm-gallery-value').val(ids.join(','));
-            $($this).closest('.tm-gallery-item').remove();
+            $(e.currentTarget).closest('.tm-gallery-field').find('.tm-gallery-value').val(ids.join(','));
+            $(e.currentTarget).closest('.tm-gallery-item').remove();
         })
 
         $('.tm-repeater-select-field.select2').each(function(indx, el){
@@ -288,7 +289,6 @@
         $('.tm-repeater-select-field.select2').each(function(indx, el){
             $(this).select2();
             $(el).on('select2:unselect', function (e) {
-                console.log($(e.target).val())
                 $(e.target).closest('.repeater-field').find('input[type="hidden"]').val(JSON.stringify($(e.target).val()));
             });
         });

@@ -64,7 +64,41 @@
     });
 
     $(document).ready(function(){
+        $('.tm-meta-wrapper').closest('.inside').addClass('pure-metafields');
         $('.tp-metabox-repeater-row .tp-metabox-repeater-item-wrapper').slideUp('300');
+    });
+
+    $(document).on('click', '.tm-image-actions .tm-edit', function(e){
+        e.preventDefault();
+
+        const attachmentId = $(this).data('attachment-id');
+        const attachment = wp.media.attachment(attachmentId);
+
+        // Fetch ensures the attachment details load
+        attachment.fetch().then(() => {
+            const frame = wp.media({
+                title: 'Edit Image',
+                multiple: false,
+                library: {
+                    type: 'image'
+                },
+                button: {
+                    text: 'Update Image'
+                }
+            });
+
+             // Add the attachment as selected and show right panel
+             frame.on('open', function(){
+                const selection = frame.state().get('selection');
+                selection.reset([attachment]); // single image
+
+                // Optional: Hide the library panel
+                $('.media-frame-router, .media-frame-menu').hide();
+                $('.media-frame-content').addClass('single-image-edit');
+            });
+
+            frame.open();
+        });
     });
     
 })( jQuery );

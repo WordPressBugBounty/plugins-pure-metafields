@@ -54,7 +54,7 @@ if(isset($multiple) && $multiple == true){
 <select 
     <?php echo (isset($multiple) && $multiple == true)? "name=".esc_attr($id)."_select[]" : "name=".esc_attr($id).'[]'; ?>
     data-key="<?php echo esc_attr($bind_keys); ?>"
-    class="<?php echo esc_attr($id); ?> tm-repeater-select-field tm-repeater-conditional <?php echo isset($context)? esc_attr($context) : ''; ?>"
+    class="<?php echo esc_attr($id); ?> tm-repeater-select-field tm-repeater-conditional tm-select-field <?php echo isset($context)? esc_attr($context) : ''; ?>"
     <?php echo (isset($multiple) && $multiple == true)? 'multiple' : ''; ?>>
     <?php if(isset($multiple) && $multiple == true): ?>
     <option value="<?php echo esc_html($default?? ''); ?>"><?php echo esc_html($placeholder)?? esc_html('Select...'); ?></option>

@@ -48,7 +48,7 @@ class tpmeta_meta_box {
 		wp_enqueue_script( 'dragula',  TPMETA_URL . 'metaboxes/js/dragula.min.js',   array('jquery'), time(), true);
 		wp_enqueue_script( 'wp-color-picker');
 		wp_enqueue_script( 'tm-metabox-js',  TPMETA_URL . 'metaboxes/js/main.js',    array('jquery', 'jquery-ui-datepicker'), time(), true);
-		wp_enqueue_script( 'repeater',  TPMETA_URL . 'metaboxes/js/repeater.js',    array('jquery', 'jquery-ui-datepicker', 'dragula'), time(), true);
+		wp_register_script( 'repeater',  TPMETA_URL . 'metaboxes/js/repeater.js',    array('jquery', 'jquery-ui-datepicker', 'dragula'), time(), true);
 
 	
 		wp_enqueue_media();
@@ -235,6 +235,9 @@ class tpmeta_meta_box {
 				}elseif($field['type'] == 'textarea' && !empty($_POST[$field['id']])){
 					// Define allowed SVG tags and attributes
 					$allowed_tags = tpmeta_allowed_svg_tags();
+					if(is_array($_POST[$field['id']])){
+						return;
+					}
 					update_post_meta($post_id, $field['id'], wp_kses($_POST[$field['id']], $allowed_tags));
 				}elseif($field['type'] == 'select'){
 					if(isset($_POST[$field['id']]) && isset($field['multiple']) && $field['multiple'] == true){
@@ -262,6 +265,9 @@ class tpmeta_meta_box {
 				}elseif($field['type'] == 'repeater' && isset($_POST[$field['id']]) ){
 					$_meta_key = $field['id'];
 					$_repeater_rows = self::sanitize_array($_POST[$field['id']]);
+					if(!is_array($_repeater_rows)){
+						return;
+					}
 					// var_dump($_repeater_rows);
 					$_repeater_rows_value = array();
 					for($i=0; $i<count($_repeater_rows); $i++){

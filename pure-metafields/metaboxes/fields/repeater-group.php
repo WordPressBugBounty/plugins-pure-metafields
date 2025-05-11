@@ -19,6 +19,7 @@ $field['row_db_value']  = isset($row_db_value)? $row_db_value : '';
 $field['field_type']    = isset($field_type)? esc_html($field_type) : '';
 $field['repeater_id']   = isset($repeater_id)? esc_html($repeater_id) : '';
 
+wp_enqueue_script('repeater');
 ?>
 
 <?php if(isset($post_format) && $post_format != ""): ?>

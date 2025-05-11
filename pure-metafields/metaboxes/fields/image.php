@@ -11,6 +11,30 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
         name="<?php echo esc_attr($id); ?>[]" 
         class="<?php echo esc_attr($id); ?> tm-image-value"
         value="<?php echo esc_html($row_db_value); ?>"/>
+    
+    <div class="tm-image-container">
+        <?php
+            $images_ids = esc_html($row_db_value);
+            if($images_ids != ''):
+            $images_ids = explode(',', $images_ids);
+            foreach($images_ids as $image_id):
+                $image_src = wp_get_attachment_image_src($image_id, 'thumbnail');
+        ?>
+        <div class="tm-image-item">
+            <div class="tm-image-prev">
+                <img src="<?php echo esc_url($image_src[0]); ?>" alt=""/>
+            </div>
+            <div class="tm-image-actions">
+                <a data-attachment-id="<?php echo esc_attr($image_id); ?>" href="#" class="tm-delete">
+                    <span class="dashicons dashicons-no-alt"></span>
+                </a>
+                <a data-attachment-id="<?php echo esc_attr($image_id); ?>" href="#" class="tm-edit">
+                    <span class="dashicons dashicons-edit"></span>
+                </a>
+            </div>
+        </div>
+        <?php endforeach; endif; ?>
+    </div>
     <button class="tm-add-image" type="button">
         <span class="">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -21,26 +45,6 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
         </span>
         <span><?php echo esc_html__('Add Image', 'pure-metafields'); ?></span>
     </button>
-    <div class="tm-image-container">
-        <?php
-            $images_ids = esc_html($row_db_value);
-            if($images_ids != ''):
-            $images_ids = explode(',', $images_ids);
-            foreach($images_ids as $image_id):
-                $image_src = wp_get_attachment_image_src($image_id, 'thumbnail');
-        ?>
-        <div class="tm-gallery-item">
-            <div class="tm-gallery-img">
-                <img src="<?php echo esc_url($image_src[0]); ?>" alt=""/>
-            </div>
-            <div class="tm-image-actions">
-                <a data-attachment-id="<?php echo esc_attr($image_id); ?>" href="#" class="tm-delete">
-                    <span class="dashicons dashicons-trash"></span>
-                </a>
-            </div>
-        </div>
-        <?php endforeach; endif; ?>
-    </div>
 </div>
 <?php else: ?>
 <div class="tm-gallery-field">
@@ -49,10 +53,6 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
         name="<?php echo esc_attr($id); ?>" 
         id="<?php echo esc_attr($id); ?>"
         value="<?php echo esc_html(tpmeta_field($id)); ?>"/>
-    <button id="<?php echo esc_attr($id); ?>-image" type="button">
-        <span class="dashicons dashicons-format-gallery"></span>
-        <span><?php echo esc_html__('Add Image', 'pure-metafields'); ?></span>
-    </button>
     <div class="tm-gallery-container" id="<?php echo esc_attr($id); ?>-g-container">
     <?php if(tpmeta_field($id) != ''): 
     $images_ids = tpmeta_field($id);
@@ -61,16 +61,21 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
         $image_src = wp_get_attachment_image_src($image_id, 'thumbnail');
         
     ?>
-    <div class="tm-gallery-item">
-        <div class="tm-gallery-img">
+    <div class="tm-image-item">
+        <div class="tm-image-prev">
             <img src="<?php echo esc_url($image_src[0]); ?>" alt=""/>
         </div>
         <div class="tm-image-actions">
-            <a data-attachment-id="<?php echo esc_attr($image_id); ?>" href="#" class="tm-delete"><span class="dashicons dashicons-trash"></span></a>
+            <a data-attachment-id="<?php echo esc_attr($image_id); ?>" href="#" class="tm-delete"><span class="dashicons dashicons-no-alt"></span></a>
+            <a data-attachment-id="<?php echo esc_attr($image_id); ?>" href="#" class="tm-edit"><span class="dashicons dashicons-edit"></span></a>
         </div>
     </div>
     <?php endforeach; endif; ?>
     </div>
+    <button id="<?php echo esc_attr($id); ?>-image" type="button">
+        <span class="dashicons dashicons-format-gallery"></span>
+        <span><?php echo esc_html__('Add Image', 'pure-metafields'); ?></span>
+    </button>
 </div>
 
 <script type="text/javascript">
@@ -97,12 +102,13 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
                     var attchmentURL = attachment.sizes.thumbnail? attachment.sizes.thumbnail.url : attachment.sizes.full.url;
                     
                     $('#<?php echo esc_attr($id); ?>-g-container').html(`
-                    <div class="tm-gallery-item">
-                        <div class="tm-gallery-img">
+                    <div class="tm-image-item">
+                        <div class="tm-image-prev">
                             <img src="${attchmentURL}" alt=""/>
                         </div>
                         <div class="tm-image-actions">
-                            <a data-attachment-id="${attachment.id}" href="#" class="tm-delete"><span class="dashicons dashicons-trash"></span></a>
+                            <a data-attachment-id="${attachment.id}" href="#" class="tm-delete"><span class="dashicons dashicons-no-alt"></span></a>
+                            <a data-attachment-id="${attachment.id}" href="#" class="tm-edit"><span class="dashicons dashicons-edit"></span></a>
                         </div>
                     </div>
                     `)
@@ -114,7 +120,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
                         e.preventDefault();
                         var selected = $( e.target ).closest('.tm-gallery-field');
                         var input = selected.find('input[type="hidden"]');
-                        var imageItem = selected.find('.tm-gallery-item');
+                        var imageItem = selected.find('.tm-image-item');
                         input.val('');
                         imageItem.remove();
                     })
@@ -136,7 +142,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
                 e.preventDefault();
                 var selected = $( e.target ).closest('.tm-gallery-field');
                 var input = selected.find('input[type="hidden"]');
-                var imageItem = selected.find('.tm-gallery-item');
+                var imageItem = selected.find('.tm-image-item');
                 input.val('');
                 imageItem.remove();
             })

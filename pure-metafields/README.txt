@@ -2,10 +2,10 @@
 Contributors: themepure
 Donate link: https://help.themepure.net/support/
 Tags: Metabox, Metafields, Custom Post Field, Post Metafield, Page Metabox
-Requires PHP: 7.4
+Requires PHP: 8.0
 Requires at least: 5.6
-Tested up to: 6.7
-Stable tag: 1.4.1
+Tested up to: 6.8
+Stable tag: 1.4.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -607,6 +607,13 @@ Yes, contributions are welcome! If you have any ideas or improvements for the pl
 * Update: New UI updated
 * Update: Edit image feature added
 * Update: New features added
+
+
+= 1.4.2  =
+* Update: Repeater issue fixed
+
+= 1.4.3  =
+* Update: Repeater issue fixed
 
 == Upgrade Notice ==
 = 1.0.0 =

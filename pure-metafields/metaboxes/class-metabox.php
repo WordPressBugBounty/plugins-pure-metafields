@@ -40,7 +40,7 @@ class tpmeta_meta_box {
 		wp_enqueue_style( 'jquery-ui', TPMETA_URL . 'metaboxes/css/jquery-ui.min.css', array(), time(), 'all');
 		wp_enqueue_style( 'select2', TPMETA_URL . 'metaboxes/css/select2.min.css', array(), time(), 'all');
 		wp_enqueue_style( 'dragula', TPMETA_URL . 'metaboxes/css/dragula.min.css', array(), time(), 'all');
-		wp_enqueue_style( 'tm-metabox-css', TPMETA_URL . 'metaboxes/css/style.css', array(),  time(), 'all');
+		wp_enqueue_style( 'tm-metabox-css', TPMETA_URL . 'metaboxes/css/puremeta-style.css', array(),  time(), 'all');
 
 
 		//js
@@ -264,32 +264,32 @@ class tpmeta_meta_box {
 					}
 				}elseif($field['type'] == 'repeater' && isset($_POST[$field['id']]) ){
 					$_meta_key = $field['id'];
+					$_row_counter = isset($_POST[$field['id'].'_counter'])? intval($_POST[$field['id'].'_counter']) : 0;
 					$_repeater_rows = self::sanitize_array($_POST[$field['id']]);
-					if(!is_array($_repeater_rows)){
-						return;
-					}
 					// var_dump($_repeater_rows);
 					$_repeater_rows_value = array();
-					for($i=0; $i<count($_repeater_rows); $i++){
-						$_row = array();
-						foreach( $field['fields'] as $repeater_field ){
-							$_get_field_value = self::sanitize_array($_POST[$repeater_field['id']]);
-							
-							if(in_array($repeater_field['type'], $types) && !empty($repeater_field)){
-								$_row[$repeater_field['id']] = sanitize_text_field($_get_field_value[$i]);
-							}elseif($repeater_field['type'] == 'textarea' && !empty($repeater_field)){
-								$_row[$repeater_field['id']] = sanitize_textarea_field($_get_field_value[$i]);
-							}elseif($repeater_field['type'] == 'checkbox' && !empty($repeater_field)){
-								$_row[$repeater_field['id']] = self::sanitize_array(json_decode(stripslashes($_get_field_value[$i]), true));
-							}elseif($repeater_field['type'] == 'select' && !empty($repeater_field)){
-								$array_object = [];
-								$array_object[$_get_field_value[$i]] = $repeater_field['options'][$_get_field_value[$i]];
-								$_row[$repeater_field['id']] = self::sanitize_array($array_object);
-							}else{
-								$_row[$repeater_field['id']] = sanitize_text_field($_get_field_value[$i]);
+					if($_row_counter > 0){
+						for($i=0; $i<count($_repeater_rows); $i++){
+							$_row = array();
+							foreach( $field['fields'] as $repeater_field ){
+								$_get_field_value = self::sanitize_array($_POST[$repeater_field['id']]);
+								
+								if(in_array($repeater_field['type'], $types) && !empty($repeater_field)){
+									$_row[$repeater_field['id']] = sanitize_text_field($_get_field_value[$i]);
+								}elseif($repeater_field['type'] == 'textarea' && !empty($repeater_field)){
+									$_row[$repeater_field['id']] = sanitize_textarea_field($_get_field_value[$i]);
+								}elseif($repeater_field['type'] == 'checkbox' && !empty($repeater_field)){
+									$_row[$repeater_field['id']] = self::sanitize_array(json_decode(stripslashes($_get_field_value[$i]), true));
+								}elseif($repeater_field['type'] == 'select' && !empty($repeater_field)){
+									$array_object = [];
+									$array_object[$_get_field_value[$i]] = $repeater_field['options'][$_get_field_value[$i]];
+									$_row[$repeater_field['id']] = self::sanitize_array($array_object);
+								}else{
+									$_row[$repeater_field['id']] = sanitize_text_field($_get_field_value[$i]);
+								}
 							}
+							$_repeater_rows_value[] = $_row;
 						}
-						$_repeater_rows_value[] = $_row;
 					}
 					update_post_meta($post_id, $_meta_key, $_repeater_rows_value);
 				}else{

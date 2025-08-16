@@ -14,7 +14,7 @@ $_get_db_values = tpmeta_field($id);
 ?>
 <?php if( !empty($_get_db_values) ): ?>
 <div class="tp-repeater">
-    
+    <input type="hidden" class="tp-row-counter" name="<?php echo esc_attr($id); ?>_counter" value="<?php echo esc_attr(count($_get_db_values)); ?>">
     <div class="tp-metabox-repeater connected-sortable">
         <?php 
             $count = 0;
@@ -65,8 +65,9 @@ $_get_db_values = tpmeta_field($id);
 </div>
 <?php else: ?>
 <div class="tp-repeater">
+    <input type="hidden" class="tp-row-counter" name="<?php echo esc_attr($id); ?>_counter" value="0">
     <div class="tp-metabox-repeater connected-sortable">
-        <div class="tp-metabox-repeater-row">
+        <div class="tp-metabox-repeater-row tp-hidden-template">
             <button class="tp-metabox-repeater-collapse">  
                 <span>
                     <svg width="16" height="9" viewBox="0 0 16 9" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -75,7 +76,6 @@ $_get_db_values = tpmeta_field($id);
                 </span>
                 <span data-count="1" class="tp-metabox-repeater-collapse-text"><?php echo esc_html__('Item', 'pure-metafields'); ?> 1</span>
             </button>
-
             <input type="hidden" name="<?php echo esc_attr($id); ?>[]" class="<?php echo esc_attr($id); ?>" value="<?php echo esc_html($id); ?>">
             <div class="tp-metabox-repeater-item-wrapper">
                 <?php

@@ -71,40 +71,58 @@
 
     const repeater_actions = function(){
 
-        $('.tp-add-row').on('click', function(){
+        function updateCounter($repeater) {
+            // Count visible rows (ignore hidden template)
+            let count = $repeater.find('.tp-metabox-repeater-row:not(.tp-hidden-template)').length;
+            $repeater.find('.tp-row-counter').val(count);
 
-            let $cloneElement = $(this).closest('.tp-repeater').find('.tp-metabox-repeater > .tp-metabox-repeater-row').first().clone();
-            // console.log($cloneElement)
-            let classList = $(this).closest('.repeater').attr("class").split(" ");
-            let key = classList[classList.length - 1];
-            let value = $(this).closest('.tp-repeater').find('.tp-metabox-repeater-row').length;
+            // Renumber visible rows
+            $repeater.find('.tp-metabox-repeater-row:not(.tp-hidden-template)').each(function(index) {
+                $(this).find('.tp-metabox-repeater-collapse-text')
+                    .text(`Item ${index + 1}`)
+                    .attr('data-count', index + 1);
+            });
+        }
 
+        $('.tp-add-row').on('click', function() {
+            let $repeater = $(this).closest('.tp-repeater');
+            let $rows = $repeater.find('.tp-metabox-repeater-row');
+            let $hiddenTemplate = $rows.filter('.tp-hidden-template');
 
-            let itemCount;
-            if(localStorage.getItem(key) != null){
-                itemCount = parseInt(localStorage.getItem(key));
-                localStorage.setItem(key, parseInt(itemCount) + 1 );
-                itemCount += 1
-            }else{
-                itemCount = 1;
-                localStorage.setItem(key, value + itemCount );
-                itemCount += value;
+            let $newRow;
+            if ($hiddenTemplate.length) {
+                // Reuse hidden row
+                $newRow = $hiddenTemplate.removeClass('tp-hidden-template').show();
+            } else {
+                // Clone first row
+                $newRow = $rows.first().clone();
+                $newRow.appendTo($repeater.find('.tp-metabox-repeater'));
             }
-            $cloneElement.find('.tp-metabox-repeater-collapse').find('.tp-metabox-repeater-collapse-text').text(`Item ${itemCount}`).attr('data-count', itemCount)
-            $(this).closest('.tp-repeater').find('.tp-metabox-repeater-row')
 
+            // Reset inputs except hidden fields
+            $newRow.find('input, select, textarea').not('[type=hidden]').val('');
 
-            $cloneElement.appendTo($(this).closest('.tp-repeater').find('.tp-metabox-repeater'))
-            $(document).trigger('row_loaded')
-        })
+            // Update counter + labels
+            updateCounter($repeater);
 
-        $('.tp-delete-row').on('click', function(){
-            
-            const rows = $(this).closest('.tp-metabox-repeater').find('.tp-metabox-repeater-row').length
-            if(rows > 1){
-                $(this).parent().remove()
+            $(document).trigger('row_loaded');
+        });
+
+        $(document).on('click', '.tp-delete-row', function() {
+            let $repeater = $(this).closest('.tp-repeater');
+            let $rows = $repeater.find('.tp-metabox-repeater-row:not(.tp-hidden-template)');
+
+            if ($rows.length > 1) {
+                // Remove clicked row
+                $(this).closest('.tp-metabox-repeater-row').remove();
+            } else {
+                // Last row → hide instead of remove
+                $rows.first().addClass('tp-hidden-template').hide();
             }
-        })
+
+            // Always update counter after action
+            updateCounter($repeater);
+        });
 
         $('.tm-repeater-conditional').on('click, change', function(){
             var closestRow      = $(this).closest('.tp-metabox-repeater-row')

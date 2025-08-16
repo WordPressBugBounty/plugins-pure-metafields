@@ -301,6 +301,86 @@ function tpmeta_allowed_svg_tags(){
       'stop-opacity' => true,
     ),
     // Add more SVG tags and attributes as needed
+		'a' => [
+			'class'    => [],
+			'href'    => [],
+			'title'    => [],
+			'target'    => [],
+			'rel'    => [],
+		],
+    'b' => [],
+    'blockquote'  =>  [
+      'cite' => [],
+    ],
+    'cite'                      => [
+      'title' => [],
+    ],
+    'code'                      => [],
+    'del'                    => [
+      'datetime'   => [],
+      'title'      => [],
+  ],
+    'dd'                     => [],
+    'div'                    => [
+      'class'   => [],
+      'title'   => [],
+      'style'   => [],
+    ],
+    'dl'                     => [],
+    'dt'                     => [],
+    'em'                     => [],
+    'h1'                     => [],
+    'h2'                     => [],
+    'h3'                     => [],
+    'h4'                     => [],
+    'h5'                     => [],
+    'h6'                     => [],
+    'i'                         => [
+      'class' => [],
+    ],
+    'img'                    => [
+      'alt'  => [],
+      'class'   => [],
+      'height' => [],
+      'src'  => [],
+      'width'   => [],
+    ],
+    'li'                     => array(
+      'class' => array(),
+    ),
+    'ul'                     => array(
+      'class' => array(),
+    ),
+    'ol'                     => array(
+      'class' => array(),
+    ),
+    'p'                         => array(
+      'class' => array(),
+    ),
+    'q'                         => array(
+      'cite'    => array(),
+      'title'   => array(),
+    ),
+    'q'                         => array(
+      'cite'    => array(),
+      'title'   => array(),
+    ),
+    'span'                      => array(
+      'class'   => array(),
+      'title'   => array(),
+      'style'   => array(),
+    ),
+    'iframe'                 => array(
+      'width'         => array(),
+      'height'     => array(),
+      'scrolling'     => array(),
+      'frameborder'   => array(),
+      'allow'         => array(),
+      'src'        => array(),
+    ),
+    'strike'                 => array(),
+    'br'                     => array(),
+    'strong'                 => array(),
   );
 
   return apply_filters('tpmeta_allowed_svg_tags', $allowed_tags);

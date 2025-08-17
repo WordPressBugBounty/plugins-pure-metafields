@@ -981,6 +981,14 @@ span.select2-container--default .select2-selection--multiple {
     font-weight: 400;
     line-height: 1;
 }
+[class*="tm-meta-column-"] .tm-field-row .tm-select-field[multiple] {
+    min-height: 150px;
+}
+/* Change selected option background + text color */
+[class*="tm-meta-column-"] .tm-field-row .tm-select-field[multiple] option:checked {
+    background-color: #5F4AFE!important; /* WP blue */
+    color: #fff;              /* White text */
+}
 .tp-metabox-repeater .tp-metabox-repeater-row {
     border: none;
 }

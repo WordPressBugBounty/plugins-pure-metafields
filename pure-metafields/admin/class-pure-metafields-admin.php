@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
  * The admin-specific functionality of the plugin.
  *
  * @link       https://themepure.net
- * @since      1.3.1
+ * @since      1.4.8
  *
  * @package    tpmeta
  * @subpackage tpmeta/admin
@@ -118,7 +118,10 @@ class tpmeta_admin {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-		wp_enqueue_script( 'pure-metafields-admin-editor', plugin_dir_url( __FILE__ ) . 'js/pure-metafields-admin-editor.js', array('wp-element', 'wp-data', 'wp-hooks', 'jquery'), $this->version, false );
+		global $pagenow;
+		if ( isset( $pagenow ) && 'post.php' === $pagenow ) {
+			wp_enqueue_script( 'pure-metafields-admin-editor', plugin_dir_url( __FILE__ ) . 'js/pure-metafields-admin-editor.js', array( 'wp-element', 'wp-data', 'wp-hooks', 'jquery' ), $this->version, false );
+		}
 
 	}
 

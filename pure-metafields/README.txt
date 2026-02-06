@@ -4,8 +4,8 @@ Donate link: https://help.themepure.net/support/
 Tags: Metabox, Meta fields, Post Meta, Page Meta
 Requires PHP: 8.0
 Requires at least: 5.6
-Tested up to: 6.8
-Stable tag: 1.4.4
+Tested up to: 6.9
+Stable tag: 1.4.8
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -494,7 +494,6 @@ Yes, contributions are welcome! If you have any ideas or improvements for the pl
 
 == Changelog ==
 
-
 = 1.3  =
 
 * Update: No Update.
@@ -512,10 +511,6 @@ Yes, contributions are welcome! If you have any ideas or improvements for the pl
 * Update: Final Docs Updated previous readme deleted.
 
 = 1.0.4  =
-
-* Update: New UI added.
-
-= 1.0.5  =
 
 * Update: New UI added.
 
@@ -608,7 +603,6 @@ Yes, contributions are welcome! If you have any ideas or improvements for the pl
 * Update: Edit image feature added
 * Update: New features added
 
-
 = 1.4.2  =
 * Update: Repeater issue fixed
 
@@ -617,6 +611,19 @@ Yes, contributions are welcome! If you have any ideas or improvements for the pl
 
 = 1.4.4  =
 * Update: Multiselect Field Fixed
+
+= 1.4.5  =
+* Fix: Block Widget Bug Fixed.
+
+= 1.4.6  =
+* Fix: Datepicker field fixed
+
+= 1.4.7  =
+* Repeater Image delete issue fixed
+* Gallery drag drop issue fixed
+
+= 1.4.8  =
+* Compatible with wp - 6.9
 
 == Upgrade Notice ==
 = 1.0.0 =

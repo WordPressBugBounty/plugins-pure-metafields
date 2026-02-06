@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
     id="<?php echo esc_attr($id); ?>-select" 
     class="<?php echo esc_attr($id); ?> tm-select-field <?php echo isset($context)? esc_attr($context) : ''; ?>"
     <?php echo (isset($multiple) && $multiple == true)? 'multiple' : ''; ?>>
-    <?php if(!isset($multiple) && $multiple == true): ?>
+    <?php if ( empty( $multiple ) ) : ?>
     <option value="<?php echo esc_html($default); ?>"><?php echo esc_html($placeholder)?? esc_html('Select...'); ?></option>
     <?php endif; ?>
     <?php foreach($options as $key => $val): ?>
@@ -39,7 +39,7 @@ if(isset($multiple) && $multiple == true){
     }else{
         $array_object = [];
         foreach($options as $key => $val){
-            if(in_array($key, $default)){
+            if(is_array($default) && in_array($key, $default)){
                 $array_object[$key] = $val;
             }
         }
@@ -63,7 +63,9 @@ if(isset($multiple) && $multiple == true){
         <?php if(isset($multiple) && $multiple == true): ?>
         <option 
             value="<?php echo esc_html($key); ?>" 
-            <?php selected((!metadata_exists('post', $post->ID, $repeater_id)? in_array($key, $default?? array()) : ($default?? '' == $key) ), 1); ?>><?php echo esc_html($val); ?>
+            <?php 
+                selected((!metadata_exists('post', $post->ID, $repeater_id)? in_array($key, (array) ($default?? array())) : (($default?? '') == $key) ), 1); ?>><?php echo esc_html($val); 
+            ?>
         </option>
         <?php else: ?>
         <option 

@@ -47,7 +47,7 @@
             })
         });
         
-        $('.tp-delete-row').on('click', function(){
+        $(document).on('click', '.tp-delete-row', function(){
             
             const rows = $(this).closest('.tp-metabox-repeater').find('.tp-metabox-repeater-row').length
             if(rows > 1){
@@ -84,7 +84,7 @@
             });
         }
 
-        $('.tp-add-row').on('click', function() {
+        $(document).on('click', '.tp-add-row', function() {
             let $repeater = $(this).closest('.tp-repeater');
             let $rows = $repeater.find('.tp-metabox-repeater-row');
             let $hiddenTemplate = $rows.filter('.tp-hidden-template');
@@ -124,7 +124,7 @@
             updateCounter($repeater);
         });
 
-        $('.tm-repeater-conditional').on('click, change', function(){
+        $(document).on('click change', '.tm-repeater-conditional', function(){
             var closestRow      = $(this).closest('.tp-metabox-repeater-row')
             var key             = $(this).data('key')
             var targetElement   = key != ''? closestRow.find(`.tm-field-row.${key}`) : '';
@@ -179,57 +179,53 @@
     }
 
     const imageFunctionality = function(){
-        $('.tm-add-image').each(function(indx, el){
-            $(el).click(function(e){
-                e.preventDefault();
-                let frame, editFrame;
-                let $this = $(this);
-                let $imageContainer = $this.closest('.tm-image-field').find('.tm-image-container');
+        $(document).on('click', '.tm-add-image', function(e){
+            e.preventDefault();
+            let frame, editFrame;
+            let $this = $(this);
+            let $imageContainer = $this.closest('.tm-image-field').find('.tm-image-container');
+
+            frame = wp.media({
+                title:'Select an image',
+                button:{
+                    text:'Add Image'
+                },
+                multiple:false
+            })
+
+            frame.on('select', function(){
+                let attachment, attchmentURL;
+                attachment = frame.state().get('selection').first().toJSON();
+                attchmentURL = attachment.sizes.thumbnail? attachment.sizes.thumbnail.url : attachment.sizes.full.url;
+                $imageContainer.html(`<div class="tm-image-item">
+                    <div class="tm-image-prev">
+                        <img src="${attchmentURL}" alt=""/>
+                    </div>
+                    <div class="tm-image-actions">
+                        <a data-attachment-id="${attachment.id}" href="#" class="tm-delete"><span class="dashicons dashicons-no-alt"></span></a>
+                        <a data-attachment-id="${attachment.id}" href="#" class="tm-edit"><span class="dashicons dashicons-edit"></span></a>
+                    </div>
+                </div>`)
+                
+                $this.closest('.tm-image-field').find('input.tm-image-value').val(attachment.id)
     
-                frame = wp.media({
-                    title:'Select an image',
-                    button:{
-                        text:'Add Image'
-                    },
-                    multiple:false
+                $imageContainer.find('.tm-image-actions > a.tm-delete').on('click', function(e){
+                    e.preventDefault();
+                    $(e.target).closest('.tm-image-field').find('input.tm-image-value').val('')
+                    $(e.target).parent().parent().parent().remove()
                 })
-    
-                frame.on('select', function(){
-                    let attachment, attchmentURL;
-                    attachment = frame.state().get('selection').first().toJSON();
-                    attchmentURL = attachment.sizes.thumbnail? attachment.sizes.thumbnail.url : attachment.sizes.full.url;
-                    $imageContainer.html(`<div class="tm-image-item">
-                        <div class="tm-image-prev">
-                            <img src="${attchmentURL}" alt=""/>
-                        </div>
-                        <div class="tm-image-actions">
-                            <a data-attachment-id="${attachment.id}" href="#" class="tm-delete"><span class="dashicons dashicons-no-alt"></span></a>
-                            <a data-attachment-id="${attachment.id}" href="#" class="tm-edit"><span class="dashicons dashicons-edit"></span></a>
-                        </div>
-                    </div>`)
-                    
-                    $this.closest('.tm-image-field').find('input.tm-image-value').val(attachment.id)
-        
-                    $imageContainer.find('.tm-image-actions > a.tm-delete').on('click', function(e){
-                        e.preventDefault();
-                        var selected = $( e.target ).parent().attr( 'data-attachment-id' );
-                        $(e.target).closest('.tm-image-field').find('input.tm-image-value').val('')
-                        $(e.target).parent().parent().parent().remove()
-                    })
-                    frame.close();
-                    return false;
-                })
-    
-                frame.open()
+                frame.close();
                 return false;
             })
+
+            frame.open()
+            return false;
         })
 
 
 
-        $('.tm-image-actions > a.tm-delete').on('click', function(e){
+        $(document).on('click', '.tm-image-actions > a.tm-delete', function(e){
             e.preventDefault();
-            var selected = $( e.target ).parent().attr( 'data-attachment-id' );
             $(e.target).closest('.tm-image-field').find('input.tm-image-value').val('')
             $(e.target).parent().parent().parent().remove();
         })
@@ -237,7 +233,7 @@
 
 
     const galleryFunctionality = function(){
-        $('.tm-add-gallery').on('click', function(e){
+        $(document).on('click', '.tm-add-gallery', function(e){
             e.preventDefault();
             let $this = $(this);
             let $frame = wp.media({

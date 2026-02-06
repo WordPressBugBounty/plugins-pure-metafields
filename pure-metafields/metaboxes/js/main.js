@@ -54,7 +54,15 @@
         }
     })
 
-    $('.tm-datepicker-input').datepicker();
+    $('.tm-datepicker-input').datepicker({
+        beforeShow: function(input, inst) {
+            setTimeout(function() {
+            // Add your custom class to the datepicker's wrapper
+            $('#ui-datepicker-div').addClass('tm-datepicker');
+            }, 0);
+        }
+    });
+
 
     $('.tm-colorpicker-input').wpColorPicker({});
 

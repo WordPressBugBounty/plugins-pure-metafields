@@ -7,7 +7,7 @@
  * so that it is ready for translation.
  *
  * @link       https://themepure.net
- * @since      1.3.1
+ * @since      1.4.8
  *
  * @package    tpmeta
  * @subpackage tpmeta/includes
@@ -19,7 +19,7 @@
  * Loads and defines the internationalization files for this plugin
  * so that it is ready for translation.
  *
- * @since      1.3.1
+ * @since      1.4.8
  * @package    tpmeta
  * @subpackage tpmeta/includes
  * @author     ThemePure <basictheme400@gmail.com>

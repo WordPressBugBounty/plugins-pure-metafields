@@ -1062,3 +1062,115 @@ span.select2-container--default .select2-selection--multiple {
 .single-image-edit .attachment-details {
     min-height: 600px;
 }
+
+/* date field  */
+
+.tm-datepicker-input {
+	max-width: 400px;
+}
+.tm-datepicker.ui-datepicker.ui-widget {
+    border-radius: 0;
+    box-shadow: 0 10px 20px 4px rgba(20, 20, 20, 0.14);
+    background: #fff;
+    padding: 30px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    width: 340px;
+    padding-top: 20px;
+    padding-bottom: 35px;
+}
+.tm-datepicker.ui-datepicker td {
+	padding: 0!important;
+}
+.tm-datepicker.ui-datepicker td span, .tm-datepicker.ui-datepicker td a {
+    border: 1px solid #e8e8e8;
+    border-radius: 0;
+    width: 45px;
+    max-width: 45px;
+    margin-right: -1px;
+    height: 45px;
+    margin-top: -1px;
+    font-size: 16px;
+    letter-spacing: -0.02em;
+    text-align: center!important;
+    padding: 0!important;
+    line-height: 45px;
+    color: #000;
+    font-weight: 500;
+    display: inline-block;
+    text-decoration: none;
+
+}
+.tm-datepicker.ui-datepicker td span, .tm-datepicker.ui-datepicker td a:hover {
+    background: #3362FF;
+    color: #fff;
+}
+.tm-datepicker.ui-datepicker td.ui-datepicker-today a, .tm-datepicker.ui-datepicker td.ui-datepicker-today a {
+    background: #3362FF;
+    color: #fff;
+}
+.tm-datepicker .wp-person a:focus .gravatar, a:focus, a:focus .media-icon img, a:focus .plugin-icon {
+	color: #fff;
+	box-shadow: none;
+	outline: none;
+    background: #3362FF;
+}
+.tm-datepicker.ui-datepicker table {
+	font-size: 18px!important;
+}
+.tm-datepicker.ui-datepicker .ui-datepicker-header {
+    margin-bottom: 10px;
+    background: #f6f6f6;
+    padding: 15px!important;
+    position: relative;
+    text-align: center;
+}
+.tm-datepicker.ui-datepicker .ui-datepicker-title {
+	font-size: 18px;
+    font-weight: bold;
+}
+.tm-datepicker.ui-datepicker .ui-datepicker-prev {
+	position: relative;
+}
+
+.tm-datepicker .ui-widget-header .ui-icon {
+	background-image: url("../images/ui-icons_444444_256x240.png");
+}
+
+.tm-datepicker.ui-datepicker .ui-icon {
+	display: block;
+	text-indent: -99999px;
+	overflow: hidden;
+	background-repeat: no-repeat;
+	left: .5em;
+	top: .3em;
+}
+.tm-datepicker.ui-datepicker .ui-datepicker-prev span, .tm-datepicker.ui-datepicker .ui-datepicker-next span {
+    margin-left: 8px !important;
+    margin-top: 7px !important;
+}
+
+.tm-datepicker .ui-icon {
+	width: 16px;
+	height: 16px;
+}
+
+.tm-datepicker .ui-icon-circle-triangle-e {
+	background-position: -48px -192px;
+}
+.tm-datepicker .ui-icon-circle-triangle-w {
+	background-position: -80px -192px;
+}
+.tm-datepicker.ui-datepicker .ui-datepicker-prev, .tm-datepicker.ui-datepicker .ui-datepicker-next {
+	position: absolute;
+	top: 10px;
+	width: 30px;
+	height: 30px;
+    cursor: pointer;
+}
+.tm-datepicker.ui-datepicker .ui-datepicker-prev {
+	left: 12px;
+}
+.tm-datepicker.ui-datepicker .ui-datepicker-next {
+	right: 12px;
+}

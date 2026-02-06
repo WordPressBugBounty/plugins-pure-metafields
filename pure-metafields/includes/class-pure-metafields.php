@@ -7,7 +7,7 @@
  * public-facing side of the site and the admin area.
  *
  * @link       https://themepure.net
- * @since      1.3.1
+ * @since      1.4.8
  *
  * @package    tpmeta
  * @subpackage tpmeta/includes
@@ -22,7 +22,7 @@
  * Also maintains the unique identifier of this plugin as well as the current
  * version of the plugin.
  *
- * @since      1.3.1
+ * @since      1.4.8
  * @package    tpmeta
  * @subpackage tpmeta/includes
  * @author     ThemePure <basictheme400@gmail.com>

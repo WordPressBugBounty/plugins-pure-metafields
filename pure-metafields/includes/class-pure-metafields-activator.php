@@ -4,7 +4,7 @@
  * Fired during plugin activation
  *
  * @link       https://themepure.net
- * @since      1.3.1
+ * @since      1.4.8
  *
  * @package    tpmeta
  * @subpackage tpmeta/includes
@@ -15,7 +15,7 @@
  *
  * This class defines all code necessary to run during the plugin's activation.
  *
- * @since      1.3.1
+ * @since      1.4.8
  * @package    tpmeta
  * @subpackage tpmeta/includes
  * @author     ThemePure <basictheme400@gmail.com>

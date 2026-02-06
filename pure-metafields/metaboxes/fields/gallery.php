@@ -165,18 +165,23 @@ if($field_type == 'repeater'){
                 const drake = dragula(Array.from(galleryItems),{
                     direction:'horizontal',
                     revertOnSpill:true,
-                    removeOnSpill:true,
+                    removeOnSpill:false,
                 });
 
-                drake.on('dragend', function( e ){
-                    
-                    const rearrangedGallery = $(e).parent().children('.tm-gallery-item');
+                // update order when an item is dropped into a gallery container
+                drake.on('drop', function(el, target, source, sibling){
+                    if(!target || !$(target).hasClass('tm-gallery-container')){
+                        // if dropped outside a gallery container, do nothing (revertOnSpill will restore)
+                        return;
+                    }
+
+                    const rearrangedGallery = $(target).children('.tm-gallery-item');
                     let ids = [];
                     rearrangedGallery.each( (index, el) => {
-                        ids.push($(el).data('image_id'))
-                    })
-                    $(e).closest('.tm-gallery-field').find('input[type="hidden"]').val(ids.join(','))
-                })
+                        ids.push($(el).data('image_id'));
+                    });
+                    $(target).closest('.tm-gallery-field').find('input[type="hidden"]').val(ids.join(','));
+                });
             }
             sortableGallery('<?php echo esc_attr($id); ?>');
         })

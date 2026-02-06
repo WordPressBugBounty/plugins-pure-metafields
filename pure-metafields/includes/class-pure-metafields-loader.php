@@ -4,7 +4,7 @@
  * Register all actions and filters for the plugin
  *
  * @link       https://themepure.net
- * @since      1.3.1
+ * @since      1.4.8
  *
  * @package    tpmeta
  * @subpackage tpmeta/includes

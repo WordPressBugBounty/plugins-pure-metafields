@@ -15,7 +15,7 @@
  * Plugin Name:       Pure Metafields
  * Plugin URI:        https://themepure.net/plugins/puremetafields/files/pure-metafields.zip
  * Description:       Plugin For Custom Metabox To Attach To Any Post Types.
- * Version:           1.4.8
+ * Version:           1.4.9
  * Author:            ThemePure
  * Author URI:        https://themepure.net
  * License:           GPL-2.0+
@@ -29,7 +29,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'TPMETA_VERSION', '1.4.8' );
+define( 'TPMETA_VERSION', '1.4.9' );
 define( 'TPMETA_PATH', plugin_dir_path(__FILE__) );
 define( 'TPMETA_URL', plugin_dir_url(__FILE__) );
 

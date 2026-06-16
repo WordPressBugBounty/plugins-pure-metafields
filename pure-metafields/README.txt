@@ -4,8 +4,8 @@ Donate link: https://help.themepure.net/support/
 Tags: Metabox, Meta fields, Post Meta, Page Meta
 Requires PHP: 8.0
 Requires at least: 5.6
-Tested up to: 6.9
-Stable tag: 1.4.8
+Tested up to: 7.0
+Stable tag: 1.4.9
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -624,6 +624,9 @@ Yes, contributions are welcome! If you have any ideas or improvements for the pl
 
 = 1.4.8  =
 * Compatible with wp - 6.9
+
+= 1.4.9  =
+* Compatible with WordPress 7.0
 
 == Upgrade Notice ==
 = 1.0.0 =

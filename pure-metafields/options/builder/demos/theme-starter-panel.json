@@ -1,0 +1,1045 @@
+{
+    "opt_name": "theme_starter",
+    "menu_title": "Theme Options",
+    "page_title": "Theme Options",
+    "panel_description": "Complete starter panel for WordPress themes — header, logo, offcanvas, breadcrumb, blog, 404, WooCommerce, typography, footer, colors and slugs.",
+    "menu_icon": "dashicons-admin-appearance",
+    "menu_position": 60,
+    "capability": "manage_options",
+    "output_css": true,
+    "sections": [
+        {
+            "id": "header_main_section",
+            "title": "Header",
+            "description": "Header layout and action controls",
+            "icon": "dashicons-layout",
+            "rows": [
+                {
+                    "id": "row_h1",
+                    "layout": "grid",
+                    "columns": 2,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "header_elementor_switch",
+                            "type": "switch",
+                            "label": "Use Elementor Header",
+                            "description": "Enable to replace the default header with an Elementor template",
+                            "default": ""
+                        },
+                        {
+                            "id": "header_right_switch",
+                            "type": "switch",
+                            "label": "Header Right Area",
+                            "description": "Show or hide the header right section",
+                            "default": "1"
+                        }
+                    ]
+                },
+                {
+                    "id": "row_h2",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "header_layout",
+                            "type": "select",
+                            "label": "Header Layout Style",
+                            "description": "Choose the default header layout",
+                            "default": "header_1",
+                            "options": [
+                                { "value": "header_1", "label": "Header Style 1" },
+                                { "value": "header_2", "label": "Header Style 2" },
+                                { "value": "header_3", "label": "Header Style 3" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "row_h3",
+                    "layout": "grid",
+                    "columns": 2,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "header_btn_text",
+                            "type": "text",
+                            "label": "Header Button Text",
+                            "description": "Label for the header CTA button",
+                            "default": "Book a Tour"
+                        },
+                        {
+                            "id": "header_btn_url",
+                            "type": "text",
+                            "label": "Header Button URL",
+                            "description": "Link for the header CTA button",
+                            "default": "#"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "header_logo_section",
+            "title": "Logo",
+            "description": "Header logo image and sizing",
+            "icon": "dashicons-format-image",
+            "rows": [
+                {
+                    "id": "row_logo1",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "header_logo",
+                            "type": "image",
+                            "label": "Header Logo",
+                            "description": "Primary / light-background logo",
+                            "default": ""
+                        }
+                    ]
+                },
+                {
+                    "id": "row_logo2",
+                    "layout": "grid",
+                    "columns": 3,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "header_logo_width_desktop",
+                            "type": "text",
+                            "label": "Logo Width — Desktop",
+                            "description": "e.g. 150px",
+                            "default": "150px",
+                            "output": [{ "selector": ".tp-theme-logo img", "property": "width" }]
+                        },
+                        {
+                            "id": "header_logo_width_tablet",
+                            "type": "text",
+                            "label": "Logo Width — Tablet",
+                            "description": "e.g. 120px",
+                            "default": "120px"
+                        },
+                        {
+                            "id": "header_logo_width_mobile",
+                            "type": "text",
+                            "label": "Logo Width — Mobile",
+                            "description": "e.g. 90px",
+                            "default": "90px"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "offcanvas_section",
+            "title": "Offcanvas",
+            "description": "Mobile menu / offcanvas drawer settings",
+            "icon": "dashicons-menu-alt",
+            "rows": [
+                {
+                    "id": "row_oc1",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "offcanvas_logo",
+                            "type": "image",
+                            "label": "Offcanvas Logo",
+                            "description": "Logo shown inside the offcanvas drawer",
+                            "default": ""
+                        }
+                    ]
+                },
+                {
+                    "id": "row_oc2",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "offcanvas_logo_width",
+                            "type": "text",
+                            "label": "Offcanvas Logo Width",
+                            "description": "e.g. 135px",
+                            "default": "135px",
+                            "output": [{ "selector": ".tp-offcanvas-logo img", "property": "width" }]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "back_to_top_section",
+            "title": "Back To Top",
+            "description": "Scroll-to-top button settings",
+            "icon": "dashicons-arrow-up-alt",
+            "rows": [
+                {
+                    "id": "row_btt1",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "backtotop_switch",
+                            "type": "switch",
+                            "label": "Back To Top Button",
+                            "description": "Enable the scroll-to-top button",
+                            "default": ""
+                        }
+                    ]
+                },
+                {
+                    "id": "row_btt2",
+                    "layout": "grid",
+                    "columns": 2,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "backtotop_bg_color",
+                            "type": "colorpicker",
+                            "label": "Background Color",
+                            "description": "",
+                            "default": "#ffffff",
+                            "output": [{ "selector": ".tp-back-to-top", "property": "background-color" }]
+                        },
+                        {
+                            "id": "backtotop_icon_color",
+                            "type": "colorpicker",
+                            "label": "Icon Color",
+                            "description": "",
+                            "default": "#071516",
+                            "output": [{ "selector": ".tp-back-to-top", "property": "color" }]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "preloader_section",
+            "title": "Preloader",
+            "description": "Page loading screen settings",
+            "icon": "dashicons-update",
+            "rows": [
+                {
+                    "id": "row_pre1",
+                    "layout": "grid",
+                    "columns": 2,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "preloader_switch",
+                            "type": "switch",
+                            "label": "Preloader",
+                            "description": "Show a loading screen before the page renders",
+                            "default": ""
+                        },
+                        {
+                            "id": "preloader_image",
+                            "type": "image",
+                            "label": "Preloader Image",
+                            "description": "Logo or animation image shown during loading",
+                            "default": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "breadcrumb_section",
+            "title": "Breadcrumb",
+            "description": "Inner page breadcrumb banner settings",
+            "icon": "dashicons-arrow-right-alt",
+            "rows": [
+                {
+                    "id": "row_bc1",
+                    "layout": "grid",
+                    "columns": 2,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "breadcrumb_switch",
+                            "type": "switch",
+                            "label": "Show Breadcrumb",
+                            "description": "Toggle breadcrumb visibility globally",
+                            "default": "1"
+                        },
+                        {
+                            "id": "breadcrumb_elementor_switch",
+                            "type": "switch",
+                            "label": "Use Elementor Breadcrumb",
+                            "description": "Replace default breadcrumb with an Elementor template",
+                            "default": ""
+                        }
+                    ]
+                },
+                {
+                    "id": "row_bc2",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "breadcrumb_layout",
+                            "type": "select",
+                            "label": "Breadcrumb Style",
+                            "description": "Default breadcrumb design",
+                            "default": "breadcrumb_1",
+                            "options": [
+                                { "value": "breadcrumb_1", "label": "Style 1" },
+                                { "value": "breadcrumb_2", "label": "Style 2" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "row_bc3",
+                    "layout": "grid",
+                    "columns": 2,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "breadcrumb_title_color",
+                            "type": "colorpicker",
+                            "label": "Title Color",
+                            "description": "",
+                            "default": "#ffffff",
+                            "output": [{ "selector": ".tp-breadcrumb-title", "property": "color" }]
+                        },
+                        {
+                            "id": "breadcrumb_bg_color",
+                            "type": "colorpicker",
+                            "label": "Background Color",
+                            "description": "",
+                            "default": "#FFFBF5",
+                            "output": [{ "selector": ".tp-custom-breadcrumb-bg", "property": "background-color" }]
+                        }
+                    ]
+                },
+                {
+                    "id": "row_bc4",
+                    "layout": "grid",
+                    "columns": 2,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "breadcrumb_padding_top",
+                            "type": "text",
+                            "label": "Padding Top",
+                            "description": "e.g. 120px",
+                            "default": "120px",
+                            "output": [{ "selector": ".tp-breadcrumb-space", "property": "padding-top" }]
+                        },
+                        {
+                            "id": "breadcrumb_padding_bottom",
+                            "type": "text",
+                            "label": "Padding Bottom",
+                            "description": "e.g. 120px",
+                            "default": "120px",
+                            "output": [{ "selector": ".tp-breadcrumb-space", "property": "padding-bottom" }]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "blog_archive_section",
+            "title": "Blog Archive",
+            "description": "Blog listing / archive page settings",
+            "icon": "dashicons-admin-post",
+            "rows": [
+                {
+                    "id": "row_ba1",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "blog_sidebar_position",
+                            "type": "tabs",
+                            "label": "Sidebar Position",
+                            "description": "",
+                            "default": "right",
+                            "options": [
+                                { "value": "right", "label": "Right" },
+                                { "value": "left", "label": "Left" },
+                                { "value": "no_sidebar", "label": "No Sidebar" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "row_ba2",
+                    "layout": "grid",
+                    "columns": 2,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "blog_read_more_switch",
+                            "type": "switch",
+                            "label": "Read More Button",
+                            "description": "Show or hide the read more button on archive cards",
+                            "default": "1"
+                        },
+                        {
+                            "id": "blog_read_more_text",
+                            "type": "text",
+                            "label": "Read More Button Text",
+                            "description": "",
+                            "default": "Read More"
+                        }
+                    ]
+                },
+                {
+                    "id": "row_ba3",
+                    "layout": "grid",
+                    "columns": 2,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "blog_category_switch",
+                            "type": "switch",
+                            "label": "Show Category Meta",
+                            "description": "",
+                            "default": "1"
+                        },
+                        {
+                            "id": "blog_date_switch",
+                            "type": "switch",
+                            "label": "Show Date Meta",
+                            "description": "",
+                            "default": "1"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "blog_single_section",
+            "title": "Blog Details",
+            "description": "Single blog post page settings",
+            "icon": "dashicons-text-page",
+            "rows": [
+                {
+                    "id": "row_bs1",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "blog_single_layout",
+                            "type": "select",
+                            "label": "Blog Single Layout",
+                            "description": "Choose the layout for single blog post pages",
+                            "default": "blog_single_default",
+                            "options": [
+                                { "value": "blog_single_default", "label": "Standard (with Sidebar)" },
+                                { "value": "blog_single_full_width", "label": "Full Width" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "row_bs2",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "blog_single_sidebar",
+                            "type": "tabs",
+                            "label": "Sidebar Position",
+                            "description": "",
+                            "default": "right",
+                            "options": [
+                                { "value": "right", "label": "Right" },
+                                { "value": "left", "label": "Left" },
+                                { "value": "no_sidebar", "label": "No Sidebar" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "row_bs3",
+                    "layout": "grid",
+                    "columns": 3,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "blog_tags_switch",
+                            "type": "switch",
+                            "label": "Show Tags",
+                            "description": "",
+                            "default": "1"
+                        },
+                        {
+                            "id": "blog_social_share",
+                            "type": "switch",
+                            "label": "Social Share",
+                            "description": "",
+                            "default": ""
+                        },
+                        {
+                            "id": "blog_author_box",
+                            "type": "switch",
+                            "label": "Author Box",
+                            "description": "",
+                            "default": "1"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "error_404_section",
+            "title": "404 Page",
+            "description": "Custom 404 error page content",
+            "icon": "dashicons-warning",
+            "rows": [
+                {
+                    "id": "row_404_1",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "error_image",
+                            "type": "image",
+                            "label": "404 Illustration",
+                            "description": "Image displayed on the 404 error page",
+                            "default": ""
+                        }
+                    ]
+                },
+                {
+                    "id": "row_404_2",
+                    "layout": "grid",
+                    "columns": 2,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "error_title",
+                            "type": "text",
+                            "label": "404 Heading",
+                            "description": "Large heading on the 404 page",
+                            "default": "Oops!"
+                        },
+                        {
+                            "id": "error_subtitle",
+                            "type": "text",
+                            "label": "404 Sub-heading",
+                            "description": "",
+                            "default": "Page not found"
+                        }
+                    ]
+                },
+                {
+                    "id": "row_404_3",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "error_description",
+                            "type": "textarea",
+                            "label": "404 Description",
+                            "description": "",
+                            "default": "Sorry, we couldn't find the page you're looking for."
+                        }
+                    ]
+                },
+                {
+                    "id": "row_404_4",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "error_btn_text",
+                            "type": "text",
+                            "label": "Back to Home Button Text",
+                            "description": "",
+                            "default": "Back To Home"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "woocommerce_section",
+            "title": "WooCommerce",
+            "description": "WooCommerce product page settings",
+            "icon": "dashicons-cart",
+            "rows": [
+                {
+                    "id": "row_woo1",
+                    "layout": "grid",
+                    "columns": 2,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "buy_now_switch",
+                            "type": "switch",
+                            "label": "Buy Now Button",
+                            "description": "Show a Buy Now button on single product pages",
+                            "default": "1"
+                        },
+                        {
+                            "id": "buy_now_text",
+                            "type": "text",
+                            "label": "Buy Now Button Text",
+                            "description": "",
+                            "default": "Buy Now"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "typography_section",
+            "title": "Typography",
+            "description": "Global heading and body font settings",
+            "icon": "dashicons-editor-textcolor",
+            "rows": [
+                {
+                    "id": "row_typo_h1",
+                    "layout": "grid",
+                    "columns": 3,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "h1_font_size",
+                            "type": "text",
+                            "label": "H1 Font Size",
+                            "description": "e.g. 48px",
+                            "default": "",
+                            "output": [{ "selector": "h1", "property": "font-size" }]
+                        },
+                        {
+                            "id": "h1_line_height",
+                            "type": "text",
+                            "label": "H1 Line Height",
+                            "description": "e.g. 1.2",
+                            "default": "",
+                            "output": [{ "selector": "h1", "property": "line-height" }]
+                        },
+                        {
+                            "id": "h1_color",
+                            "type": "colorpicker",
+                            "label": "H1 Color",
+                            "description": "",
+                            "default": "",
+                            "output": [{ "selector": "h1", "property": "color" }]
+                        }
+                    ]
+                },
+                {
+                    "id": "row_typo_h2",
+                    "layout": "grid",
+                    "columns": 3,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "h2_font_size",
+                            "type": "text",
+                            "label": "H2 Font Size",
+                            "description": "",
+                            "default": "",
+                            "output": [{ "selector": "h2", "property": "font-size" }]
+                        },
+                        {
+                            "id": "h2_line_height",
+                            "type": "text",
+                            "label": "H2 Line Height",
+                            "description": "",
+                            "default": "",
+                            "output": [{ "selector": "h2", "property": "line-height" }]
+                        },
+                        {
+                            "id": "h2_color",
+                            "type": "colorpicker",
+                            "label": "H2 Color",
+                            "description": "",
+                            "default": "",
+                            "output": [{ "selector": "h2", "property": "color" }]
+                        }
+                    ]
+                },
+                {
+                    "id": "row_typo_h3",
+                    "layout": "grid",
+                    "columns": 3,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "h3_font_size",
+                            "type": "text",
+                            "label": "H3 Font Size",
+                            "description": "",
+                            "default": "",
+                            "output": [{ "selector": "h3", "property": "font-size" }]
+                        },
+                        {
+                            "id": "h3_line_height",
+                            "type": "text",
+                            "label": "H3 Line Height",
+                            "description": "",
+                            "default": "",
+                            "output": [{ "selector": "h3", "property": "line-height" }]
+                        },
+                        {
+                            "id": "h3_color",
+                            "type": "colorpicker",
+                            "label": "H3 Color",
+                            "description": "",
+                            "default": "",
+                            "output": [{ "selector": "h3", "property": "color" }]
+                        }
+                    ]
+                },
+                {
+                    "id": "row_typo_h4",
+                    "layout": "grid",
+                    "columns": 3,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "h4_font_size",
+                            "type": "text",
+                            "label": "H4 Font Size",
+                            "description": "",
+                            "default": "",
+                            "output": [{ "selector": "h4", "property": "font-size" }]
+                        },
+                        {
+                            "id": "h4_line_height",
+                            "type": "text",
+                            "label": "H4 Line Height",
+                            "description": "",
+                            "default": "",
+                            "output": [{ "selector": "h4", "property": "line-height" }]
+                        },
+                        {
+                            "id": "h4_color",
+                            "type": "colorpicker",
+                            "label": "H4 Color",
+                            "description": "",
+                            "default": "",
+                            "output": [{ "selector": "h4", "property": "color" }]
+                        }
+                    ]
+                },
+                {
+                    "id": "row_typo_h5",
+                    "layout": "grid",
+                    "columns": 3,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "h5_font_size",
+                            "type": "text",
+                            "label": "H5 Font Size",
+                            "description": "",
+                            "default": "",
+                            "output": [{ "selector": "h5", "property": "font-size" }]
+                        },
+                        {
+                            "id": "h5_line_height",
+                            "type": "text",
+                            "label": "H5 Line Height",
+                            "description": "",
+                            "default": "",
+                            "output": [{ "selector": "h5", "property": "line-height" }]
+                        },
+                        {
+                            "id": "h5_color",
+                            "type": "colorpicker",
+                            "label": "H5 Color",
+                            "description": "",
+                            "default": "",
+                            "output": [{ "selector": "h5", "property": "color" }]
+                        }
+                    ]
+                },
+                {
+                    "id": "row_typo_h6",
+                    "layout": "grid",
+                    "columns": 3,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "h6_font_size",
+                            "type": "text",
+                            "label": "H6 Font Size",
+                            "description": "",
+                            "default": "",
+                            "output": [{ "selector": "h6", "property": "font-size" }]
+                        },
+                        {
+                            "id": "h6_line_height",
+                            "type": "text",
+                            "label": "H6 Line Height",
+                            "description": "",
+                            "default": "",
+                            "output": [{ "selector": "h6", "property": "line-height" }]
+                        },
+                        {
+                            "id": "h6_color",
+                            "type": "colorpicker",
+                            "label": "H6 Color",
+                            "description": "",
+                            "default": "",
+                            "output": [{ "selector": "h6", "property": "color" }]
+                        }
+                    ]
+                },
+                {
+                    "id": "row_typo_body",
+                    "layout": "grid",
+                    "columns": 3,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "body_font_size",
+                            "type": "text",
+                            "label": "Body Font Size",
+                            "description": "",
+                            "default": "",
+                            "output": [{ "selector": "body", "property": "font-size" }]
+                        },
+                        {
+                            "id": "body_line_height",
+                            "type": "text",
+                            "label": "Body Line Height",
+                            "description": "",
+                            "default": "",
+                            "output": [{ "selector": "body", "property": "line-height" }]
+                        },
+                        {
+                            "id": "body_color",
+                            "type": "colorpicker",
+                            "label": "Body Text Color",
+                            "description": "",
+                            "default": "",
+                            "output": [{ "selector": "body", "property": "color" }]
+                        }
+                    ]
+                },
+                {
+                    "id": "row_typo_p",
+                    "layout": "grid",
+                    "columns": 3,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "p_font_size",
+                            "type": "text",
+                            "label": "Paragraph Font Size",
+                            "description": "",
+                            "default": "",
+                            "output": [{ "selector": "p", "property": "font-size" }]
+                        },
+                        {
+                            "id": "p_line_height",
+                            "type": "text",
+                            "label": "Paragraph Line Height",
+                            "description": "",
+                            "default": "",
+                            "output": [{ "selector": "p", "property": "line-height" }]
+                        },
+                        {
+                            "id": "p_color",
+                            "type": "colorpicker",
+                            "label": "Paragraph Color",
+                            "description": "",
+                            "default": "",
+                            "output": [{ "selector": "p", "property": "color" }]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "footer_section",
+            "title": "Footer",
+            "description": "Footer layout and copyright settings",
+            "icon": "dashicons-admin-settings",
+            "rows": [
+                {
+                    "id": "row_ft1",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "footer_elementor_switch",
+                            "type": "switch",
+                            "label": "Use Elementor Footer",
+                            "description": "Replace the default footer with an Elementor template",
+                            "default": ""
+                        }
+                    ]
+                },
+                {
+                    "id": "row_ft2",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "footer_copyright",
+                            "type": "text",
+                            "label": "Footer Copyright Text",
+                            "description": "Shown in the footer copyright bar",
+                            "default": "© Copyright 2026 | All Rights Reserved"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "theme_colors_section",
+            "title": "Theme Colors",
+            "description": "Brand color palette — mapped to CSS custom properties",
+            "icon": "dashicons-art",
+            "rows": [
+                {
+                    "id": "row_clr1",
+                    "layout": "grid",
+                    "columns": 3,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "theme_color_1",
+                            "type": "colorpicker",
+                            "label": "Color 1 — Primary",
+                            "description": "Main brand / accent color",
+                            "default": "#ff5e14",
+                            "output": [{ "selector": ":root", "property": "--tp-color-1" }]
+                        },
+                        {
+                            "id": "theme_color_2",
+                            "type": "colorpicker",
+                            "label": "Color 2 — Dark",
+                            "description": "Dark heading / text color",
+                            "default": "#00235a",
+                            "output": [{ "selector": ":root", "property": "--tp-color-2" }]
+                        },
+                        {
+                            "id": "theme_color_3",
+                            "type": "colorpicker",
+                            "label": "Color 3 — Background",
+                            "description": "Dark background tone",
+                            "default": "#0a1229",
+                            "output": [{ "selector": ":root", "property": "--tp-color-3" }]
+                        }
+                    ]
+                },
+                {
+                    "id": "row_clr2",
+                    "layout": "grid",
+                    "columns": 3,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "theme_color_4",
+                            "type": "colorpicker",
+                            "label": "Color 4",
+                            "description": "",
+                            "default": "#F94D1C",
+                            "output": [{ "selector": ":root", "property": "--tp-color-4" }]
+                        },
+                        {
+                            "id": "theme_color_5",
+                            "type": "colorpicker",
+                            "label": "Color 5",
+                            "description": "",
+                            "default": "#1B2335",
+                            "output": [{ "selector": ":root", "property": "--tp-color-5" }]
+                        },
+                        {
+                            "id": "theme_color_6",
+                            "type": "colorpicker",
+                            "label": "Color 6",
+                            "description": "",
+                            "default": "#eb003d",
+                            "output": [{ "selector": ":root", "property": "--tp-color-6" }]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "slug_section",
+            "title": "Custom Slugs",
+            "description": "Post type permalink slug settings — flush rewrite rules after changing",
+            "icon": "dashicons-admin-links",
+            "rows": [
+                {
+                    "id": "row_slug1",
+                    "layout": "grid",
+                    "columns": 2,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "portfolios_slug",
+                            "type": "text",
+                            "label": "Portfolios Slug",
+                            "description": "URL slug for the portfolio post type",
+                            "default": "tp-portfolios"
+                        },
+                        {
+                            "id": "services_slug",
+                            "type": "text",
+                            "label": "Services Slug",
+                            "description": "URL slug for the services post type",
+                            "default": "tp-services"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

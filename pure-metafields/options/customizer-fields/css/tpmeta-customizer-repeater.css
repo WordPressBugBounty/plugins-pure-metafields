@@ -1,0 +1,234 @@
+/**
+ * tpmeta-customizer-repeater.css
+ *
+ * Dedicated, isolated styling for the repeater field rendered inside the
+ * WordPress Customizer (~280–300px sidebar). Driven by the Customizer-native
+ * controller in tpmeta-customizer-fields.js (add / remove / collapse / sync).
+ *
+ * Strict isolation: every rule is scoped under
+ *   .wp-customizer .customize-control-tpmeta_field
+ * so it can ONLY affect the Customizer pane and never leaks into the options
+ * admin panel (which keeps using tpmeta-fields.css / tpmeta-options.css).
+ *
+ * Design goals for the narrow pane:
+ *   - Each row is a compact, full-width card.
+ *   - Rows are COLLAPSED by default; the whole header toggles open/closed.
+ *   - Sub-fields stack in a single column and never overflow horizontally.
+ *   - Add Row is a clear full-width action.
+ */
+
+/* ── Wrapper ──────────────────────────────────────────────────────────── */
+.wp-customizer .customize-control-tpmeta_field .tm-repeater {
+	max-width: 100%;
+	width: 100%;
+}
+.wp-customizer .customize-control-tpmeta_field .tm-repeater-rows {
+	display: block;
+	margin: 0 0 8px;
+}
+
+/* Never show the clone source. */
+.wp-customizer .customize-control-tpmeta_field .tm-repeater .tp-hidden-template {
+	display: none !important;
+}
+
+/* ── Row card ─────────────────────────────────────────────────────────── */
+.wp-customizer .customize-control-tpmeta_field .tm-repeater-row {
+	display: block;
+	width: 100%;
+	box-sizing: border-box;
+	margin: 0 0 6px;
+	border: 1px solid var(--tpc-border);
+	border-radius: var(--tpc-radius);
+	background: var(--tpc-white);
+	overflow: hidden;
+}
+.wp-customizer .customize-control-tpmeta_field .tm-repeater-row:last-child {
+	margin-bottom: 0;
+}
+
+/* ── Header (whole bar toggles collapse) ──────────────────────────────── */
+.wp-customizer .customize-control-tpmeta_field .tm-rptr-header {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	min-height: 34px;
+	padding: 4px 6px;
+	box-sizing: border-box;
+	background: var(--tpc-bg);
+	border-bottom: 1px solid transparent;
+	cursor: pointer;
+	user-select: none;
+}
+.wp-customizer .customize-control-tpmeta_field .tm-repeater-row:not(.is-collapsed) .tm-rptr-header {
+	border-bottom-color: var(--tpc-border);
+}
+
+/* Drag handle is not wired in the Customizer — reclaim the space. */
+.wp-customizer .customize-control-tpmeta_field .tm-rptr-handle {
+	display: none !important;
+}
+
+/* Collapse/expand chevron. */
+.wp-customizer .customize-control-tpmeta_field .tm-rptr-toggle {
+	flex: 0 0 auto;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 22px;
+	height: 22px;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	color: var(--tpc-muted);
+	cursor: pointer;
+}
+.wp-customizer .customize-control-tpmeta_field .tm-rptr-toggle .dashicons {
+	width: 18px;
+	height: 18px;
+	font-size: 18px;
+	line-height: 18px;
+	transition: transform .15s ease;
+}
+/* Chevron points right when collapsed, down when open. */
+.wp-customizer .customize-control-tpmeta_field .tm-repeater-row.is-collapsed .tm-rptr-toggle .dashicons {
+	transform: rotate(-90deg);
+}
+
+/* Title fills the bar and truncates instead of wrapping. */
+.wp-customizer .customize-control-tpmeta_field .tm-rptr-title {
+	flex: 1 1 auto;
+	min-width: 0;
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--tpc-text);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.wp-customizer .customize-control-tpmeta_field .tm-rptr-actions {
+	flex: 0 0 auto;
+	display: inline-flex;
+	align-items: center;
+}
+.wp-customizer .customize-control-tpmeta_field .tm-rptr-remove {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	padding: 0;
+	border: 0;
+	border-radius: var(--tpc-radius);
+	background: transparent;
+	color: var(--tpc-muted);
+	cursor: pointer;
+	transition: background .12s, color .12s;
+}
+.wp-customizer .customize-control-tpmeta_field .tm-rptr-remove:hover {
+	background: rgba(214, 54, 56, .1);
+	color: var(--tpc-danger);
+}
+.wp-customizer .customize-control-tpmeta_field .tm-rptr-remove .dashicons {
+	width: 16px;
+	height: 16px;
+	font-size: 16px;
+	line-height: 16px;
+}
+
+/* ── Body (single column, collapses) ──────────────────────────────────── */
+.wp-customizer .customize-control-tpmeta_field .tm-rptr-body {
+	display: block;
+	grid-template-columns: none !important; /* override any options-panel grid */
+	padding: 8px;
+	box-sizing: border-box;
+}
+.wp-customizer .customize-control-tpmeta_field .tm-repeater-row.is-collapsed .tm-rptr-body {
+	display: none;
+}
+
+.wp-customizer .customize-control-tpmeta_field .tm-rptr-field {
+	display: block;
+	width: 100%;
+	box-sizing: border-box;
+	margin: 0 0 8px;
+}
+.wp-customizer .customize-control-tpmeta_field .tm-rptr-field:last-child {
+	margin-bottom: 0;
+}
+.wp-customizer .customize-control-tpmeta_field .tm-rptr-label {
+	display: block;
+	margin: 0 0 3px;
+	font-size: 11px;
+	font-weight: 600;
+	color: var(--tpc-text);
+	line-height: 1.3;
+}
+
+/* Every control inside a row fills the column width. */
+.wp-customizer .customize-control-tpmeta_field .tm-rptr-field .tpmeta-field-control,
+.wp-customizer .customize-control-tpmeta_field .tm-rptr-field .tpmeta-field-control > * {
+	max-width: 100%;
+}
+.wp-customizer .customize-control-tpmeta_field .tm-rptr-field input[type="text"],
+.wp-customizer .customize-control-tpmeta_field .tm-rptr-field input[type="url"],
+.wp-customizer .customize-control-tpmeta_field .tm-rptr-field input[type="number"],
+.wp-customizer .customize-control-tpmeta_field .tm-rptr-field input[type="email"],
+.wp-customizer .customize-control-tpmeta_field .tm-rptr-field select,
+.wp-customizer .customize-control-tpmeta_field .tm-rptr-field textarea {
+	width: 100%;
+	box-sizing: border-box;
+}
+
+/* ── Native <select> (select2 is intentionally NOT used in the pane) ──────
+   These render as plain OS selects so the option list can't be clipped by the
+   pane and never needs scroll-into-view. Style them to match the other inputs.
+   The companion JS adds .tpmeta-cust-native-select and strips select2 markup. */
+.wp-customizer .customize-control-tpmeta_field .tm-rptr-field select.tm-select-field {
+	display: block;
+	width: 100%;
+	box-sizing: border-box;
+	min-height: 30px;
+	padding: 3px 6px;
+	border: 1px solid var(--tpc-border);
+	border-radius: var(--tpc-radius);
+	background: var(--tpc-white);
+	font-size: 12px;
+	line-height: 1.4;
+}
+/* Defensive: if a stale select2 container was cloned in, keep it hidden so
+   only the native select shows. */
+.wp-customizer .customize-control-tpmeta_field .tm-rptr-field .select2-container {
+	display: none !important;
+}
+
+/* ── Add Row ──────────────────────────────────────────────────────────── */
+.wp-customizer .customize-control-tpmeta_field .tm-repeater-add-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 5px;
+	width: 100%;
+	box-sizing: border-box;
+	min-height: 34px;
+	padding: 6px 10px;
+	border: 1px dashed var(--tpc-blue);
+	border-radius: var(--tpc-radius);
+	background: var(--tpc-blue-lt);
+	color: var(--tpc-blue);
+	font-size: 12px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: background .12s, border-color .12s;
+}
+.wp-customizer .customize-control-tpmeta_field .tm-repeater-add-btn:hover {
+	background: #e4eaff;
+	border-style: solid;
+}
+.wp-customizer .customize-control-tpmeta_field .tm-repeater-add-btn .dashicons {
+	width: 16px;
+	height: 16px;
+	font-size: 16px;
+	line-height: 16px;
+}

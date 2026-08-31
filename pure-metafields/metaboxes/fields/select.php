@@ -1,19 +1,36 @@
 <?php
 /**
  * Select
+ *
+ * Variables below are populated at runtime via extract() by the field
+ * renderer — declared here for static analysis (Intelephense).
+ *
+ * @var string $id
+ * @var string $post_type
+ * @var string $placeholder
+ * @var string $default
+ * @var string $bind
+ * @var mixed  $row_db_value
+ * @var array  $options
+ * @var bool   $multiple
+ * @var string $context
+ * @var string $repeater_id
  */
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 ?>
+<?php
+$_options = isset($options) ? $options : array();
+?>
 <?php if(!isset($row_db_value)): ?>
-<select 
+<select
     <?php echo (isset($multiple) && $multiple == true)? "name=".esc_attr($id)."[]" : "name=".esc_attr($id); ?>
-    id="<?php echo esc_attr($id); ?>-select" 
+    id="<?php echo esc_attr($id); ?>-select"
     class="<?php echo esc_attr($id); ?> tm-select-field <?php echo isset($context)? esc_attr($context) : ''; ?>"
     <?php echo (isset($multiple) && $multiple == true)? 'multiple' : ''; ?>>
     <?php if ( empty( $multiple ) ) : ?>
-    <option value="<?php echo esc_html($default); ?>"><?php echo esc_html($placeholder)?? esc_html('Select...'); ?></option>
+    <option value="<?php echo esc_html( isset($default) ? $default : '' ); ?>"><?php echo esc_html( isset($placeholder) ? $placeholder : 'Select...' ); ?></option>
     <?php endif; ?>
-    <?php foreach($options as $key => $val): ?>
+    <?php foreach($_options as $key => $val): ?>
         <option 
             value="<?php echo esc_html($key); ?>" 
             <?php selected((is_array(tpmeta_field($id))? array_key_exists($key, tpmeta_field($id)) : tpmeta_field($id) == $key), 1); ?>><?php echo esc_html($val); ?>
@@ -57,19 +74,19 @@ if(isset($multiple) && $multiple == true){
     class="<?php echo esc_attr($id); ?> tm-repeater-select-field tm-repeater-conditional tm-select-field <?php echo isset($context)? esc_attr($context) : ''; ?>"
     <?php echo (isset($multiple) && $multiple == true)? 'multiple' : ''; ?>>
     <?php if(isset($multiple) && $multiple == true): ?>
-    <option value="<?php echo esc_html($default?? ''); ?>"><?php echo esc_html($placeholder)?? esc_html('Select...'); ?></option>
+    <option value="<?php echo esc_html( isset($default) ? $default : '' ); ?>"><?php echo esc_html( isset($placeholder) ? $placeholder : 'Select...' ); ?></option>
     <?php endif; ?>
-    <?php foreach($options as $key => $val): ?>
+    <?php foreach($_options as $key => $val): ?>
         <?php if(isset($multiple) && $multiple == true): ?>
-        <option 
-            value="<?php echo esc_html($key); ?>" 
-            <?php 
-                selected((!metadata_exists('post', $post->ID, $repeater_id)? in_array($key, (array) ($default?? array())) : (($default?? '') == $key) ), 1); ?>><?php echo esc_html($val); 
+        <option
+            value="<?php echo esc_html($key); ?>"
+            <?php
+                selected((!metadata_exists('post', $post->ID, $repeater_id)? in_array($key, (array) ($default ?? array())) : (($default ?? '') == $key) ), 1); ?>><?php echo esc_html($val);
             ?>
         </option>
         <?php else: ?>
-        <option 
-            value="<?php echo esc_html($key); ?>" 
+        <option
+            value="<?php echo esc_html($key); ?>"
             <?php selected(array_key_exists($key, (array) $row_db_value), 1); ?>><?php echo esc_html($val); ?>
         </option>
         <?php endif; ?>

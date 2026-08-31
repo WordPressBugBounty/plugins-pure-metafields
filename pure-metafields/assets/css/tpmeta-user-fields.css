@@ -1,0 +1,111 @@
+/*!
+ * tpmeta-user-fields.css
+ *
+ * Profile-screen-only overrides for pure-metafields user-meta fields.
+ * Loaded by TPMeta_Assets::enqueue_user_fields_css() ONLY on the
+ * profile.php and user-edit.php admin screens, so nothing here can
+ * leak into post-edit metaboxes, options panels, or the customizer.
+ *
+ * Two jobs:
+ *   1. Cap the major field widgets at 50% of the form-table cell
+ *      width so the user-profile layout doesn't stretch them
+ *      edge-to-edge.
+ *   2. Repair the gradient field's number inputs (Angle %, Stop
+ *      Position %) — they appear blank on profile.php because WP
+ *      admin's form-table input reset wins specificity over the
+ *      .tm-meta-wrapper .tm-dim-num rules in tpmeta-fields.css.
+ *
+ * Rules are double-scoped to body.profile-php / body.user-edit-php
+ * defensively — even if the file is ever served from a stale cache
+ * on another admin screen, none of these selectors will match.
+ */
+
+/* ── 1. 50% width cap for major field widgets ─────────────────── */
+
+body.profile-php  .form-table td .select2-container,
+body.user-edit-php .form-table td .select2-container,
+/* body.profile-php  .form-table td .tm-meta-wrapper .tm-gradient-wrap,
+body.user-edit-php .form-table td .tm-meta-wrapper .tm-gradient-wrap, */
+body.profile-php  .form-table td .wp-editor-wrap,
+body.user-edit-php .form-table td .wp-editor-wrap,
+body.profile-php  .form-table td .tm-gallery-field,
+body.user-edit-php .form-table td .tm-gallery-field,
+body.profile-php  .form-table td input[type="text"],
+body.user-edit-php .form-table td input[type="text"],
+body.profile-php  .form-table td input[type="url"],
+body.user-edit-php .form-table td input[type="url"],
+body.profile-php  .form-table td input[type="email"],
+body.user-edit-php .form-table td input[type="email"],
+body.profile-php  .form-table td input[type="number"]:not(.tm-dim-num),
+body.user-edit-php .form-table td input[type="number"]:not(.tm-dim-num),
+body.profile-php  .form-table td textarea,
+body.user-edit-php .form-table td textarea,
+body.profile-php  .form-table td select:not(.tm-dim-unit),
+body.user-edit-php .form-table td select:not(.tm-dim-unit) {
+    width: 50%;
+    max-width: 50%;
+    box-sizing: border-box;
+}
+
+/* The gradient widget itself is capped at 50%; its internal flex
+   children (preview bar, controls panel) inherit that width. */
+body.profile-php  .form-table td .tm-meta-wrapper.tpmf-user-gradient-host,
+body.user-edit-php .form-table td .tm-meta-wrapper.tpmf-user-gradient-host {
+    width: 50%;
+    max-width: 50%;
+    box-sizing: border-box;
+}
+
+/* ── 2. Gradient number inputs (Angle, Stop position %) ──────────
+   Force visible text + sane size. WP admin's .form-table input
+   reset can leave inherited color/line-height/min-width values that
+   either hide the value or squeeze it out of the visible area.    */
+
+body.profile-php  .form-table .tm-meta-wrapper .tm-dim-num,
+body.user-edit-php .form-table .tm-meta-wrapper .tm-dim-num {
+    color: #010F1C !important;
+    background: #ffffff !important;
+    height: 36px !important;
+    padding: 0 8px !important;
+    font-size: 13px !important;
+    line-height: normal !important;
+    width: auto !important;
+    min-width: 60px !important;
+    max-width: none !important;
+    box-shadow: none !important;
+    -moz-appearance: textfield;
+}
+
+/* Hide native spinner so the small input cell isn't dominated by
+   the up/down arrows on Chromium browsers. */
+body.profile-php  .form-table .tm-meta-wrapper .tm-dim-num::-webkit-inner-spin-button,
+body.profile-php  .form-table .tm-meta-wrapper .tm-dim-num::-webkit-outer-spin-button,
+body.user-edit-php .form-table .tm-meta-wrapper .tm-dim-num::-webkit-inner-spin-button,
+body.user-edit-php .form-table .tm-meta-wrapper .tm-dim-num::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+
+/* The dimension wrap holds num + unit side by side; keep it
+   compact so the 50% cap on the parent gradient widget doesn't
+   stretch each stop row into one tall band. */
+body.profile-php  .form-table .tm-meta-wrapper .tm-grd-stop .tm-dimension-wrap,
+body.user-edit-php .form-table .tm-meta-wrapper .tm-grd-stop .tm-dimension-wrap,
+body.profile-php  .form-table .tm-meta-wrapper .tm-grd-angle-wrap .tm-dimension-wrap,
+body.user-edit-php .form-table .tm-meta-wrapper .tm-grd-angle-wrap .tm-dimension-wrap {
+    width: auto !important;
+    max-width: 130px !important;
+}
+
+/* ── 3. Misc carve-outs ──────────────────────────────────────────
+   Image preview and multicolor swatches are tile-grids, not single
+   inputs — leave them at their natural sizes (the parent <td> is
+   already wide enough). */
+body.profile-php  .form-table td .tp-image-container,
+body.user-edit-php .form-table td .tp-image-container,
+body.profile-php  .form-table td .tm-multicolor-group,
+body.user-edit-php .form-table td .tm-multicolor-group {
+    width: auto;
+    max-width: 100%;
+}

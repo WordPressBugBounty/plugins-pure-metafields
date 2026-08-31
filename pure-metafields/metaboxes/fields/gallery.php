@@ -1,11 +1,21 @@
 <?php
 /**
  * Gallery
+ *
+ * Variables below are populated at runtime via extract() by the field
+ * renderer — declared here for static analysis (Intelephense).
+ *
+ * @var string $id
+ * @var string $post_type
+ * @var string $placeholder
+ * @var string $default
+ * @var string $bind
+ * @var mixed  $row_db_value
  */
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 $class = [];
-if($field_type == 'repeater'){
+if( isset($field_type) && $field_type === 'repeater' ){
     $class[] = 'repeater';
     $class[] = 'repeater-'.$id;
 }
@@ -24,15 +34,21 @@ if($field_type == 'repeater'){
     if($row_db_value != ''): 
     $images_ids = explode(',', $images_ids);
     foreach($images_ids as $image_id):
-        $image_src = wp_get_attachment_image_src($image_id, 'thumbnail');
-        
+        // Use the original upload ('full'). WP-generated 'thumbnail' is a
+        // 150x150 hard square crop that strips aspect ratio; CSS sizes the
+        // gallery cell and uses object-fit:contain to keep the real shape.
+        $image_src = wp_get_attachment_image_src($image_id, 'full');
+
     ?>
     <div class="tm-gallery-item" data-image_id="<?php echo esc_attr($image_id); ?>">
         <div class="tm-gallery-img">
             <img src="<?php echo esc_url($image_src[0]); ?>" alt=""/>
         </div>
         <div class="tm-gallery-actions">
-            <a data-attachment-id="<?php echo esc_attr($image_id); ?>" href="#" class="tm-delete <?php echo esc_attr(implode(' ', $class)); ?>">
+            <a data-attachment-id="<?php echo esc_attr($image_id); ?>" href="#" class="tm-edit" title="<?php esc_attr_e( 'Edit', 'pure-metafields' ); ?>">
+                <span class="dashicons dashicons-edit"></span>
+            </a>
+            <a data-attachment-id="<?php echo esc_attr($image_id); ?>" href="#" class="tm-delete <?php echo esc_attr(implode(' ', $class)); ?>" title="<?php esc_attr_e( 'Remove', 'pure-metafields' ); ?>">
                 <span class="dashicons dashicons-no-alt"></span>
             </a>
         </div>
@@ -64,15 +80,19 @@ if($field_type == 'repeater'){
     $images_ids = tpmeta_field($id);
     $images_ids = explode(',', $images_ids);
     foreach($images_ids as $image_id):
-        $image_src = wp_get_attachment_image_src($image_id, 'thumbnail');
-        
+        // Use the original upload ('full'). WP-generated 'thumbnail' is a
+        // 150x150 hard square crop that strips aspect ratio; CSS sizes the
+        // gallery cell and uses object-fit:contain to keep the real shape.
+        $image_src = wp_get_attachment_image_src($image_id, 'full');
+
     ?>
     <div class="tm-gallery-item" data-image_id="<?php echo esc_attr($image_id); ?>">
         <div class="tm-gallery-img">
             <img src="<?php echo esc_url($image_src[0]); ?>" alt=""/>
         </div>
         <div class="tm-gallery-actions">
-            <a data-attachment-id="<?php echo esc_attr($image_id); ?>" href="#" class="tm-delete <?php echo esc_attr(implode(' ', $class)); ?>"><span class="dashicons dashicons-no-alt"></span></a>
+            <a data-attachment-id="<?php echo esc_attr($image_id); ?>" href="#" class="tm-edit" title="<?php esc_attr_e( 'Edit', 'pure-metafields' ); ?>"><span class="dashicons dashicons-edit"></span></a>
+            <a data-attachment-id="<?php echo esc_attr($image_id); ?>" href="#" class="tm-delete <?php echo esc_attr(implode(' ', $class)); ?>" title="<?php esc_attr_e( 'Remove', 'pure-metafields' ); ?>"><span class="dashicons dashicons-no-alt"></span></a>
         </div>
     </div>
     <?php endforeach; endif; ?>
@@ -111,7 +131,11 @@ if($field_type == 'repeater'){
                     
                     attachments.map(function(el, i){
                         ids = [...ids, el.id];
-                        attachmentURL = el.sizes.thumbnail? el.sizes.thumbnail.url : el.sizes.full.url;
+                        // Use the original uploaded URL — no WP crop/resize.
+                        // CSS in the cell handles aspect-correct sizing.
+                        attachmentURL = (el.sizes && el.sizes.full && el.sizes.full.url)
+                            ? el.sizes.full.url
+                            : el.url;
                         $('#<?php echo esc_attr($id); ?>-g-container').append(`
                         <div class="tm-gallery-item" data-image_id="${el.id}">
                             <div class="tm-gallery-img">

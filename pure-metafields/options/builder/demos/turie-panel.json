@@ -1,0 +1,1010 @@
+{
+    "opt_name": "turie_options",
+    "menu_title": "Turie Theme",
+    "page_title": "Turie Theme Options",
+    "menu_slug": "turie-options",
+    "menu_icon": "dashicons-admin-appearance",
+    "menu_position": 60,
+    "capability": "manage_options",
+    "output_css": false,
+    "panel_description": "Complete theme options panel for the Turie WordPress theme — header, logo, offcanvas, back-to-top, preloader, breadcrumb, blog, 404, WooCommerce, typography, footer, colors and slugs.",
+    "sections": [
+
+        {
+            "id": "header_main_section",
+            "title": "Header",
+            "icon": "dashicons-admin-appearance",
+            "description": "Header layout and action controls.",
+            "rows": [
+                {
+                    "id": "row_hdr_1",
+                    "layout": "grid",
+                    "columns": 2,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "turie_header_elementor_switch",
+                            "type": "switch",
+                            "label": "Use Elementor Header",
+                            "description": "Replace default header with an Elementor template.",
+                            "default": "off"
+                        },
+                        {
+                            "id": "header_right_switch",
+                            "type": "switch",
+                            "label": "Header Right Area",
+                            "description": "Show or hide the header right section.",
+                            "default": "off"
+                        }
+                    ]
+                },
+                {
+                    "id": "row_hdr_2",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "header_layout_custom",
+                            "type": "radio_image",
+                            "label": "Choose Header Style",
+                            "description": "Select a pre-built header layout.",
+                            "default": "header_1",
+                            "options": [
+                                { "value": "header_1", "label": "Header Style 1" },
+                                { "value": "header_2", "label": "Header Style 2" },
+                                { "value": "header_3", "label": "Header Style 3" }
+                            ],
+                            "conditional": { "field": "turie_header_elementor_switch", "operator": "==", "value": "off" }
+                        }
+                    ]
+                },
+                {
+                    "id": "row_hdr_3",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "turie_header_templates",
+                            "type": "post_select",
+                            "label": "Elementor Header Template",
+                            "description": "Select a saved Elementor header template.",
+                            "post_type": "tp-header",
+                            "save_format": "id",
+                            "placeholder": "— Choose a header template —",
+                            "conditional": { "field": "turie_header_elementor_switch", "operator": "==", "value": "on" }
+                        }
+                    ]
+                },
+                {
+                    "id": "row_hdr_4",
+                    "layout": "grid",
+                    "columns": 2,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "turie_header_btn_text",
+                            "type": "text",
+                            "label": "Button Title",
+                            "default": "Book a Tour",
+                            "conditional": { "field": "header_right_switch", "operator": "==", "value": "on" }
+                        },
+                        {
+                            "id": "turie_header_btn_url",
+                            "type": "text",
+                            "label": "Button URL",
+                            "default": "#",
+                            "placeholder": "https://",
+                            "conditional": { "field": "header_right_switch", "operator": "==", "value": "on" }
+                        }
+                    ]
+                }
+            ]
+        },
+
+        {
+            "id": "header_logo_section",
+            "title": "Logo",
+            "icon": "dashicons-format-image",
+            "description": "Header logo image and sizing.",
+            "rows": [
+                {
+                    "id": "row_logo_1",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "header_logo",
+                            "type": "image",
+                            "label": "Header Logo",
+                            "description": "Upload your primary / default logo.",
+                            "default": ""
+                        }
+                    ]
+                },
+                {
+                    "id": "row_logo_2",
+                    "layout": "grid",
+                    "columns": 3,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "turie_header_logo_width_desktop",
+                            "type": "dimension",
+                            "label": "Logo Width — Desktop",
+                            "default": "150px"
+                        },
+                        {
+                            "id": "turie_header_logo_width_tablet",
+                            "type": "dimension",
+                            "label": "Logo Width — Tablet",
+                            "default": "120px"
+                        },
+                        {
+                            "id": "turie_header_logo_width_mobile",
+                            "type": "dimension",
+                            "label": "Logo Width — Mobile",
+                            "default": "90px"
+                        }
+                    ]
+                }
+            ]
+        },
+
+        {
+            "id": "turie_offcanvas_section",
+            "title": "Offcanvas",
+            "icon": "dashicons-menu",
+            "description": "Offcanvas sidebar controls.",
+            "rows": [
+                {
+                    "id": "row_oc_1",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "turie_offcanvas_logo",
+                            "type": "image",
+                            "label": "Offcanvas Logo",
+                            "description": "Logo displayed inside the offcanvas menu.",
+                            "default": ""
+                        }
+                    ]
+                },
+                {
+                    "id": "row_oc_2",
+                    "layout": "grid",
+                    "columns": 3,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "turie_offcanvas_logo_width_desktop",
+                            "type": "dimension",
+                            "label": "Logo Width — Desktop",
+                            "default": "135px"
+                        },
+                        {
+                            "id": "turie_offcanvas_logo_width_tablet",
+                            "type": "dimension",
+                            "label": "Logo Width — Tablet",
+                            "default": "135px"
+                        },
+                        {
+                            "id": "turie_offcanvas_logo_width_mobile",
+                            "type": "dimension",
+                            "label": "Logo Width — Mobile",
+                            "default": "135px"
+                        }
+                    ]
+                }
+            ]
+        },
+
+        {
+            "id": "back_to_top_section",
+            "title": "Back To Top",
+            "icon": "dashicons-arrow-up-alt",
+            "description": "Back To Top button controls.",
+            "rows": [
+                {
+                    "id": "row_btt_1",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "turie_backtotop_switch",
+                            "type": "switch",
+                            "label": "Back To Top Button",
+                            "description": "Show or hide the scroll-to-top button.",
+                            "default": "off"
+                        }
+                    ]
+                },
+                {
+                    "id": "row_btt_2",
+                    "layout": "grid",
+                    "columns": 2,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "turie_backtotop_bg_color",
+                            "type": "colorpicker",
+                            "label": "Background Color",
+                            "default": "#ffffff"
+                        },
+                        {
+                            "id": "turie_backtotop_text_color",
+                            "type": "colorpicker",
+                            "label": "Icon Color",
+                            "default": "#071516"
+                        }
+                    ]
+                }
+            ]
+        },
+
+        {
+            "id": "preloader_section",
+            "title": "Preloader",
+            "icon": "dashicons-update",
+            "description": "Page preloader settings.",
+            "rows": [
+                {
+                    "id": "row_pre_1",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "turie_preloader_switch",
+                            "type": "switch",
+                            "label": "Preloader",
+                            "description": "Enable the page loading animation.",
+                            "default": "off"
+                        }
+                    ]
+                },
+                {
+                    "id": "row_pre_2",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "turie_preloader_image",
+                            "type": "image",
+                            "label": "Preloader Image",
+                            "description": "Upload a custom preloader animation image.",
+                            "default": ""
+                        }
+                    ]
+                }
+            ]
+        },
+
+        {
+            "id": "turie_breadcrumb_section",
+            "title": "Breadcrumb",
+            "icon": "dashicons-arrow-right-alt",
+            "description": "Breadcrumb display and typography settings.",
+            "rows": [
+                {
+                    "id": "row_bc_1",
+                    "layout": "grid",
+                    "columns": 2,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "breadcrumb_switch",
+                            "type": "switch",
+                            "label": "Show Breadcrumb Globally",
+                            "description": "Toggle breadcrumb visibility across all pages.",
+                            "default": "on"
+                        },
+                        {
+                            "id": "turie_breadcrumb_elementor_switch",
+                            "type": "switch",
+                            "label": "Use Elementor Breadcrumb",
+                            "description": "Replace default breadcrumb with an Elementor template.",
+                            "default": "off"
+                        }
+                    ]
+                },
+                {
+                    "id": "row_bc_2",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "breadcrumb_layout",
+                            "type": "radio_image",
+                            "label": "Choose Default Breadcrumb",
+                            "default": "breadcrumb_1",
+                            "options": [
+                                { "value": "breadcrumb_1", "label": "Breadcrumb Style 1" },
+                                { "value": "breadcrumb_2", "label": "Breadcrumb Style 2" }
+                            ],
+                            "conditional": { "field": "turie_breadcrumb_elementor_switch", "operator": "==", "value": "off" }
+                        }
+                    ]
+                },
+                {
+                    "id": "row_bc_3",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "turie_breadcrumb_templates_kirki",
+                            "type": "post_select",
+                            "label": "Elementor Breadcrumb Template",
+                            "post_type": "tp-breadcrumb",
+                            "save_format": "id",
+                            "placeholder": "— Choose a breadcrumb template —",
+                            "conditional": { "field": "turie_breadcrumb_elementor_switch", "operator": "==", "value": "on" }
+                        }
+                    ]
+                },
+                {
+                    "id": "row_bc_4",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "breadcrumb_typography_responsive_control",
+                            "type": "tabs",
+                            "label": "Typography Control — Breakpoint",
+                            "default": "desktop",
+                            "options": [
+                                { "value": "desktop", "label": "Desktop" },
+                                { "value": "tablet",  "label": "Tablet" },
+                                { "value": "mobile",  "label": "Mobile" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "row_bc_5",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "breadcrumb_typography_desktop",
+                            "type": "typography",
+                            "label": "Title Typography — Desktop",
+                            "default": { "font-family": "", "font-size": "", "font-weight": "", "line-height": "", "color": "#ffffff" },
+                            "conditional": { "field": "breadcrumb_typography_responsive_control", "operator": "==", "value": "desktop" }
+                        }
+                    ]
+                },
+                {
+                    "id": "row_bc_6",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "breadcrumb_typography_tablet",
+                            "type": "typography",
+                            "label": "Title Typography — Tablet",
+                            "default": { "font-family": "", "font-size": "", "font-weight": "", "line-height": "", "color": "#ffffff" },
+                            "conditional": { "field": "breadcrumb_typography_responsive_control", "operator": "==", "value": "tablet" }
+                        }
+                    ]
+                },
+                {
+                    "id": "row_bc_7",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "breadcrumb_typography_mobile",
+                            "type": "typography",
+                            "label": "Title Typography — Mobile",
+                            "default": { "font-family": "", "font-size": "", "font-weight": "", "line-height": "", "color": "#ffffff" },
+                            "conditional": { "field": "breadcrumb_typography_responsive_control", "operator": "==", "value": "mobile" }
+                        }
+                    ]
+                },
+                {
+                    "id": "row_bc_8",
+                    "layout": "grid",
+                    "columns": 2,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "breadcrumb_bg_color",
+                            "type": "colorpicker",
+                            "label": "Background Color",
+                            "default": "#FFFBF5"
+                        },
+                        {
+                            "id": "turie_breadcrumb_padding_top",
+                            "type": "dimension",
+                            "label": "Padding Top",
+                            "default": "120px"
+                        }
+                    ]
+                }
+            ]
+        },
+
+        {
+            "id": "blog_archive_section",
+            "title": "Blog Archive",
+            "icon": "dashicons-admin-post",
+            "description": "Settings for the blog listing / archive page.",
+            "rows": [
+                {
+                    "id": "row_ba_1",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "turie_blog_sidebar_system",
+                            "type": "tabs",
+                            "label": "Sidebar Position",
+                            "default": "right",
+                            "options": [
+                                { "value": "right",      "label": "Right" },
+                                { "value": "left",       "label": "Left" },
+                                { "value": "no_sidebar", "label": "No Sidebar" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "row_ba_2",
+                    "layout": "grid",
+                    "columns": 3,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "turie_blog_button",
+                            "type": "switch",
+                            "label": "Read More Button",
+                            "default": "on"
+                        },
+                        {
+                            "id": "turie_blog_cat",
+                            "type": "switch",
+                            "label": "Show Category",
+                            "default": "on"
+                        },
+                        {
+                            "id": "turie_blog_date",
+                            "type": "switch",
+                            "label": "Show Date",
+                            "default": "on"
+                        }
+                    ]
+                },
+                {
+                    "id": "row_ba_3",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "turie_blog_button_text",
+                            "type": "text",
+                            "label": "Read More Button Text",
+                            "default": "Read More",
+                            "conditional": { "field": "turie_blog_button", "operator": "==", "value": "on" }
+                        }
+                    ]
+                }
+            ]
+        },
+
+        {
+            "id": "blog_details_section",
+            "title": "Blog Details",
+            "icon": "dashicons-text-page",
+            "description": "Settings for the single blog post page.",
+            "rows": [
+                {
+                    "id": "row_bd_1",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "turie_blog_single_layout",
+                            "type": "radio_image",
+                            "label": "Choose Blog Layout",
+                            "default": "blog_single_default",
+                            "options": [
+                                { "value": "blog_single_default",         "label": "Standard Layout" },
+                                { "value": "blog_single_full_width_theme","label": "Full Width Layout" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "row_bd_2",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "turie_blog_single_sidebar",
+                            "type": "tabs",
+                            "label": "Sidebar Position",
+                            "default": "right",
+                            "options": [
+                                { "value": "right",      "label": "Right" },
+                                { "value": "left",       "label": "Left" },
+                                { "value": "no_sidebar", "label": "No Sidebar" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "row_bd_3",
+                    "layout": "grid",
+                    "columns": 3,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "turie_blog_tags",
+                            "type": "switch",
+                            "label": "Show Tags",
+                            "default": "on"
+                        },
+                        {
+                            "id": "turie_blog_single_social",
+                            "type": "switch",
+                            "label": "Social Share",
+                            "default": "off"
+                        },
+                        {
+                            "id": "turie_blog_single_author",
+                            "type": "switch",
+                            "label": "Author Box",
+                            "default": "on"
+                        }
+                    ]
+                }
+            ]
+        },
+
+        {
+            "id": "error_404_section",
+            "title": "404 Page",
+            "icon": "dashicons-dismiss",
+            "description": "Customize the 404 error page.",
+            "rows": [
+                {
+                    "id": "row_404_1",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "turie_error_thumb",
+                            "type": "image",
+                            "label": "404 Illustration",
+                            "description": "Upload a custom image for the 404 page.",
+                            "default": ""
+                        }
+                    ]
+                },
+                {
+                    "id": "row_404_2",
+                    "layout": "grid",
+                    "columns": 2,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "turie_error_title",
+                            "type": "text",
+                            "label": "Large Heading",
+                            "default": "Oops!"
+                        },
+                        {
+                            "id": "turie_error_title_sm",
+                            "type": "text",
+                            "label": "Sub Heading",
+                            "default": "Page not found"
+                        }
+                    ]
+                },
+                {
+                    "id": "row_404_3",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "turie_error_desc",
+                            "type": "textarea",
+                            "label": "Description",
+                            "default": "Sorry, we couldn't find the page you were looking for."
+                        }
+                    ]
+                },
+                {
+                    "id": "row_404_4",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "turie_error_link_text",
+                            "type": "text",
+                            "label": "Back to Home Button Text",
+                            "default": "Back To Home"
+                        }
+                    ]
+                }
+            ]
+        },
+
+        {
+            "id": "woo_product_section",
+            "title": "WooCommerce",
+            "icon": "dashicons-cart",
+            "description": "WooCommerce single product settings.",
+            "rows": [
+                {
+                    "id": "row_woo_1",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "turie_buy_now_switch",
+                            "type": "switch",
+                            "label": "Buy Now Button",
+                            "description": "Show a Buy Now button on product pages.",
+                            "default": "on"
+                        }
+                    ]
+                },
+                {
+                    "id": "row_woo_2",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "turie_buy_now_text",
+                            "type": "text",
+                            "label": "Buy Now Button Text",
+                            "default": "Buy Now",
+                            "conditional": { "field": "turie_buy_now_switch", "operator": "==", "value": "on" }
+                        }
+                    ]
+                }
+            ]
+        },
+
+        {
+            "id": "full_site_typography",
+            "title": "Typography",
+            "icon": "dashicons-editor-bold",
+            "description": "Global typography settings for headings, body text, and paragraphs.",
+            "rows": [
+                {
+                    "id": "row_typo_h1",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "full_site_typography_settings_h1",
+                            "type": "typography",
+                            "label": "H1 Heading",
+                            "default": { "font-family": "", "font-size": "", "font-weight": "", "line-height": "", "color": "" }
+                        }
+                    ]
+                },
+                {
+                    "id": "row_typo_h2",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "full_site_typography_settings_h2",
+                            "type": "typography",
+                            "label": "H2 Heading",
+                            "default": { "font-family": "", "font-size": "", "font-weight": "", "line-height": "", "color": "" }
+                        }
+                    ]
+                },
+                {
+                    "id": "row_typo_h3",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "full_site_typography_settings_h3",
+                            "type": "typography",
+                            "label": "H3 Heading",
+                            "default": { "font-family": "", "font-size": "", "font-weight": "", "line-height": "", "color": "" }
+                        }
+                    ]
+                },
+                {
+                    "id": "row_typo_h4",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "full_site_typography_settings_h4",
+                            "type": "typography",
+                            "label": "H4 Heading",
+                            "default": { "font-family": "", "font-size": "", "font-weight": "", "line-height": "", "color": "" }
+                        }
+                    ]
+                },
+                {
+                    "id": "row_typo_h5",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "full_site_typography_settings_h5",
+                            "type": "typography",
+                            "label": "H5 Heading",
+                            "default": { "font-family": "", "font-size": "", "font-weight": "", "line-height": "", "color": "" }
+                        }
+                    ]
+                },
+                {
+                    "id": "row_typo_h6",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "full_site_typography_settings_h6",
+                            "type": "typography",
+                            "label": "H6 Heading",
+                            "default": { "font-family": "", "font-size": "", "font-weight": "", "line-height": "", "color": "" }
+                        }
+                    ]
+                },
+                {
+                    "id": "row_typo_body",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "full_site_typography_settings_body",
+                            "type": "typography",
+                            "label": "Body",
+                            "default": { "font-family": "", "font-size": "", "font-weight": "", "line-height": "", "color": "" }
+                        }
+                    ]
+                },
+                {
+                    "id": "row_typo_p",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "full_site_typography_settings_p",
+                            "type": "typography",
+                            "label": "Paragraph",
+                            "default": { "font-family": "", "font-size": "", "font-weight": "", "line-height": "", "color": "" }
+                        }
+                    ]
+                }
+            ]
+        },
+
+        {
+            "id": "turie_footer_section",
+            "title": "Footer",
+            "icon": "dashicons-admin-generic",
+            "description": "Footer layout and copyright settings.",
+            "rows": [
+                {
+                    "id": "row_ftr_1",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "turie_footer_elementor_switch",
+                            "type": "switch",
+                            "label": "Use Elementor Footer",
+                            "description": "Replace default footer with an Elementor template.",
+                            "default": "off"
+                        }
+                    ]
+                },
+                {
+                    "id": "row_ftr_2",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "turie_footer_templates",
+                            "type": "post_select",
+                            "label": "Elementor Footer Template",
+                            "post_type": "tp-footer",
+                            "save_format": "id",
+                            "placeholder": "— Choose a footer template —",
+                            "conditional": { "field": "turie_footer_elementor_switch", "operator": "==", "value": "on" }
+                        }
+                    ]
+                },
+                {
+                    "id": "row_ftr_3",
+                    "layout": "grid",
+                    "columns": 1,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "turie_copyright",
+                            "type": "text",
+                            "label": "Footer Copyright Text",
+                            "default": "© Copyright 2026 | All Rights Reserved"
+                        }
+                    ]
+                }
+            ]
+        },
+
+        {
+            "id": "turie_theme_color_section",
+            "title": "Theme Colors",
+            "icon": "dashicons-art",
+            "description": "Primary brand colors — these are injected as CSS variables.",
+            "rows": [
+                {
+                    "id": "row_clr_1",
+                    "layout": "grid",
+                    "columns": 3,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "turie_color_1",
+                            "type": "colorpicker",
+                            "label": "Color 1 — Primary",
+                            "description": "Main brand / accent color",
+                            "default": "#ff5e14"
+                        },
+                        {
+                            "id": "turie_color_2",
+                            "type": "colorpicker",
+                            "label": "Color 2 — Dark",
+                            "description": "Dark heading / text color",
+                            "default": "#00235a"
+                        },
+                        {
+                            "id": "turie_color_3",
+                            "type": "colorpicker",
+                            "label": "Color 3 — Darker",
+                            "description": "Deeper dark / navy",
+                            "default": "#0a1229"
+                        }
+                    ]
+                },
+                {
+                    "id": "row_clr_2",
+                    "layout": "grid",
+                    "columns": 3,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "turie_color_4",
+                            "type": "colorpicker",
+                            "label": "Color 4 — Highlight",
+                            "default": "#F94D1C"
+                        },
+                        {
+                            "id": "turie_color_5",
+                            "type": "colorpicker",
+                            "label": "Color 5 — Charcoal",
+                            "default": "#1B2335"
+                        },
+                        {
+                            "id": "turie_color_6",
+                            "type": "colorpicker",
+                            "label": "Color 6 — Red",
+                            "default": "#eb003d"
+                        }
+                    ]
+                }
+            ]
+        },
+
+        {
+            "id": "turie_post_type_slug_section",
+            "title": "Custom Slugs",
+            "icon": "dashicons-admin-links",
+            "description": "Custom post type URL slugs. Save then visit Settings → Permalinks to flush rewrite rules.",
+            "rows": [
+                {
+                    "id": "row_slug_1",
+                    "layout": "grid",
+                    "columns": 2,
+                    "direction": "row",
+                    "wrap": "wrap",
+                    "fields": [
+                        {
+                            "id": "turie_portfolios_slug",
+                            "type": "text",
+                            "label": "Portfolios Slug",
+                            "default": "tp-portfolios",
+                            "placeholder": "tp-portfolios"
+                        },
+                        {
+                            "id": "turie_services_slug",
+                            "type": "text",
+                            "label": "Services Slug",
+                            "default": "tp-services",
+                            "placeholder": "tp-services"
+                        }
+                    ]
+                }
+            ]
+        }
+
+    ]
+}

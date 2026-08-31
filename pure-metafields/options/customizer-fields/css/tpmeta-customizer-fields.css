@@ -1,0 +1,546 @@
+/**
+ * tpmeta-customizer-fields.css
+ *
+ * Compact UI for TPMeta options field templates rendered inside the WordPress
+ * Customizer (~280–300px sidebar). All visual rules in tpmeta-fields.css /
+ * tpmeta-options.css are scoped under .tm-meta-wrapper or .tpmeta-panel-field
+ * — neither wrapper exists in the Customizer pane, so this file re-declares
+ * the necessary visual rules under .wp-customizer scope only.
+ *
+ * Strict isolation: every rule starts with .wp-customizer so nothing leaks
+ * into the dashboard or post-edit screens.
+ *
+ * Sizing principle: components shrink ~15% versus admin-panel styles to fit
+ * the narrow sidebar without horizontal scroll.
+ */
+
+/* ── 1. Tokens (sidebar-local) ─────────────────────────────────────────── */
+.wp-customizer .customize-control-tpmeta_field {
+	--tpc-blue:     #3362FF;
+	--tpc-blue-lt:  #eef2ff;
+	--tpc-border:   #dcdcde;
+	--tpc-bg:       #f6f7f7;
+	--tpc-white:    #ffffff;
+	--tpc-text:     #1d2327;
+	--tpc-muted:    #646970;
+	--tpc-danger:   #d63638;
+	--tpc-radius:   4px;
+	--tpc-fs:       12px;
+	--tpc-input-h:  28px;
+}
+
+/* ── 2. Container / typography ─────────────────────────────────────────── */
+.wp-customizer .customize-control-tpmeta_field {
+	max-width: 100%;
+	overflow: visible;     /* allow datepicker / select2 to escape */
+}
+.wp-customizer .customize-control-tpmeta_field > .customize-control-title {
+	font-size: 12px;
+	font-weight: 600;
+	margin-bottom: 4px;
+}
+.wp-customizer .customize-control-tpmeta_field > .description {
+	font-size: 11px;
+	color: var(--tpc-muted);
+	margin-bottom: 6px;
+	display: block;
+}
+
+/* ── 3. section_heading divider ─────────────────────────────────────────── */
+.wp-customizer .tpmeta-cust-section-heading {
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	color: #50575e;
+	padding: 14px 0 6px;
+	border-bottom: 1px solid var(--tpc-border);
+	margin-bottom: 4px;
+}
+
+/* ── 4. Generic compact inputs (28px high) ─────────────────────────────── */
+.wp-customizer .customize-control-tpmeta_field input[type="text"],
+.wp-customizer .customize-control-tpmeta_field input[type="number"],
+.wp-customizer .customize-control-tpmeta_field input[type="email"],
+.wp-customizer .customize-control-tpmeta_field input[type="url"],
+.wp-customizer .customize-control-tpmeta_field input[type="search"],
+.wp-customizer .customize-control-tpmeta_field select,
+.wp-customizer .customize-control-tpmeta_field textarea {
+	font-size: var(--tpc-fs);
+	padding: 4px 8px;
+	max-width: 100%;
+	box-sizing: border-box;
+	min-height: var(--tpc-input-h);
+	height: auto;
+	line-height: 1.4;
+}
+.wp-customizer .customize-control-tpmeta_field textarea {
+	min-height: 60px;
+}
+.wp-customizer .customize-control-tpmeta_field .tm-input {
+	height: var(--tpc-input-h);
+}
+
+/* ── 5. Switch toggle — compact + fully visible state ─────────────────── */
+.wp-customizer .customize-control-tpmeta_field .tm-switch {
+	position: relative;
+	display: inline-block;
+	width: 40px;
+	height: 22px;
+	vertical-align: middle;
+	margin: 2px 0;
+}
+.wp-customizer .customize-control-tpmeta_field .tm-switch input {
+	opacity: 0 !important;
+	width: 0 !important;
+	height: 0 !important;
+	position: absolute !important;
+	pointer-events: none;
+}
+.wp-customizer .customize-control-tpmeta_field .tm-slider {
+	display: block;
+	width: 40px;
+	height: 22px;
+	background: #cad2ef;
+	border-radius: 20px;
+	position: relative;
+	cursor: pointer;
+	transition: background-color .25s ease;
+}
+.wp-customizer .customize-control-tpmeta_field .tm-slider::before {
+	content: "";
+	position: absolute;
+	top: 3px; left: 3px; bottom: 3px; right: 53%;
+	border-radius: 50%;
+	background: linear-gradient(180deg, #fff 0%, #d6dcef 100%);
+	box-shadow: 1px 1px 2px rgba(18,20,32,.3);
+	transition: left .25s ease, right .25s ease;
+}
+.wp-customizer .customize-control-tpmeta_field .tm-switch input:checked + .tm-slider {
+	background-color: var(--tpc-blue);
+}
+.wp-customizer .customize-control-tpmeta_field .tm-switch input:checked + .tm-slider::before {
+	left: 53%; right: 3px;
+}
+
+/* ── 6. Checkbox — force native input visible (overrides admin hides) ──── */
+.wp-customizer .customize-control-tpmeta_field .tm-checkbox-group {
+	display: flex !important;
+	flex-direction: column !important;
+	gap: 4px !important;
+	margin: 0;
+	padding: 0;
+}
+.wp-customizer .customize-control-tpmeta_field .tm-checkbox-item {
+	display: inline-flex !important;
+	align-items: center !important;
+	gap: 7px;
+	font-size: var(--tpc-fs);
+	color: var(--tpc-text);
+	cursor: pointer;
+	margin: 0;
+	line-height: 1.4;
+}
+.wp-customizer .customize-control-tpmeta_field .tm-checkbox-item > input[type="checkbox"],
+.wp-customizer .customize-control-tpmeta_field .tm-checkbox-item input[type="checkbox"] {
+	width: 16px !important;
+	height: 16px !important;
+	min-width: 16px !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	opacity: 1 !important;
+	visibility: visible !important;
+	display: inline-block !important;
+	position: static !important;
+	pointer-events: auto !important;
+	accent-color: var(--tpc-blue);
+	cursor: pointer;
+	flex: 0 0 16px;
+}
+
+/* ── 7. Multicheck — same logic as checkbox ─────────────────────────────── */
+.wp-customizer .customize-control-tpmeta_field .tm-multicheck-wrap          { max-width: 100%; font-size: var(--tpc-fs); }
+.wp-customizer .customize-control-tpmeta_field .tm-multicheck-header        { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-bottom: 4px; }
+.wp-customizer .customize-control-tpmeta_field .tm-multicheck-all-label     { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; cursor: pointer; }
+.wp-customizer .customize-control-tpmeta_field .tm-multicheck-count         { color: var(--tpc-muted); font-size: 10px; }
+.wp-customizer .customize-control-tpmeta_field .tm-multicheck-items         { max-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; padding: 4px 0; }
+.wp-customizer .customize-control-tpmeta_field .tm-multicheck-item          { display: inline-flex !important; align-items: center; gap: 7px; cursor: pointer; }
+.wp-customizer .customize-control-tpmeta_field .tm-multicheck-input,
+.wp-customizer .customize-control-tpmeta_field .tm-multicheck-toggle-all {
+	width: 16px !important;
+	height: 16px !important;
+	min-width: 16px !important;
+	opacity: 1 !important;
+	visibility: visible !important;
+	display: inline-block !important;
+	position: static !important;
+	margin: 0 !important;
+	accent-color: var(--tpc-blue);
+}
+.wp-customizer .customize-control-tpmeta_field .tm-multicheck-checkmark { display: none !important; }   /* hide custom checkmark span */
+
+/* ── 8. Image field ────────────────────────────────────────────────────── */
+.wp-customizer .customize-control-tpmeta_field .tm-image-field { display: block; max-width: 100%; }
+.wp-customizer .customize-control-tpmeta_field .tm-image-field .tm-image-img img {
+	max-width: 100%;
+	height: auto;
+	border-radius: var(--tpc-radius);
+	border: 1.5px solid var(--tpc-border);
+	display: block;
+	margin-bottom: 6px;
+}
+.wp-customizer .customize-control-tpmeta_field .tm-image-field .tm-add-image,
+.wp-customizer .customize-control-tpmeta_field .tm-image-field .tpmeta-image-upload {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	padding: 6px 10px;
+	background: var(--tpc-bg);
+	border: 1.5px dashed var(--tpc-border);
+	border-radius: var(--tpc-radius);
+	font-size: 11px;
+	font-weight: 600;
+	color: var(--tpc-muted);
+	cursor: pointer;
+	min-height: 0;
+	height: auto;
+	line-height: 1.2;
+}
+.wp-customizer .customize-control-tpmeta_field .tm-image-field .tm-add-image:hover,
+.wp-customizer .customize-control-tpmeta_field .tm-image-field .tpmeta-image-upload:hover {
+	border-color: var(--tpc-blue);
+	color: var(--tpc-blue);
+	background: var(--tpc-blue-lt);
+}
+.wp-customizer .customize-control-tpmeta_field .tm-image-field .tpmeta-image-remove {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 20px;
+	height: 20px;
+	background: var(--tpc-danger);
+	color: #fff;
+	border-radius: 50%;
+	text-decoration: none;
+	font-size: 12px;
+	line-height: 1;
+}
+
+/* ── 9. Datepicker ─────────────────────────────────────────────────────── */
+.wp-customizer .customize-control-tpmeta_field .tm-datepicker-input { width: 100%; }
+/* Datepicker dropdown is appended to body — this rule lives at body scope. */
+body .ui-datepicker.tm-datepicker { font-size: 12px; padding: 4px; z-index: 500001; }
+body .ui-datepicker.tm-datepicker .ui-datepicker-header { background: var(--tpc-bg, #f6f7f7); padding: 4px; }
+
+/* ── 10. Editor (TinyMCE) — TPMeta_Customize_TinyMCE_Control ───────────── */
+.wp-customizer .customize-control-tpmeta_tinymce {
+	--tpc-blue:   #3362FF;
+	--tpc-border: #dcdcde;
+	--tpc-bg:     #f6f7f7;
+	--tpc-text:   #1d2327;
+	--tpc-white:  #fff;
+}
+.wp-customizer .customize-control-tpmeta_tinymce > .customize-control-title { font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+.wp-customizer .customize-control-tpmeta_tinymce > .description             { font-size: 11px; color: #646970; margin-bottom: 6px; display: block; }
+
+/* ── Field wrapper ─────────────────────────────────────────────────────── */
+.wp-customizer .tpmeta-editor-field { max-width: 100%; position: relative; }
+
+/* Textarea — visible before TinyMCE boots; hidden by TinyMCE on init */
+.wp-customizer .tpmeta-editor-textarea {
+	display: block;
+	width: 100%;
+	min-height: 160px;
+	padding: 8px;
+	font-size: 12px;
+	font-family: monospace;
+	color: var(--tpc-text);
+	background: var(--tpc-white);
+	border: 1px solid var(--tpc-border);
+	border-radius: 3px;
+	box-sizing: border-box;
+	resize: vertical;
+	line-height: 1.6;
+}
+
+/* ── Visual / Text tab bar (injected by JS after TinyMCE init) ─────────── */
+.wp-customizer .tpmeta-editor-tabs {
+	display: flex;
+	border-bottom: none;
+	background: var(--tpc-bg);
+	padding: 4px 6px 0;
+	border: 1px solid var(--tpc-border);
+	border-bottom: none;
+	border-radius: 3px 3px 0 0;
+}
+.wp-customizer .tpmeta-tab {
+	font-size: 11px;
+	font-weight: 600;
+	padding: 4px 10px;
+	background: transparent;
+	border: 1px solid transparent;
+	border-bottom: none;
+	border-radius: 3px 3px 0 0;
+	color: #646970;
+	cursor: pointer;
+	line-height: 1.4;
+	margin-bottom: -1px;
+	position: relative;
+}
+.wp-customizer .tpmeta-tab.is-active {
+	background: var(--tpc-white);
+	border-color: var(--tpc-border);
+	border-bottom-color: var(--tpc-white);
+	color: var(--tpc-text);
+}
+.wp-customizer .tpmeta-tab:hover:not(.is-active) { color: var(--tpc-text); }
+
+/* ── TinyMCE container (after .tpmeta-editor-tabs when booted) ─────────── */
+.wp-customizer .tpmeta-editor-field .mce-tinymce {
+	max-width: 100% !important;
+	box-shadow: none !important;
+	border: 1px solid var(--tpc-border) !important;
+	border-top: none !important;
+	border-radius: 0 0 3px 3px;
+	visibility: visible !important;
+}
+.wp-customizer .tpmeta-editor-field .mce-tinymce.mce-container { width: 100% !important; }
+
+/* Toolbar wraps on narrow sidebar */
+.wp-customizer .tpmeta-editor-field .mce-toolbar-grp        { padding: 3px; background: var(--tpc-bg); border-bottom: 1px solid var(--tpc-border); max-width: 100%; }
+.wp-customizer .tpmeta-editor-field .mce-toolbar-grp > div  { white-space: normal !important; }
+.wp-customizer .tpmeta-editor-field .mce-toolbar            { white-space: normal !important; padding: 1px 0 !important; }
+.wp-customizer .tpmeta-editor-field .mce-toolbar .mce-btn-group {
+	display: inline-flex !important;
+	flex-wrap: wrap !important;
+	white-space: normal !important;
+	padding: 1px !important;
+	margin: 0 !important;
+	border: none !important;
+}
+.wp-customizer .tpmeta-editor-field .mce-flow-layout-item { float: none !important; display: inline-block !important; }
+
+/* Toolbar buttons */
+.wp-customizer .tpmeta-editor-field .mce-btn               { margin: 1px !important; }
+.wp-customizer .tpmeta-editor-field .mce-btn button        { padding: 3px 5px !important; min-width: 0 !important; height: auto !important; }
+.wp-customizer .tpmeta-editor-field .mce-btn .mce-ico      { font-size: 14px !important; line-height: 14px; width: 14px; height: 14px; }
+.wp-customizer .tpmeta-editor-field .mce-btn.mce-active button,
+.wp-customizer .tpmeta-editor-field .mce-btn:hover button  { background: #e5e7ef !important; }
+
+/* Iframe */
+.wp-customizer .tpmeta-editor-field .mce-edit-area iframe  { width: 100% !important; min-height: 160px; display: block; }
+
+/* ── 11. Code editor (CodeMirror) ──────────────────────────────────────── */
+.wp-customizer .customize-control-tpmeta_field .tm-code-editor-wrap             { max-width: 100%; }
+.wp-customizer .customize-control-tpmeta_field .tm-code-editor-wrap .CodeMirror { height: 180px; font-size: 12px; }
+
+/* ── 12. Color gradient — compact layout ───────────────────────────────── */
+.wp-customizer .customize-control-tpmeta_field .tm-gradient-wrap {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	max-width: 100%;
+}
+.wp-customizer .customize-control-tpmeta_field .tm-gradient-preview {
+	height: 40px;
+	border-radius: var(--tpc-radius);
+	border: 1.5px solid var(--tpc-border);
+}
+.wp-customizer .customize-control-tpmeta_field .tm-gradient-controls {
+	background: var(--tpc-bg);
+	border: 1.5px solid var(--tpc-border);
+	border-radius: var(--tpc-radius);
+	padding: 8px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+.wp-customizer .customize-control-tpmeta_field .tm-gradient-row {
+	display: flex;
+	align-items: flex-end;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+.wp-customizer .customize-control-tpmeta_field .tm-gradient-field {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+	flex: 1 1 auto;
+	min-width: 0;
+}
+.wp-customizer .customize-control-tpmeta_field .tm-gradient-field .tm-typo-label {
+	font-size: 10px;
+	font-weight: 600;
+	color: var(--tpc-muted);
+	text-transform: uppercase;
+	letter-spacing: .04em;
+}
+.wp-customizer .customize-control-tpmeta_field .tm-gradient-stops {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+.wp-customizer .customize-control-tpmeta_field .tm-grd-stop {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	flex-wrap: nowrap;
+}
+.wp-customizer .customize-control-tpmeta_field .tm-grd-stop .wp-picker-container { flex: 0 0 auto; }
+.wp-customizer .customize-control-tpmeta_field .tm-grd-stop .tm-dimension-wrap   { flex: 0 0 auto; max-width: 110px !important; }
+.wp-customizer .customize-control-tpmeta_field .tpgrd-remove-stop {
+	width: 22px; height: 22px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: transparent;
+	border: 1.5px solid var(--tpc-border);
+	border-radius: var(--tpc-radius);
+	color: var(--tpc-muted);
+	cursor: pointer;
+	padding: 0;
+}
+.wp-customizer .customize-control-tpmeta_field .tpgrd-remove-stop:hover {
+	border-color: var(--tpc-danger);
+	color: var(--tpc-danger);
+}
+.wp-customizer .customize-control-tpmeta_field .tpgrd-add-stop {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	padding: 5px 10px;
+	background: var(--tpc-white);
+	border: 1.5px dashed var(--tpc-border);
+	border-radius: var(--tpc-radius);
+	font-size: 11px;
+	font-weight: 600;
+	color: var(--tpc-muted);
+	cursor: pointer;
+	align-self: flex-start;
+}
+.wp-customizer .customize-control-tpmeta_field .tpgrd-add-stop:hover {
+	border-color: var(--tpc-blue);
+	color: var(--tpc-blue);
+	background: var(--tpc-blue-lt);
+}
+
+/* ── 13. Button-radio group (Linear/Radial, etc.) ──────────────────────── */
+.wp-customizer .customize-control-tpmeta_field .tm-button-groups {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 3px;
+	margin: 0;
+}
+.wp-customizer .customize-control-tpmeta_field .tm-button-groups input {
+	opacity: 0; width: 0; height: 0; position: absolute;
+}
+.wp-customizer .customize-control-tpmeta_field .tm-button-groups .tm-button-radio {
+	border: 1.5px solid var(--tpc-border);
+	border-radius: var(--tpc-radius);
+	padding: 4px 8px;
+	font-size: 11px;
+	font-weight: 600;
+	color: var(--tpc-muted);
+	cursor: pointer;
+	background: var(--tpc-white);
+	display: inline-flex;
+	align-items: center;
+	margin: 0;
+	line-height: 1.2;
+}
+.wp-customizer .customize-control-tpmeta_field .tm-button-groups .tm-button-radio span {
+	padding: 0;
+	font-size: 11px;
+	font-weight: 600;
+}
+.wp-customizer .customize-control-tpmeta_field .tm-button-groups .tm-button-radio:has(input:checked) {
+	border-color: var(--tpc-blue);
+	background: var(--tpc-blue-lt);
+	color: var(--tpc-blue);
+}
+.wp-customizer .customize-control-tpmeta_field .tm-button-groups .tm-button-radio:has(input:checked) span {
+	color: var(--tpc-blue);
+}
+
+/* ── 14. Dimension wrap (number + unit) ────────────────────────────────── */
+.wp-customizer .customize-control-tpmeta_field .tm-dimension-wrap {
+	display: flex;
+	gap: 0;
+	align-items: stretch;
+	max-width: 100%;
+}
+.wp-customizer .customize-control-tpmeta_field .tm-dimension-wrap .tm-dim-num {
+	flex: 1 1 auto;
+	min-width: 0;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+	height: var(--tpc-input-h);
+}
+.wp-customizer .customize-control-tpmeta_field .tm-dimension-wrap .tm-dim-unit {
+	flex: 0 0 auto;
+	border-left: 0;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	height: var(--tpc-input-h);
+	font-size: 11px;
+	padding: 0 4px;
+}
+
+/* ── 15. Spacing ───────────────────────────────────────────────────────── */
+.wp-customizer .customize-control-tpmeta_field .tm-spacing-wrap { max-width: 100%; }
+.wp-customizer .customize-control-tpmeta_field .tm-spacing-grid { gap: 4px; }
+.wp-customizer .customize-control-tpmeta_field .tm-spacing-grid input { font-size: 11px; padding: 2px 4px; height: 26px; }
+
+/* ── 16. Multicolor swatches ───────────────────────────────────────────── */
+.wp-customizer .customize-control-tpmeta_field .tm-multicolor-group {
+	display: flex; flex-wrap: wrap; gap: 6px;
+}
+.wp-customizer .customize-control-tpmeta_field .tm-mcswatch-item { flex: 0 0 auto; cursor: pointer; }
+
+/* ── 17. Radio image + 18. Typography ────────────────────────────────────
+   FULL option-panel UI for these two widgets now lives in
+   `tpmeta-customizer-parity.css` (loaded right after this file). That file
+   ports the rules verbatim from tpmeta-options.css and prefixes every
+   selector with `.wp-customizer` so they cannot leak. */
+
+/* ── 19. Repeater ───────────────────────────────────────────────────────── */
+/* Full repeater UI for the narrow pane lives in the dedicated, separately
+   enqueued tpmeta-customizer-repeater.css so the repeater styling is isolated
+   and easy to reason about. (The old rules here forced `.tm-rptr-body` to
+   display:block !important, which broke row collapse — removed.) */
+
+/* ── 20. Select2 / post_select — appended to body via JS ───────────────── */
+.wp-customizer .select2-container { max-width: 100% !important; }
+.wp-customizer .select2-container--default .select2-selection--single,
+.wp-customizer .select2-container--default .select2-selection--multiple {
+	min-height: 28px; height: 28px; line-height: 28px; font-size: 12px;
+}
+.wp-customizer .select2-container--default .select2-selection--single .select2-selection__rendered { line-height: 28px; padding-left: 8px; }
+.wp-customizer .select2-container--default .select2-selection--single .select2-selection__arrow    { height: 28px; }
+
+/* Dropdown is appended to body by JS (escapes overflow:hidden ancestors).
+   Body is OUTSIDE the .wp-customizer scope, so target by the class our JS
+   stamps on the dropdown element. WP customizer overlay sits at z-index
+   500000 — go above it. */
+body > .select2-container.tpmeta-customizer-select2,
+body > .select2-container--open.tpmeta-customizer-select2,
+.select2-dropdown.tpmeta-customizer-select2-dd {
+	z-index: 500001 !important;
+}
+.select2-dropdown.tpmeta-customizer-select2-dd .select2-results__option { font-size: 12px; padding: 5px 8px; }
+.select2-dropdown.tpmeta-customizer-select2-dd .select2-search--dropdown .select2-search__field { font-size: 12px; padding: 4px 6px; }
+
+/* ── 21. WP color picker ──────────────────────────────────────────────── */
+.wp-customizer .customize-control-tpmeta_field .wp-picker-container,
+.wp-customizer .customize-control-tpmeta_field .wp-picker-holder { max-width: 100%; }
+.wp-customizer .customize-control-tpmeta_field .wp-picker-input-wrap input[type="text"].wp-color-picker { width: 70px; font-size: 11px; }
+.wp-customizer .customize-control-tpmeta_field .wp-color-result.button { height: 26px; min-height: 26px; }
+
+/* ── 22. Strip admin chrome (cards/borders) ─────────────────────────────── */
+.wp-customizer .customize-control-tpmeta_field .tpmeta-field-wrap,
+.wp-customizer .customize-control-tpmeta_field .tm-field-row {
+	box-shadow: none;
+	border: none;
+	padding: 0;
+	margin: 0;
+}

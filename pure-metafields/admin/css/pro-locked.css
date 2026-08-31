@@ -1,0 +1,290 @@
+/*!
+ * Pure Fields — Pro Locked Feature Cards
+ * Shown in the free version for pro-exclusive features.
+ */
+
+/* ── Locked page wrapper ───────────────────────────────────────────────── */
+.pf-locked-page {
+	max-width: 960px;
+	margin: 32px auto;
+	padding: 0 20px;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.pf-locked-hero {
+	text-align: center;
+	padding: 48px 32px 40px;
+	background: var(--pf-white, #fff);
+	border: 1px solid var(--pf-border, #e2e6ed);
+	border-radius: 12px;
+	box-shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.04);
+	margin-bottom: 28px;
+	position: relative;
+	overflow: hidden;
+}
+
+.pf-locked-hero::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 4px;
+	background: linear-gradient(90deg, var(--pf-blue, #3362FF), var(--pf-purple, #5F4AFE), var(--pf-pink, #E91E8C));
+}
+
+.pf-locked-hero-icon {
+	width: 72px;
+	height: 72px;
+	border-radius: 50%;
+	background: linear-gradient(135deg, var(--pf-purple-lt, #ede9ff) 0%, var(--pf-blue-lt, #f0f4ff) 100%);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 auto 20px;
+}
+
+.pf-locked-hero-icon .dashicons {
+	font-size: 32px;
+	width: 32px;
+	height: 32px;
+	color: var(--pf-purple, #5F4AFE);
+}
+
+.pf-locked-hero h2 {
+	font-size: 24px;
+	font-weight: 800;
+	color: var(--pf-text, #010F1C);
+	margin: 0 0 10px;
+}
+
+.pf-locked-hero p {
+	font-size: 15px;
+	color: var(--pf-muted, #5b6470);
+	margin: 0 auto;
+	max-width: 480px;
+	line-height: 1.6;
+}
+
+/* ── Locked cards grid ─────────────────────────────────────────────────── */
+.pf-locked-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+	gap: 16px;
+	margin-bottom: 32px;
+}
+
+.pf-locked-card {
+	background: var(--pf-white, #fff);
+	border: 1px solid var(--pf-border, #e2e6ed);
+	border-radius: 10px;
+	padding: 22px;
+	position: relative;
+	transition: border-color .18s, box-shadow .18s, transform .18s;
+}
+
+.pf-locked-card:hover {
+	border-color: #d4daff;
+	box-shadow: 0 4px 20px rgba(0,0,0,.08);
+	transform: translateY(-2px);
+}
+
+.pf-locked-card-badge {
+	position: absolute;
+	top: 14px;
+	right: 14px;
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: .04em;
+	text-transform: uppercase;
+	padding: 3px 8px;
+	border-radius: 50px;
+	background: linear-gradient(135deg, var(--pf-purple-lt, #ede9ff), var(--pf-blue-lt, #f0f4ff));
+	color: var(--pf-purple, #5F4AFE);
+}
+
+.pf-locked-card-badge .dashicons {
+	font-size: 10px;
+	width: 10px;
+	height: 10px;
+}
+
+.pf-locked-card-icon {
+	width: 44px;
+	height: 44px;
+	border-radius: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 14px;
+	background: var(--pf-bg, #f4f6fb);
+	color: var(--pf-muted, #5b6470);
+}
+
+.pf-locked-card-icon .dashicons {
+	font-size: 22px;
+	width: 22px;
+	height: 22px;
+}
+
+.pf-locked-card h3 {
+	font-size: 14px;
+	font-weight: 700;
+	color: var(--pf-text, #010F1C);
+	margin: 0 0 6px;
+}
+
+.pf-locked-card p {
+	font-size: 12px;
+	color: var(--pf-muted, #5b6470);
+	line-height: 1.55;
+	margin: 0 0 16px;
+}
+
+.pf-locked-card-cta {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--pf-blue, #3362FF);
+	text-decoration: none;
+	padding: 6px 14px;
+	border-radius: 6px;
+	border: 1.5px solid rgba(51,98,255,.2);
+	background: var(--pf-blue-lt, #f0f4ff);
+	transition: all .15s;
+}
+
+.pf-locked-card-cta:hover {
+	background: var(--pf-blue, #3362FF);
+	color: #fff;
+	border-color: var(--pf-blue, #3362FF);
+	text-decoration: none;
+}
+
+.pf-locked-card-cta .dashicons {
+	font-size: 12px;
+	width: 12px;
+	height: 12px;
+}
+
+/* ── CTA banner at bottom ──────────────────────────────────────────────── */
+.pf-locked-cta-banner {
+	background: linear-gradient(135deg, var(--pf-blue, #3362FF) 0%, var(--pf-purple, #5F4AFE) 100%);
+	border-radius: 12px;
+	padding: 32px;
+	text-align: center;
+	color: #fff;
+}
+
+.pf-locked-cta-banner h3 {
+	font-size: 20px;
+	font-weight: 800;
+	margin: 0 0 8px;
+	color: #fff;
+}
+
+.pf-locked-cta-banner p {
+	font-size: 14px;
+	opacity: .85;
+	margin: 0 0 20px;
+	line-height: 1.5;
+}
+
+.pf-locked-cta-banner .pf-btn--cta {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 14px;
+	font-weight: 700;
+	padding: 12px 28px;
+	border-radius: 8px;
+	border: none;
+	background: #fff;
+	color: var(--pf-blue, #3362FF);
+	cursor: pointer;
+	text-decoration: none;
+	box-shadow: 0 4px 14px rgba(0,0,0,.15);
+	transition: transform .15s, box-shadow .15s;
+}
+
+.pf-locked-cta-banner .pf-btn--cta:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 6px 20px rgba(0,0,0,.2);
+	text-decoration: none;
+	color: var(--pf-purple, #5F4AFE);
+}
+
+.pf-locked-cta-banner .pf-btn--cta .dashicons {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+}
+
+/* ── Inline locked overlay (for inside builder pages) ──────────────────── */
+.pf-locked-inline {
+	position: relative;
+	border: 1.5px dashed var(--pf-border, #e2e6ed);
+	border-radius: 10px;
+	padding: 28px 20px;
+	text-align: center;
+	background: repeating-linear-gradient(
+		-45deg,
+		var(--pf-white, #fff),
+		var(--pf-white, #fff) 10px,
+		var(--pf-bg, #f4f6fb) 10px,
+		var(--pf-bg, #f4f6fb) 20px
+	);
+}
+
+.pf-locked-inline-icon {
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	background: var(--pf-purple-lt, #ede9ff);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 auto 12px;
+}
+
+.pf-locked-inline-icon .dashicons {
+	font-size: 22px;
+	width: 22px;
+	height: 22px;
+	color: var(--pf-purple, #5F4AFE);
+}
+
+.pf-locked-inline h4 {
+	font-size: 14px;
+	font-weight: 700;
+	color: var(--pf-text, #010F1C);
+	margin: 0 0 4px;
+}
+
+.pf-locked-inline p {
+	font-size: 12px;
+	color: var(--pf-muted, #5b6470);
+	margin: 0 0 12px;
+}
+
+/* ── Field type locked chip (for builder palettes) ─────────────────────── */
+.pf-field-chip--locked {
+	opacity: .55;
+	cursor: not-allowed;
+	position: relative;
+}
+
+.pf-field-chip--locked::after {
+	content: "\f160";
+	font-family: dashicons;
+	font-size: 10px;
+	position: absolute;
+	top: 2px;
+	right: 2px;
+	color: var(--pf-purple, #5F4AFE);
+}

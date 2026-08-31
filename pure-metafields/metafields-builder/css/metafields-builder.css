@@ -1,0 +1,660 @@
+/*
+ * Metafield Builder — layout additions on top of assets/css/tpmeta-builder.css
+ * All row/field/rail/canvas/palette styles come from the shared builder CSS.
+ */
+
+#wpcontent { padding-left: 0 !important; }
+
+/* ── Two-panel page shell ───────────────────────────────────────────────── */
+.mfb-page {
+	display: flex;
+	width: 100%;
+	height: calc(100vh - 50px);
+	overflow: hidden;
+	background: var(--tp-bg, #f4f6fb);
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* ── Left sidebar: metabox list ─────────────────────────────────────────── */
+.mfb-sidebar {
+	width: 260px;
+	flex: 0 0 260px;
+	background: var(--tp-white, #fff);
+	border-right: 1px solid var(--tp-border, #e2e6ed);
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+
+.mfb-sidebar-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 14px 14px 12px;
+	border-bottom: 1px solid var(--tp-border, #e2e6ed);
+	flex-shrink: 0;
+}
+
+.mfb-sidebar-title {
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: .06em;
+	text-transform: uppercase;
+	color: var(--tp-muted, #5b6470);
+}
+
+.mfb-sidebar-add {
+	width: 28px;
+	height: 28px;
+	border-radius: 6px;
+	border: 1.5px solid var(--tp-border, #e2e6ed);
+	background: var(--tp-white, #fff);
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--tp-muted, #5b6470);
+	transition: border-color .15s, background .15s, color .15s;
+}
+
+.mfb-sidebar-add:hover {
+	border-color: var(--tp-blue, #3362FF);
+	background: var(--tp-blue-lt, #f0f4ff);
+	color: var(--tp-blue, #3362FF);
+}
+
+.mfb-sidebar-add .dashicons { font-size: 15px; width: 15px; height: 15px; }
+
+.mfb-sidebar-list {
+	flex: 1;
+	overflow-y: auto;
+	padding: 6px;
+	scrollbar-width: none;
+}
+.mfb-sidebar-list::-webkit-scrollbar { display: none; }
+
+.mfb-sidebar-empty {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 32px 16px;
+	text-align: center;
+	gap: 8px;
+}
+
+.mfb-sidebar-empty .dashicons { font-size: 32px; width: 32px; height: 32px; color: var(--tp-border, #e2e6ed); }
+.mfb-sidebar-empty p { font-size: 12px; color: var(--tp-muted, #5b6470); margin: 0; }
+
+/* Metabox list items */
+.mfb-list-item {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 9px 10px;
+	border-radius: 6px;
+	cursor: pointer;
+	transition: background .15s;
+}
+
+.mfb-list-item:hover { background: var(--tp-bg, #f4f6fb); }
+
+.mfb-list-item.is-active {
+	background: var(--tp-blue-lt, #f0f4ff);
+}
+
+.mfb-list-icon .dashicons {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+	color: var(--tp-muted, #5b6470);
+}
+
+.mfb-list-item.is-active .mfb-list-icon .dashicons { color: var(--tp-blue, #3362FF); }
+
+.mfb-list-info { flex: 1; min-width: 0; }
+
+.mfb-list-title {
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--tp-text, #010F1C);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.mfb-list-item.is-active .mfb-list-title { color: var(--tp-blue, #3362FF); }
+
+.mfb-list-pts {
+	font-size: 10px;
+	color: var(--tp-muted, #5b6470);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	margin-top: 1px;
+}
+
+.mfb-list-actions {
+	display: flex;
+	gap: 2px;
+	opacity: 0;
+	transition: opacity .15s;
+}
+
+.mfb-list-item:hover .mfb-list-actions { opacity: 1; }
+
+.mfb-list-actions button {
+	width: 24px;
+	height: 24px;
+	border: 0;
+	background: none;
+	border-radius: 4px;
+	cursor: pointer;
+	color: var(--tp-muted, #5b6470);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: background .15s, color .15s;
+}
+
+.mfb-list-actions button:hover { background: rgba(0,0,0,.06); }
+.mfb-list-actions .mfb-list-delete:hover { background: #fbeaea; color: var(--tp-danger, #d63638); }
+.mfb-list-actions button .dashicons { font-size: 14px; width: 14px; height: 14px; }
+
+/* ── Right: builder area ────────────────────────────────────────────────── */
+.mfb-builder-wrap {
+	flex: 1;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+
+#mfb-root {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	min-height: 0;
+	overflow: hidden;
+}
+
+/* Reuse .tpmeta-builder-page sizing within our shell */
+#mfb-root .tpmeta-bar  { flex: 0 0 auto; }
+#mfb-root .tpmeta-body { flex: 1; min-height: 0; }
+
+/* ── Bar: post-type pills ───────────────────────────────────────────────── */
+.mfb-bar-pt {
+	display: inline-block;
+	font-size: 10px;
+	font-weight: 600;
+	padding: 2px 7px;
+	border-radius: 50px;
+	background: var(--tp-blue-lt, #f0f4ff);
+	color: var(--tp-blue, #3362FF);
+}
+
+/* ── Metabox settings modal ─────────────────────────────────────────────── */
+.mfb-box-modal {
+	width: min(620px, calc(100vw - 40px));
+}
+
+.mfb-form-grid-3 {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	gap: 12px;
+}
+
+/* Post-type checkboxes in modal */
+.mfb-pt-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+	gap: 7px;
+}
+
+.mfb-pt-check {
+	display: flex;
+	align-items: center;
+	gap: 9px;
+	padding: 9px 12px;
+	border: 1.5px solid var(--tp-border, #e2e6ed);
+	border-radius: 8px;
+	background: #fff;
+	font-size: 12.5px;
+	font-weight: 500;
+	color: var(--tp-text, #3d4555);
+	cursor: pointer;
+	transition: border-color .15s, background .15s, color .15s;
+	user-select: none;
+}
+
+/* Hide native checkbox — keep it accessible/functional */
+.mfb-pt-check input[type="checkbox"] {
+	position: absolute;
+	opacity: 0;
+	width: 0;
+	height: 0;
+	pointer-events: none;
+}
+
+/* Custom indicator box */
+.mfb-pt-check-indicator {
+	width: 16px;
+	height: 16px;
+	flex-shrink: 0;
+	border: 1.5px solid var(--tp-border, #cdd3de);
+	border-radius: 4px;
+	background: var(--tp-bg, #f4f6fb);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: border-color .15s, background .15s;
+}
+
+/* Checkmark via rotated pseudo-element */
+.mfb-pt-check-indicator::after {
+	content: '';
+	display: block;
+	width: 9px;
+	height: 5px;
+	border-left: 2px solid transparent;
+	border-bottom: 2px solid transparent;
+	transform: rotate(-45deg) translateY(-1px);
+	transition: border-color .12s;
+}
+
+.mfb-pt-check-label {
+	line-height: 1.2;
+}
+
+.mfb-pt-check:hover {
+	border-color: var(--tp-blue, #3362FF);
+	background: var(--tp-blue-lt, #eef2ff);
+}
+
+.mfb-pt-check:hover .mfb-pt-check-indicator {
+	border-color: var(--tp-blue, #3362FF);
+}
+
+.mfb-pt-check:has(input:checked) {
+	border-color: var(--tp-blue, #3362FF);
+	background: var(--tp-blue-lt, #eef2ff);
+	color: var(--tp-blue, #3362FF);
+	font-weight: 600;
+}
+
+.mfb-pt-check:has(input:checked) .mfb-pt-check-indicator {
+	border-color: var(--tp-blue, #3362FF);
+	background: var(--tp-blue, #3362FF);
+}
+
+.mfb-pt-check:has(input:checked) .mfb-pt-check-indicator::after {
+	border-left-color: #fff;
+	border-bottom-color: #fff;
+}
+
+/* ── Modal button palette inherits shared styles from builder.css ─────────── */
+.mfb-box-modal .tpmeta-builder-modal-footer .button,
+.mfb-box-modal .tpmeta-builder-modal-footer .button-primary {
+	box-sizing: border-box;
+}
+
+/* ============================================================
+   ONBOARDING / WELCOME SCREEN
+   ============================================================ */
+
+.mfb-welcome {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 28px;
+	padding: 52px 40px;
+	min-height: 100%;
+	background: var(--tp-bg, #f4f6fb);
+	text-align: center;
+}
+
+/* Hero */
+.mfb-welcome-icon {
+	width: 64px;
+	height: 64px;
+	border-radius: 16px;
+	background: linear-gradient(135deg, var(--tp-blue, #3362FF) 0%, var(--tp-purple, #5F4AFE) 100%);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 auto 4px;
+	box-shadow: 0 8px 24px rgba(51,98,255,.3);
+}
+
+.mfb-welcome-icon .dashicons {
+	font-size: 28px;
+	width: 28px;
+	height: 28px;
+	color: #fff;
+}
+
+.mfb-welcome-headline {
+	font-size: 26px;
+	font-weight: 800;
+	color: var(--tp-text, #010F1C);
+	letter-spacing: -.4px;
+	margin: 0 0 8px;
+}
+
+.mfb-welcome-sub {
+	font-size: 14px;
+	color: var(--tp-muted, #5b6470);
+	line-height: 1.65;
+	max-width: 480px;
+	margin: 0 auto;
+}
+
+/* Stats row */
+.mfb-welcome-stats {
+	display: flex;
+	gap: 14px;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.mfb-stat {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 4px;
+	padding: 16px 24px;
+	background: var(--tp-white, #fff);
+	border: 1.5px solid var(--tp-border, #e2e6ed);
+	border-radius: var(--tp-radius, 8px);
+	min-width: 110px;
+	box-shadow: var(--tp-shadow, 0 1px 3px rgba(0,0,0,.06));
+}
+
+.mfb-stat .dashicons { font-size: 20px; width: 20px; height: 20px; }
+.mfb-stat--blue   .dashicons { color: var(--tp-blue, #3362FF); }
+.mfb-stat--purple .dashicons { color: var(--tp-purple, #5F4AFE); }
+.mfb-stat--pink   .dashicons { color: #e91e8c; }
+
+.mfb-stat-num {
+	font-size: 28px;
+	font-weight: 800;
+	line-height: 1;
+	color: var(--tp-text, #010F1C);
+}
+
+.mfb-stat-label {
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: .04em;
+	text-transform: uppercase;
+	color: var(--tp-muted, #5b6470);
+}
+
+/* Feature hints */
+.mfb-welcome-hints {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 12px;
+	max-width: 580px;
+	width: 100%;
+}
+
+.mfb-hint {
+	display: flex;
+	align-items: flex-start;
+	gap: 12px;
+	background: var(--tp-white, #fff);
+	border: 1.5px solid var(--tp-border, #e2e6ed);
+	border-radius: var(--tp-radius, 8px);
+	padding: 14px 16px;
+	text-align: left;
+}
+
+.mfb-hint-icon {
+	font-size: 18px;
+	width: 18px;
+	height: 18px;
+	color: var(--tp-blue, #3362FF);
+	flex-shrink: 0;
+	margin-top: 1px;
+}
+
+.mfb-hint strong {
+	display: block;
+	font-size: 12px;
+	font-weight: 700;
+	color: var(--tp-text, #010F1C);
+	margin-bottom: 3px;
+}
+
+.mfb-hint p {
+	font-size: 11px;
+	color: var(--tp-muted, #5b6470);
+	margin: 0;
+	line-height: 1.5;
+}
+
+/* CTA buttons */
+.mfb-welcome-cta {
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.mfb-welcome-btn-primary {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	padding: 11px 26px;
+	font-size: 13px;
+	font-weight: 600;
+	border-radius: 50px;
+	border: none;
+	background: linear-gradient(135deg, var(--tp-blue, #3362FF) 0%, var(--tp-purple, #5F4AFE) 100%);
+	color: #fff;
+	cursor: pointer;
+	box-shadow: 0 6px 20px rgba(51,98,255,.3);
+	transition: transform .15s, box-shadow .15s;
+	font-family: inherit;
+}
+
+.mfb-welcome-btn-primary:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 10px 28px rgba(51,98,255,.4);
+}
+
+.mfb-welcome-btn-primary .dashicons { font-size: 16px; width: 16px; height: 16px; }
+
+.mfb-welcome-btn-ghost {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	padding: 11px 22px;
+	font-size: 13px;
+	font-weight: 600;
+	border-radius: 50px;
+	border: 1.5px solid var(--tp-border, #e2e6ed);
+	background: var(--tp-white, #fff);
+	color: var(--tp-muted, #5b6470);
+	cursor: pointer;
+	transition: border-color .15s, color .15s, background .15s;
+	font-family: inherit;
+}
+
+.mfb-welcome-btn-ghost:hover {
+	border-color: var(--tp-blue, #3362FF);
+	color: var(--tp-blue, #3362FF);
+	background: var(--tp-blue-lt, #f0f4ff);
+}
+
+.mfb-welcome-btn-ghost .dashicons { font-size: 16px; width: 16px; height: 16px; }
+
+/* ── Phase 2: theme-scan group + import button ─────────────────────────── */
+.mfb-sidebar-group-head {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding: 10px 14px 6px;
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: .04em;
+	color: #6b7280;
+}
+.mfb-sidebar-group-head small { font-weight: 500; color: #9ca3af; }
+.mfb-sidebar-group-head .dashicons {
+	font-size: 14px;
+	width: 14px;
+	height: 14px;
+	margin-left: auto;
+	color: #9ca3af;
+	cursor: help;
+}
+.mfb-theme-head { color: #2563eb; }
+.mfb-theme-head small { color: #60a5fa; }
+
+.mfb-theme-item {
+	border-left: 2px solid var(--tp-blue, #3362FF);
+	background: linear-gradient(to right, rgba(51, 98, 255, 0.04), transparent 60%);
+	margin-bottom: 6px;
+}
+.mfb-theme-item:last-of-type { margin-bottom: 12px; }
+.mfb-theme-item .mfb-list-icon .dashicons { color: var(--tp-blue, #3362FF); }
+.mfb-theme-item.is-readonly {
+	opacity: .8;
+	border-left-color: #9ca3af;
+	cursor: help;
+}
+.mfb-theme-item.is-readonly .mfb-list-icon .dashicons { color: #9ca3af; }
+
+.mfb-theme-import {
+	background: var(--tp-blue, #3362FF);
+	color: #fff;
+	border: 1px solid var(--tp-blue, #3362FF);
+	border-radius: 4px;
+	cursor: pointer;
+	padding: 2px 6px;
+	display: inline-flex;
+	align-items: center;
+	transition: opacity .15s;
+}
+.mfb-theme-import:hover { opacity: .85; }
+.mfb-theme-import .dashicons {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+}
+
+.mfb-theme-refresh {
+	margin-left: auto;
+	background: transparent;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	padding: 2px 4px;
+	cursor: pointer;
+	color: #6b7280;
+	display: inline-flex;
+	align-items: center;
+	transition: background .15s, color .15s;
+}
+.mfb-theme-refresh:hover { background: #eff6ff; color: var(--tp-blue, #3362FF); }
+.mfb-theme-refresh .dashicons { font-size: 14px; width: 14px; height: 14px; }
+.mfb-theme-refresh.is-spinning .dashicons { animation: mfb-spin 0.7s linear infinite; }
+@keyframes mfb-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+/* When refresh exists, info icon should sit immediately after it (not push to right). */
+.mfb-theme-head .mfb-theme-refresh + .dashicons.dashicons-info-outline { margin-left: 4px; }
+
+/* Smooth hover for the Save button in any state — extends the base button
+   transition with filter + transform so gradient fills (which can't be tweened
+   directly) animate via a brightness shift instead of an instant swap. */
+#mfb-save.is-saved,
+#mfb-save.is-dirty {
+	transition: background .2s ease, border-color .2s ease, color .2s ease,
+	            box-shadow .25s ease, filter .2s ease, transform .2s ease !important;
+}
+
+/* Save button — solid success fill + white text immediately after a successful save.
+   Toggled by setStatus('saved', …) in metafields-builder.js; cleared on idle/dirty. */
+#mfb-save.is-saved,
+#mfb-save.is-saved:focus,
+#mfb-save.is-saved:active {
+	background: var(--tp-success, #1a8455) !important;
+	border-color: var(--tp-success, #1a8455) !important;
+	color: #fff !important;
+	box-shadow: none !important;
+	text-shadow: none !important;
+}
+#mfb-save.is-saved:hover {
+	background: var(--tp-success, #1a8455) !important;
+	border-color: var(--tp-success, #1a8455) !important;
+	color: #fff !important;
+	filter: brightness(0.94);
+	transform: translateY(-1px);
+	box-shadow: 0 2px 8px rgba(26, 132, 85, 0.30) !important;
+}
+#mfb-save.is-saved .dashicons { color: #fff; }
+
+/* Save button — gradient fill + white text whenever there are unsaved edits.
+   Toggled by markDirty() / cleared on save success in metafields-builder.js. */
+#mfb-save.is-dirty,
+#mfb-save.is-dirty:focus,
+#mfb-save.is-dirty:active {
+	background: linear-gradient(135deg, var(--tp-blue, #3362FF) 0%, var(--tp-purple, #5F4AFE) 100%) !important;
+	border-color: transparent !important;
+	color: #fff !important;
+	box-shadow: none !important;
+	text-shadow: none !important;
+}
+#mfb-save.is-dirty:hover {
+	background: linear-gradient(135deg, var(--tp-blue, #3362FF) 0%, var(--tp-purple, #5F4AFE) 100%) !important;
+	border-color: transparent !important;
+	color: #fff !important;
+	filter: brightness(0.92);
+	transform: translateY(-1px);
+	box-shadow: 0 4px 12px rgba(51, 98, 255, 0.32) !important;
+}
+#mfb-save.is-dirty .dashicons { color: #fff; }
+/* is-saved wins over is-dirty when both are present (post-save flash). */
+#mfb-save.is-saved.is-dirty {
+	background: var(--tp-success, #1a8455) !important;
+	border-color: var(--tp-success, #1a8455) !important;
+}
+
+/* ── User-meta target support (Phase 4c) ───────────────────────────────
+   Visibility classes are toggled inline by applyTargetVisibility() in
+   metafields-builder.js — these rules just style the target toggle and
+   the sidebar badge so user-target records are visually distinguishable
+   from post-target ones at a glance.                                    */
+
+.mfb-target-row .mfb-target-toggle {
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
+	margin-top: 4px;
+}
+.mfb-target-row .mfb-target-toggle .mfb-pt-check {
+	cursor: pointer;
+}
+
+/* Sidebar badge — small uppercase pill on user-target list items. */
+.mfb-target-badge {
+	display: inline-block;
+	margin-left: 8px;
+	padding: 1px 6px;
+	border-radius: 4px;
+	font-size: 9px;
+	font-weight: 700;
+	letter-spacing: .04em;
+	line-height: 1.6;
+	vertical-align: middle;
+}
+.mfb-target-badge--user {
+	background: rgba(51, 98, 255, .12);
+	color: #3362FF;
+}
+.mfb-list-item[data-target="user"] .mfb-list-icon .dashicons {
+	color: #3362FF;
+}

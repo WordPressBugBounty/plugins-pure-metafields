@@ -1,0 +1,662 @@
+/*!
+ * Pure Fields — Shared Admin UI
+ * ThemePure colour palette: Blue #3362FF · Purple #5F4AFE · Pink #E91E8C
+ */
+
+/* ── Variables ───────────────────────────────────────────────────────────── */
+:root {
+	--pf-blue:      #3362FF;
+	--pf-blue-lt:   #f0f4ff;
+	--pf-blue-dk:   #1e45d4;
+	--pf-purple:    #5F4AFE;
+	--pf-purple-lt: #ede9ff;
+	--pf-pink:      #E91E8C;
+	--pf-pink-lt:   #fff0f6;
+	--pf-green:     #1a8455;
+	--pf-green-lt:  #e6f4ed;
+	--pf-orange:    #c05621;
+	--pf-orange-lt: #fff3e6;
+	--pf-text:      #010F1C;
+	--pf-muted:     #5b6470;
+	--pf-border:    #e2e6ed;
+	--pf-bg:        #f4f6fb;
+	--pf-white:     #ffffff;
+	--pf-danger:    #d63638;
+	--pf-shadow:    0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.04);
+	--pf-shadow-md: 0 4px 20px rgba(0,0,0,.12);
+	--pf-radius:    8px;
+	--pf-radius-sm: 5px;
+}
+
+/* ── Page wrapper (all Pure Fields pages) ───────────────────────────────── */
+.pf-page {
+	min-height: calc(100vh - 50px);
+	background: var(--pf-bg);
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+	color: var(--pf-text);
+	padding: 0;
+}
+
+/* ── Page header bar ────────────────────────────────────────────────────── */
+.pf-page-header {
+	background: var(--pf-white);
+	border-bottom: 1px solid var(--pf-border);
+	padding: 20px 28px;
+	display: flex;
+	align-items: center;
+	gap: 16px;
+}
+
+.pf-page-header-icon {
+	width: 40px;
+	height: 40px;
+	border-radius: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+
+.pf-page-header-icon .dashicons {
+	font-size: 20px;
+	width: 20px;
+	height: 20px;
+}
+
+/* Brand logo replaces the gradient dashicon badge in the page header. */
+.pf-page-header-icon.has-logo {
+	background: none;
+	border-radius: 0;
+}
+.pf-page-header-logo {
+	display: block;
+	width: 40px;
+	height: 40px;
+	object-fit: contain;
+}
+
+.pf-page-header-title { flex: 1; }
+
+.pf-page-header-title h1 {
+	font-size: 18px;
+	font-weight: 700;
+	margin: 0 0 2px;
+	color: var(--pf-text);
+}
+
+.pf-page-header-title p {
+	font-size: 13px;
+	color: var(--pf-muted);
+	margin: 0;
+}
+
+/* ── Page body ──────────────────────────────────────────────────────────── */
+.pf-page-body {
+	padding: 28px;
+}
+
+/* ── Cards grid ─────────────────────────────────────────────────────────── */
+.pf-cards-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+	gap: 18px;
+}
+
+.pf-card {
+	background: var(--pf-white);
+	border: 1px solid var(--pf-border);
+	border-radius: var(--pf-radius);
+	padding: 22px;
+	box-shadow: var(--pf-shadow);
+	transition: border-color .18s, box-shadow .18s, transform .18s;
+	position: relative;
+}
+
+.pf-card:hover {
+	border-color: #c8d6ff;
+	box-shadow: var(--pf-shadow-md);
+	transform: translateY(-2px);
+}
+
+.pf-card-header {
+	display: flex;
+	align-items: flex-start;
+	gap: 12px;
+	margin-bottom: 12px;
+}
+
+.pf-card-icon {
+	width: 40px;
+	height: 40px;
+	border-radius: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+
+.pf-card-icon .dashicons {
+	font-size: 20px;
+	width: 20px;
+	height: 20px;
+}
+
+.pf-card-title {
+	font-size: 14px;
+	font-weight: 700;
+	color: var(--pf-text);
+	margin: 0 0 4px;
+	line-height: 1.3;
+}
+
+.pf-card-meta {
+	font-size: 11px;
+	color: var(--pf-muted);
+	margin: 0;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.pf-card-meta .dashicons {
+	font-size: 12px;
+	width: 12px;
+	height: 12px;
+}
+
+.pf-card-desc {
+	font-size: 12px;
+	color: var(--pf-muted);
+	line-height: 1.55;
+	margin: 0 0 14px;
+}
+
+.pf-card-footer {
+	display: flex;
+	gap: 6px;
+	align-items: center;
+	border-top: 1px solid var(--pf-border);
+	padding-top: 12px;
+	margin-top: 12px;
+}
+
+/* ── Badge ──────────────────────────────────────────────────────────────── */
+.pf-badge {
+	display: inline-flex;
+	align-items: center;
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: .04em;
+	text-transform: uppercase;
+	padding: 2px 7px;
+	border-radius: 50px;
+}
+
+.pf-badge--blue   { background: var(--pf-blue-lt);   color: var(--pf-blue); }
+.pf-badge--purple { background: var(--pf-purple-lt); color: var(--pf-purple); }
+.pf-badge--pink   { background: var(--pf-pink-lt);   color: var(--pf-pink); }
+.pf-badge--green  { background: var(--pf-green-lt);  color: var(--pf-green); }
+
+/* ── Icon colour variants ───────────────────────────────────────────────── */
+.pf-icon-blue   { background: var(--pf-blue-lt);   color: var(--pf-blue); }
+.pf-icon-purple { background: var(--pf-purple-lt); color: var(--pf-purple); }
+.pf-icon-pink   { background: var(--pf-pink-lt);   color: var(--pf-pink); }
+.pf-icon-green  { background: var(--pf-green-lt);  color: var(--pf-green); }
+.pf-icon-orange { background: var(--pf-orange-lt); color: var(--pf-orange); }
+
+/* ── Unified button system ──────────────────────────────────────────────── */
+.pf-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1;
+	padding: 8px 16px;
+	border-radius: var(--pf-radius-sm);
+	border: 1.5px solid var(--pf-border);
+	background: var(--pf-white);
+	color: var(--pf-muted);
+	cursor: pointer;
+	text-decoration: none;
+	box-shadow: none;
+	text-shadow: none;
+	transition: background .15s, border-color .15s, color .15s;
+	white-space: nowrap;
+	box-sizing: border-box;
+}
+
+.pf-btn:hover {
+	background: var(--pf-blue-lt);
+	border-color: var(--pf-blue);
+	color: var(--pf-blue);
+	text-decoration: none;
+}
+
+.pf-btn--primary {
+	background: linear-gradient(135deg, var(--pf-blue) 0%, var(--pf-purple) 100%);
+	border-color: transparent;
+	color: #fff;
+	box-shadow: 0 2px 10px rgba(51,98,255,.28);
+}
+
+.pf-btn--primary:hover {
+	background: linear-gradient(135deg, var(--pf-blue-dk) 0%, var(--pf-purple) 100%);
+	border-color: transparent;
+	color: #fff;
+	box-shadow: 0 4px 18px rgba(51,98,255,.38);
+}
+
+.pf-btn--danger {
+	border-color: rgba(214,54,56,.25);
+	color: var(--pf-danger);
+	background: rgba(214,54,56,.04);
+}
+
+.pf-btn--danger:hover {
+	background: rgba(214,54,56,.09);
+	border-color: var(--pf-danger);
+	color: var(--pf-danger);
+}
+
+.pf-btn--sm { padding: 5px 11px; font-size: 12px; }
+
+.pf-btn .dashicons {
+	font-size: 14px;
+	width: 14px;
+	height: 14px;
+	color: inherit;
+}
+
+.pf-btn:disabled, .pf-btn[disabled] { opacity: .4; pointer-events: none; }
+
+/* ── Form controls ──────────────────────────────────────────────────────── */
+.pf-form-row {
+	margin-bottom: 18px;
+}
+
+.pf-form-row label,
+.pf-label {
+	display: block;
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--pf-muted);
+	text-transform: uppercase;
+	letter-spacing: .04em;
+	margin-bottom: 6px;
+}
+
+.pf-form-row input[type="text"],
+.pf-form-row input[type="url"],
+.pf-form-row select,
+.pf-form-row textarea,
+.pf-input,
+.pf-select {
+	width: 100%;
+	padding: 8px 11px;
+	border: 1.5px solid var(--pf-border);
+	border-radius: var(--pf-radius-sm);
+	font-size: 13px;
+	font-family: inherit;
+	color: var(--pf-text);
+	background: var(--pf-white);
+	box-shadow: none;
+	outline: none;
+	box-sizing: border-box;
+	transition: border-color .15s, box-shadow .15s;
+}
+
+.pf-form-row input:focus,
+.pf-form-row select:focus,
+.pf-form-row textarea:focus,
+.pf-input:focus,
+.pf-select:focus {
+	border-color: var(--pf-blue);
+	box-shadow: 0 0 0 3px rgba(51,98,255,.12);
+}
+
+.pf-form-row textarea { resize: vertical; min-height: 80px; }
+
+.pf-form-hint {
+	font-size: 11px;
+	color: var(--pf-muted);
+	margin-top: 4px;
+	line-height: 1.5;
+}
+
+/* Checkboxes grid */
+.pf-checkbox-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+	gap: 8px;
+}
+
+.pf-checkbox-item {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	background: var(--pf-bg);
+	border: 1.5px solid var(--pf-border);
+	border-radius: var(--pf-radius-sm);
+	padding: 8px 10px;
+	cursor: pointer;
+	transition: border-color .15s, background .15s;
+	font-size: 12px;
+	font-weight: 500;
+	color: var(--pf-text);
+}
+
+.pf-checkbox-item:hover {
+	border-color: var(--pf-blue);
+	background: var(--pf-blue-lt);
+}
+
+.pf-checkbox-item input[type="checkbox"] { margin: 0; accent-color: var(--pf-blue); }
+
+/* ── Two-column layout ──────────────────────────────────────────────────── */
+.pf-layout {
+	display: grid;
+	grid-template-columns: 320px 1fr;
+	gap: 24px;
+	align-items: start;
+}
+
+/* ── Sidebar list ───────────────────────────────────────────────────────── */
+.pf-sidebar {
+	background: var(--pf-white);
+	border: 1px solid var(--pf-border);
+	border-radius: var(--pf-radius);
+	box-shadow: var(--pf-shadow);
+	overflow: hidden;
+}
+
+.pf-sidebar-header {
+	padding: 14px 16px;
+	border-bottom: 1px solid var(--pf-border);
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.pf-sidebar-header h3 {
+	font-size: 13px;
+	font-weight: 700;
+	color: var(--pf-text);
+	margin: 0;
+	flex: 1;
+}
+
+.pf-sidebar-list { padding: 8px; }
+
+.pf-sidebar-item {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 10px 12px;
+	border-radius: var(--pf-radius-sm);
+	cursor: pointer;
+	transition: background .15s, color .15s;
+}
+
+.pf-sidebar-item:hover { background: var(--pf-bg); }
+
+.pf-sidebar-item.is-active {
+	background: var(--pf-blue-lt);
+	color: var(--pf-blue);
+}
+
+.pf-sidebar-item-icon .dashicons {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+	color: var(--pf-muted);
+}
+
+.pf-sidebar-item.is-active .pf-sidebar-item-icon .dashicons { color: var(--pf-blue); }
+
+.pf-sidebar-item-label {
+	font-size: 13px;
+	font-weight: 500;
+	flex: 1;
+}
+
+.pf-sidebar-item-actions {
+	display: flex;
+	gap: 3px;
+	opacity: 0;
+	transition: opacity .15s;
+}
+
+.pf-sidebar-item:hover .pf-sidebar-item-actions { opacity: 1; }
+
+.pf-sidebar-item-actions button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	border: 0;
+	background: none;
+	border-radius: 4px;
+	cursor: pointer;
+	color: var(--pf-muted);
+	transition: background .15s, color .15s;
+}
+
+.pf-sidebar-item-actions button:hover { background: rgba(0,0,0,.06); color: var(--pf-text); }
+.pf-sidebar-item-actions button.is-danger:hover { background: #fbeaea; color: var(--pf-danger); }
+.pf-sidebar-item-actions button .dashicons { font-size: 14px; width: 14px; height: 14px; }
+
+/* ── Content panel ──────────────────────────────────────────────────────── */
+.pf-content-panel {
+	background: var(--pf-white);
+	border: 1px solid var(--pf-border);
+	border-radius: var(--pf-radius);
+	box-shadow: var(--pf-shadow);
+	overflow: hidden;
+}
+
+.pf-content-panel-header {
+	padding: 16px 22px;
+	border-bottom: 1px solid var(--pf-border);
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	background: #fafbfd;
+}
+
+.pf-content-panel-header h2 {
+	font-size: 15px;
+	font-weight: 700;
+	color: var(--pf-text);
+	margin: 0;
+	flex: 1;
+}
+
+.pf-content-panel-body { padding: 24px; }
+
+.pf-section-title {
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: .06em;
+	text-transform: uppercase;
+	color: var(--pf-muted);
+	margin: 0 0 12px;
+}
+
+/* ── Empty state ────────────────────────────────────────────────────────── */
+.pf-empty-state {
+	text-align: center;
+	padding: 56px 32px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 12px;
+}
+
+.pf-empty-state-icon .dashicons {
+	font-size: 48px;
+	width: 48px;
+	height: 48px;
+	color: var(--pf-border);
+}
+
+.pf-empty-state h3 {
+	font-size: 18px;
+	font-weight: 700;
+	color: var(--pf-text);
+	margin: 0;
+}
+
+.pf-empty-state p {
+	font-size: 13px;
+	color: var(--pf-muted);
+	margin: 0;
+	max-width: 320px;
+	line-height: 1.6;
+}
+
+/* ── Notices / Toast ────────────────────────────────────────────────────── */
+.pf-notice {
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+	padding: 12px 16px;
+	border-radius: var(--pf-radius-sm);
+	font-size: 13px;
+	margin-bottom: 16px;
+}
+
+.pf-notice--success { background: var(--pf-green-lt); color: var(--pf-green); border: 1px solid rgba(26,132,85,.2); }
+.pf-notice--error   { background: #fbeaea; color: var(--pf-danger); border: 1px solid rgba(214,54,56,.2); }
+.pf-notice--info    { background: var(--pf-blue-lt); color: var(--pf-blue); border: 1px solid rgba(51,98,255,.2); }
+
+/* ── Suppress ALL third-party notices on every Pure Fields page ─────────────
+   PHP removes the action hooks (primary defence).
+   These rules are a second layer for anything that sneaks through a different
+   code path (settings_errors, update-nag, etc.).
+   We target by WP's body class so only our pages are affected.
+   ─────────────────────────────────────────────────────────────────────────── */
+.toplevel_page_pure-fields                       #wpbody-content > .notice,
+.toplevel_page_pure-fields                       #wpbody-content > .error,
+.toplevel_page_pure-fields                       #wpbody-content > .updated,
+.toplevel_page_pure-fields                       #wpbody-content > .update-nag,
+.toplevel_page_pure-fields                       #wpbody-content > .notice-warning,
+.toplevel_page_pure-fields                       #wpbody-content > .notice-error,
+.toplevel_page_pure-fields                       #wpbody-content > .notice-success,
+.toplevel_page_pure-fields                       #wpbody-content > .notice-info,
+.toplevel_page_pure-fields                       #wpbody-content > .settings-error,
+.pure-fields_page_pure-fields-pro                #wpbody-content > .notice,
+.pure-fields_page_pure-fields-pro                #wpbody-content > .error,
+.pure-fields_page_pure-fields-pro                #wpbody-content > .updated,
+.pure-fields_page_pure-fields-pro                #wpbody-content > .update-nag,
+.pure-fields_page_pure-fields-pro                #wpbody-content > .settings-error,
+.pure-fields_page_pure-fields-options-builder    #wpbody-content > .notice,
+.pure-fields_page_pure-fields-options-builder    #wpbody-content > .error,
+.pure-fields_page_pure-fields-options-builder    #wpbody-content > .updated,
+.pure-fields_page_pure-fields-options-builder    #wpbody-content > .update-nag,
+.pure-fields_page_pure-fields-options-builder    #wpbody-content > .settings-error,
+.pure-fields_page_pure-fields-post-types         #wpbody-content > .notice,
+.pure-fields_page_pure-fields-post-types         #wpbody-content > .error,
+.pure-fields_page_pure-fields-post-types         #wpbody-content > .updated,
+.pure-fields_page_pure-fields-post-types         #wpbody-content > .update-nag,
+.pure-fields_page_pure-fields-post-types         #wpbody-content > .settings-error,
+.pure-fields_page_pure-fields-taxonomies         #wpbody-content > .notice,
+.pure-fields_page_pure-fields-taxonomies         #wpbody-content > .error,
+.pure-fields_page_pure-fields-taxonomies         #wpbody-content > .updated,
+.pure-fields_page_pure-fields-taxonomies         #wpbody-content > .update-nag,
+.pure-fields_page_pure-fields-taxonomies         #wpbody-content > .settings-error,
+.pure-fields_page_pure-fields-export-import      #wpbody-content > .notice,
+.pure-fields_page_pure-fields-export-import      #wpbody-content > .error,
+.pure-fields_page_pure-fields-export-import      #wpbody-content > .updated,
+.pure-fields_page_pure-fields-export-import      #wpbody-content > .update-nag,
+.pure-fields_page_pure-fields-export-import      #wpbody-content > .settings-error,
+/* Catch notices injected directly inside #wpbody or #wpcontent */
+.toplevel_page_pure-fields                       #wpcontent > .notice,
+.pure-fields_page_pure-fields-pro                #wpcontent > .notice,
+.pure-fields_page_pure-fields-options-builder    #wpcontent > .notice,
+.pure-fields_page_pure-fields-post-types         #wpcontent > .notice,
+.pure-fields_page_pure-fields-taxonomies         #wpcontent > .notice,
+.pure-fields_page_pure-fields-export-import      #wpcontent > .notice,
+/* wp-header-end siblings (notices inserted by settings API redirect) */
+.toplevel_page_pure-fields                       .wp-header-end ~ .notice,
+.toplevel_page_pure-fields                       .wp-header-end ~ .error,
+.toplevel_page_pure-fields                       .wp-header-end ~ .updated,
+.pure-fields_page_pure-fields-pro                .wp-header-end ~ .notice,
+.pure-fields_page_pure-fields-options-builder    .wp-header-end ~ .notice,
+.pure-fields_page_pure-fields-post-types         .wp-header-end ~ .notice,
+.pure-fields_page_pure-fields-taxonomies         .wp-header-end ~ .notice,
+.pure-fields_page_pure-fields-export-import      .wp-header-end ~ .notice {
+	display: none !important;
+}
+
+/* ── Divider ────────────────────────────────────────────────────────────── */
+.pf-divider {
+	border: none;
+	border-top: 1px solid var(--pf-border);
+	margin: 20px 0;
+}
+
+/* ── Supports / checkbox pills ──────────────────────────────────────────── */
+.pf-pill-group {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+
+.pf-pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	padding: 4px 10px;
+	border-radius: 50px;
+	border: 1.5px solid var(--pf-border);
+	background: var(--pf-white);
+	font-size: 12px;
+	font-weight: 500;
+	color: var(--pf-muted);
+	cursor: pointer;
+	transition: all .15s;
+	user-select: none;
+}
+
+.pf-pill:hover { border-color: var(--pf-blue); color: var(--pf-blue); background: var(--pf-blue-lt); }
+
+.pf-pill.is-active {
+	background: var(--pf-blue-lt);
+	border-color: var(--pf-blue);
+	color: var(--pf-blue);
+}
+
+.pf-pill input { display: none; }
+
+/* ── Tabs ───────────────────────────────────────────────────────────────── */
+.pf-tab-nav {
+	display: flex;
+	gap: 2px;
+	border-bottom: 2px solid var(--pf-border);
+	margin-bottom: 24px;
+}
+
+.pf-tab-btn {
+	padding: 9px 16px;
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--pf-muted);
+	background: none;
+	border: none;
+	border-bottom: 2px solid transparent;
+	margin-bottom: -2px;
+	cursor: pointer;
+	transition: color .15s, border-color .15s;
+}
+
+.pf-tab-btn:hover { color: var(--pf-blue); }
+.pf-tab-btn.is-active { color: var(--pf-blue); border-bottom-color: var(--pf-blue); }
+
+/* ── Gradient header icons ──────────────────────────────────────────────── */
+.pf-page-header-icon.grad-blue   { background: linear-gradient(135deg, var(--pf-blue) 0%, var(--pf-purple) 100%); color: #fff; }
+.pf-page-header-icon.grad-purple { background: linear-gradient(135deg, var(--pf-purple) 0%, var(--pf-pink) 100%); color: #fff; }
+.pf-page-header-icon.grad-pink   { background: linear-gradient(135deg, var(--pf-pink) 0%, #ff6b6b 100%); color: #fff; }
+.pf-page-header-icon.grad-green  { background: linear-gradient(135deg, var(--pf-green) 0%, #38bdf8 100%); color: #fff; }
+.pf-page-header-icon.grad-orange { background: linear-gradient(135deg, var(--pf-orange) 0%, #f59e0b 100%); color: #fff; }

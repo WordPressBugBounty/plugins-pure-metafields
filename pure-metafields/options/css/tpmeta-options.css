@@ -1,0 +1,2801 @@
+﻿/*!
+ * TPMeta Options Panel — modern theme-options UI.
+ * Field controls inherit from assets/css/tpmeta-fields.css.
+ */
+
+/* ============================================================
+   CSS Variables (mirrors builder tokens for visual consistency)
+   ============================================================ */
+.tpmeta-options-wrap {
+	--tp-blue:      #3362FF;
+	--tp-blue-lt:   #eef2ff;
+	--tp-purple:    #5F4AFE;
+	--tp-text:      #010F1C;
+	--tp-muted:     #6b7280;
+	--tp-border:    #e5e7eb;
+	--tp-bg:        #f4f6fb;
+	--tp-white:     #ffffff;
+	--tp-danger:    #d63638;
+	--tp-success:   #1a8455;
+	--tp-radius:    10px;
+	--tp-radius-sm: 6px;
+	--tp-shadow:    0 1px 3px rgba(0,0,0,.06), 0 4px 20px rgba(0,0,0,.04);
+	--tp-nav-w:     240px;
+}
+
+/* ============================================================
+   Page-level reset — hide WP notices, remove WP padding
+   ============================================================ */
+#wpcontent { padding-left: 0 !important; }
+
+#wpbody-content > .notice,
+#wpbody-content > .error,
+#wpbody-content > .warning,
+#wpbody-content > .updated,
+#wpbody-content > .update-nag,
+#wpbody-content > .notice-warning,
+#wpbody-content > .notice-error,
+#wpbody-content > .notice-success,
+#wpbody-content > .notice-info,
+.wp-header-end ~ .notice,
+.wp-header-end ~ .error,
+.wp-header-end ~ .updated,
+.wp-header-end ~ .update-nag {
+	display: none !important;
+}
+
+/* ============================================================
+   App shell — fills viewport, no page-level scroll
+   ============================================================ */
+.tpmeta-options-wrap {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: calc(100vh - 32px);
+	overflow: hidden;
+	box-sizing: border-box;
+	background: var(--tp-bg);
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+	font-size: 14px;
+	color: var(--tp-text);
+}
+
+/* ============================================================
+   Header bar
+   ============================================================ */
+.tpmeta-options-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 28px;
+	height: 60px;
+	flex: 0 0 60px;
+	background: var(--tp-white);
+	border-bottom: 1px solid var(--tp-border);
+	box-shadow: 0 1px 4px rgba(0,0,0,.05);
+	z-index: 10;
+	box-sizing: border-box;
+}
+
+.tpmeta-options-header-left {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.tpmeta-options-header-icon {
+	font-size: 22px;
+	width: 22px;
+	height: 22px;
+	color: var(--tp-blue);
+}
+
+/* Brand logo in the options panel header. */
+.tpmeta-options-header-logo {
+	display: block;
+	width: 28px;
+	height: 28px;
+	object-fit: contain;
+	flex-shrink: 0;
+}
+
+.tpmeta-options-title {
+	margin: 0;
+	font-size: 17px;
+	font-weight: 700;
+	color: var(--tp-text);
+	letter-spacing: -.02em;
+}
+
+.tpmeta-options-header-actions {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+}
+
+.tpmeta-options-status {
+	font-size: 12px;
+	color: var(--tp-muted);
+	font-weight: 500;
+}
+.tpmeta-options-status.is-success { color: var(--tp-success); }
+.tpmeta-options-status.is-error   { color: var(--tp-danger); }
+
+/* Save button */
+.tpmeta-options-save {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	background: var(--wp-admin-theme-color);
+	color: #fff !important;
+	border: 0;
+	border-radius: var(--tp-radius-sm);
+	padding: 0 20px;
+	height: 36px;
+	font-size: 13px;
+	font-weight: 600;
+	cursor: pointer;
+	letter-spacing: .01em;
+	box-shadow: 0 1px 3px rgba(0,0,0,.18);
+	transition: background .15s, transform .1s, box-shadow .15s;
+}
+.tpmeta-options-save:hover {
+	background: var(--wp-admin-theme-color-darker-10);
+	opacity: 1;
+	box-shadow: 0 4px 14px rgba(0,0,0,.2);
+	transform: translateY(-1px);
+}
+.tpmeta-options-save:active { transform: translateY(0); background: var(--wp-admin-theme-color-darker-20); }
+.tpmeta-options-save.is-busy { opacity: .55; pointer-events: none; }
+.tpmeta-options-save .dashicons {
+	font-size: 15px; width: 15px; height: 15px;
+}
+
+/* ── Secondary header buttons (Edit with Builder / Open in Customizer) ── */
+.tpmeta-options-header-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	height: 36px;
+	padding: 0 14px;
+	border: 1px solid var(--tp-border);
+	border-radius: var(--tp-radius-sm);
+	background: var(--tp-white);
+	color: var(--tp-text) !important;
+	font-size: 12px;
+	font-weight: 600;
+	text-decoration: none !important;
+	cursor: pointer;
+	transition: border-color .15s, color .15s, background .15s, box-shadow .15s, transform .1s;
+	box-shadow: none;
+}
+.tpmeta-options-header-btn:hover {
+	border-color: var(--wp-admin-theme-color);
+	color: var(--wp-admin-theme-color) !important;
+	background: var(--tp-blue-lt);
+	transform: translateY(-1px);
+}
+.tpmeta-options-header-btn:focus-visible {
+	outline: none;
+	box-shadow: 0 0 0 3px rgba(0,0,0,.12);
+	border-color: var(--wp-admin-theme-color);
+}
+.tpmeta-options-header-btn .dashicons {
+	font-size: 15px; width: 15px; height: 15px;
+	color: var(--tp-muted);
+	transition: color .15s;
+}
+.tpmeta-options-header-btn:hover .dashicons { color: var(--wp-admin-theme-color); }
+
+.tpmeta-options-header-btn--customizer:hover {
+	border-color: var(--tp-purple);
+	color: var(--tp-purple) !important;
+	background: rgba(95, 74, 254, .08);
+}
+.tpmeta-options-header-btn--customizer:hover .dashicons { color: var(--tp-purple); }
+
+/* Hide label on narrow viewports — keep icon only */
+@media (max-width: 900px) {
+	.tpmeta-options-header-btn-label { display: none; }
+	.tpmeta-options-header-btn { padding: 0 10px; }
+}
+
+/* ── Sticky panel footer (mirrors the header Save) ─────────────────── */
+.tpmeta-options-footer {
+	position: sticky;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 5;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 14px;
+	margin: 32px -32px -28px;          /* extend full-bleed across the .tpmeta-options-form padding */
+	padding: 14px 32px;
+	background: rgba(255, 255, 255, .92);
+	-webkit-backdrop-filter: blur(8px);
+	backdrop-filter: blur(8px);
+	border-top: 1px solid var(--tp-border);
+	box-shadow: 0 -2px 12px rgba(15, 23, 42, .05);
+}
+.tpmeta-options-footer-hint {
+	flex: 1 1 auto;
+	font-size: 12px;
+	color: var(--tp-muted);
+}
+.tpmeta-options-status--footer { font-size: 12px; }
+
+@media (max-width: 720px) {
+	.tpmeta-options-footer-hint { display: none; }
+	.tpmeta-options-footer { justify-content: space-between; }
+}
+
+/* ============================================================
+   Body — flex row (nav + form)
+   ============================================================ */
+.tpmeta-options-body {
+	display: flex;
+	flex: 1 1 auto;
+	min-height: 0;
+	overflow: hidden;
+}
+
+/* ============================================================
+   Sidebar navigation
+   ============================================================ */
+.tpmeta-options-nav {
+	width: var(--tp-nav-w);
+	flex: 0 0 var(--tp-nav-w);
+	background: #1e1e1e !important;   /* matches #adminmenu bg */
+	border-right: 1px solid #2c3338 !important;
+	overflow-y: auto;
+	overflow-x: hidden;
+	height: 100%;
+	box-sizing: border-box;
+	padding: 16px 0 28px;
+	scrollbar-width: none;
+}
+.tpmeta-options-nav::-webkit-scrollbar { display: none; }
+
+.tpmeta-options-nav ul {
+	margin: 0;
+	padding: 0 10px;
+	list-style: none;
+}
+
+.tpmeta-options-nav-item {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 9px 12px;
+	color: #a7aaad;
+	text-decoration: none;
+	font-size: 13px;
+	font-weight: 500;
+	border-radius: 7px;
+	margin-bottom: 3px;
+	transition: background .14s, color .14s;
+}
+.tpmeta-options-nav-item:hover {
+	background: rgba(255,255,255,.07);
+	color: #fff;
+}
+.tpmeta-options-nav-item.is-active {
+	background: rgba(255,255,255,.1);
+	color: #fff;
+	font-weight: 600;
+	box-shadow: inset 3px 0 0 var(--wp-admin-theme-color);
+}
+
+.tpmeta-options-nav-icon {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+	flex: 0 0 16px;
+	color: inherit;
+	opacity: .7;
+}
+.tpmeta-options-nav-item:hover .tpmeta-options-nav-icon,
+.tpmeta-options-nav-item.is-active .tpmeta-options-nav-icon { opacity: 1; }
+
+.tpmeta-options-nav-label {
+	flex: 1 1 auto;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/* ── Dynamic sidebar bg — mirrors WP admin color schemes exactly ── */
+/* WP applies body.admin-color-* when user changes their palette    */
+body.admin-color-fresh     .tpmeta-options-nav,
+body.admin-color-default   .tpmeta-options-nav { background: #1e1e1e !important; border-right-color: #2c3338 !important; }
+body.admin-color-blue      .tpmeta-options-nav { background: #096484 !important; border-right-color: #0a7291 !important; }
+body.admin-color-coffee    .tpmeta-options-nav { background: #46403c !important; border-right-color: #59524d !important; }
+body.admin-color-ectoplasm .tpmeta-options-nav { background: #413256 !important; border-right-color: #523f6d !important; }
+body.admin-color-midnight  .tpmeta-options-nav { background: #25282b !important; border-right-color: #363b3f !important; }
+body.admin-color-ocean     .tpmeta-options-nav { background: #5e7e9e !important; border-right-color: #738da7 !important; }
+body.admin-color-sunrise   .tpmeta-options-nav { background: #6e3737 !important; border-right-color: #854040 !important; }
+/* Light scheme — flip to light sidebar with dark text */
+body.admin-color-light     .tpmeta-options-nav { background: #f1f1f1 !important; border-right-color: #dcdcdc !important; }
+body.admin-color-light     .tpmeta-options-nav-item         { color: #555; }
+body.admin-color-light     .tpmeta-options-nav-item:hover   { background: rgba(0,0,0,.06); color: #222; }
+body.admin-color-light     .tpmeta-options-nav-item.is-active { background: rgba(0,0,0,.08); color: #111; }
+
+/* ============================================================
+   Main form area
+   ============================================================ */
+.tpmeta-options-form {
+	flex: 1 1 auto;
+	min-width: 0;
+	height: 100%;
+	overflow-y: auto;
+	overflow-x: hidden;
+	padding: 28px 32px;
+	box-sizing: border-box;
+	padding-bottom: 0;
+	scrollbar-width: thin;
+	scrollbar-color: var(--tp-border) transparent;
+}
+.tpmeta-options-form::-webkit-scrollbar { width: 5px; }
+.tpmeta-options-form::-webkit-scrollbar-track { background: transparent; }
+.tpmeta-options-form::-webkit-scrollbar-thumb { background: var(--tp-border); border-radius: 3px; }
+.tpmeta-options-form::-webkit-scrollbar-thumb:hover { background: #c0c9d4; }
+
+/* ============================================================
+   Section panels
+   ============================================================ */
+.tpmeta-options-section { display: none; }
+.tpmeta-options-section.is-active { display: block; }
+
+.tpmeta-options-section-header {
+	display: flex;
+	align-items: flex-start;
+	gap: 12px;
+	margin-bottom: 20px;
+	padding-bottom: 16px;
+	border-bottom: 1px solid var(--tp-border);
+}
+
+.tpmeta-section-header-icon {
+	font-size: 22px;
+	width: 22px;
+	height: 22px;
+	color: var(--tp-blue);
+	flex: 0 0 22px;
+	margin-top: 2px;
+}
+
+.tpmeta-options-section-header h2 {
+	margin: 0 0 3px;
+	font-size: 17px;
+	font-weight: 700;
+	color: var(--tp-text);
+	letter-spacing: -.01em;
+}
+
+.tpmeta-section-description {
+	margin: 0;
+	font-size: 13px;
+	color: var(--tp-muted);
+}
+
+/* ============================================================
+   Row cards — builder rows rendered as white cards
+   ============================================================ */
+.tpmeta-panel-row {
+	background: var(--tp-white);
+	border: 1px solid var(--tp-border);
+	border-radius: var(--tp-radius);
+	box-shadow: var(--tp-shadow);
+	margin-bottom: 16px;
+	overflow: hidden;
+	transition: box-shadow .2s;
+}
+.tpmeta-panel-row:hover {
+	box-shadow: 0 2px 8px rgba(51,98,255,.06), 0 8px 30px rgba(0,0,0,.06);
+}
+
+/* ============================================================
+   Row inner grid / flex
+   ============================================================ */
+.tpmeta-panel-row-inner {
+	display: grid;
+}
+
+/* Grid layouts — respect builder column choice */
+.tpmeta-panel-row-inner.layout-grid.cols-1  { grid-template-columns: 1fr; }
+.tpmeta-panel-row-inner.layout-grid.cols-2  { grid-template-columns: repeat(2, 1fr); }
+.tpmeta-panel-row-inner.layout-grid.cols-3  { grid-template-columns: repeat(3, 1fr); }
+.tpmeta-panel-row-inner.layout-grid.cols-4  { grid-template-columns: repeat(4, 1fr); }
+.tpmeta-panel-row-inner.layout-grid.cols-6  { grid-template-columns: repeat(6, 1fr); }
+.tpmeta-panel-row-inner.layout-grid.cols-12 { grid-template-columns: repeat(12, 1fr); }
+
+/* Flex layout — uses flexbox so direction/wrap work properly */
+.tpmeta-panel-row-inner.layout-flex {
+	display: flex;
+	flex-wrap: wrap;
+}
+.tpmeta-panel-row-inner.layout-flex.cols-1 .tpmeta-panel-field { flex: 1 1 100%; }
+.tpmeta-panel-row-inner.layout-flex.cols-2 .tpmeta-panel-field { flex: 0 0 50%; }
+.tpmeta-panel-row-inner.layout-flex.cols-3 .tpmeta-panel-field { flex: 0 0 33.33%; }
+.tpmeta-panel-row-inner.layout-flex.cols-4 .tpmeta-panel-field { flex: 0 0 25%; }
+.tpmeta-panel-row-inner.layout-flex.cols-6 .tpmeta-panel-field { flex: 0 0 16.66%; }
+.tpmeta-panel-row-inner.layout-flex.dir-column { flex-direction: column; }
+.tpmeta-panel-row-inner.layout-flex.dir-column .tpmeta-panel-field { flex: 0 0 auto; }
+.tpmeta-panel-row-inner.layout-flex.nowrap { flex-wrap: nowrap; overflow-x: auto; }
+
+/* ============================================================
+   Individual field cell inside a row
+   ============================================================ */
+.tpmeta-panel-field {
+	padding: 20px 22px;
+	border-right: 1px solid var(--tp-border);
+	border-bottom: 1px solid var(--tp-border);
+	box-sizing: border-box;
+	min-width: 0;
+}
+
+/* Remove double border on last column and last row */
+.tpmeta-panel-row-inner.layout-grid.cols-1  .tpmeta-panel-field,
+.tpmeta-panel-row-inner.layout-flex         .tpmeta-panel-field:last-child { border-right: 0; }
+
+.tpmeta-panel-row-inner.cols-2  .tpmeta-panel-field:nth-child(2n)  { border-right: 0; }
+.tpmeta-panel-row-inner.cols-3  .tpmeta-panel-field:nth-child(3n)  { border-right: 0; }
+.tpmeta-panel-row-inner.cols-4  .tpmeta-panel-field:nth-child(4n)  { border-right: 0; }
+.tpmeta-panel-row-inner.cols-6  .tpmeta-panel-field:nth-child(6n)  { border-right: 0; }
+.tpmeta-panel-row-inner.cols-12 .tpmeta-panel-field:nth-child(12n) { border-right: 0; }
+
+/* Remove bottom border from last row of cells */
+.tpmeta-panel-row-inner.cols-1  .tpmeta-panel-field:last-child      { border-bottom: 0; }
+.tpmeta-panel-row-inner.cols-2  .tpmeta-panel-field:nth-last-child(-n+2) { border-bottom: 0; }
+.tpmeta-panel-row-inner.cols-3  .tpmeta-panel-field:nth-last-child(-n+3) { border-bottom: 0; }
+.tpmeta-panel-row-inner.cols-4  .tpmeta-panel-field:nth-last-child(-n+4) { border-bottom: 0; }
+.tpmeta-panel-row-inner.cols-6  .tpmeta-panel-field:nth-last-child(-n+6) { border-bottom: 0; }
+
+/* ============================================================
+   Field internals — override metabox defaults cleanly
+   ============================================================ */
+.tpmeta-panel-field .tm-field-row {
+	padding: 0;
+	min-height: auto;
+	border-bottom: 0;
+	width: 100% !important;
+	box-sizing: border-box !important;
+}
+
+.tpmeta-panel-field .label-text,
+.tpmeta-panel-field .label-textarea,
+.tpmeta-panel-field .label-switch,
+.tpmeta-panel-field .label-colorpicker,
+.tpmeta-panel-field .label-select,
+.tpmeta-panel-field .label-checkbox,
+.tpmeta-panel-field .label-tabs,
+.tpmeta-panel-field .label-image,
+.tpmeta-panel-field .label-datepicker,
+.tpmeta-panel-field label {
+	display: block;
+	margin-bottom: 8px;
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--tp-muted);
+	text-transform: uppercase;
+	letter-spacing: .05em;
+}
+
+.tpmeta-panel-field .tpmeta-field-description {
+	margin: 8px 0 0;
+	font-size: 12px;
+	color: var(--tp-muted);
+	line-height: 1.5;
+}
+
+/* Inputs inherit metabox styling but constrained to cell */
+.tpmeta-panel-field .tm-input,
+.tpmeta-panel-field .tm-textarea,
+.tpmeta-panel-field .tm-select-field {
+	max-width: 100%;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+/* ============================================================
+   Field control wrapper
+   ============================================================ */
+.tpmeta-panel-field .tpmeta-field-control {
+	display: block;
+}
+
+/* ============================================================
+   Label — clean uppercase, small, tracking
+   ============================================================ */
+.tpmeta-panel-field .tm-field-row > label,
+.tpmeta-panel-field label[class^="label-"] {
+	display: block;
+	margin-bottom: 8px;
+	font-size: 11px !important;
+	font-weight: 700 !important;
+	color: var(--tp-muted) !important;
+	text-transform: uppercase;
+	letter-spacing: .07em;
+	line-height: 1.4;
+}
+
+/* ============================================================
+   Text + Textarea inputs
+   ============================================================ */
+.tpmeta-panel-field .tm-input,
+.tpmeta-panel-field input.tm-input-sm {
+	height: 40px;
+	width: 100%;
+	padding: 0 12px;
+	border: 1.5px solid var(--tp-border);
+	border-radius: var(--tp-radius-sm);
+	font-size: 13px;
+	color: var(--tp-text);
+	background: var(--tp-white);
+	box-shadow: 0 1px 2px rgba(0,0,0,.04) inset;
+	transition: border-color .15s, box-shadow .15s;
+	box-sizing: border-box;
+}
+.tpmeta-panel-field .tm-input:focus,
+.tpmeta-panel-field input.tm-input-sm:focus {
+	border-color: var(--tp-blue);
+	box-shadow: 0 0 0 3px rgba(51,98,255,.12);
+	outline: none;
+}
+
+.tpmeta-panel-field .tm-textarea {
+	width: 100%;
+	min-height: 100px;
+	padding: 10px 12px;
+	border: 1.5px solid var(--tp-border);
+	border-radius: var(--tp-radius-sm);
+	font-size: 13px;
+	color: var(--tp-text);
+	background: var(--tp-white);
+	box-shadow: 0 1px 2px rgba(0,0,0,.04) inset;
+	resize: vertical;
+	transition: border-color .15s, box-shadow .15s;
+	box-sizing: border-box;
+	line-height: 1.6;
+}
+.tpmeta-panel-field .tm-textarea:focus {
+	border-color: var(--tp-blue);
+	box-shadow: 0 0 0 3px rgba(51,98,255,.12);
+	outline: none;
+}
+
+/* ============================================================
+   Select dropdown
+   ============================================================ */
+.tpmeta-panel-field .tm-select-field,
+.tpmeta-panel-field select {
+	height: 40px;
+	width: 100%;
+	padding: 0 12px;
+	border: 1.5px solid var(--tp-border);
+	border-radius: var(--tp-radius-sm);
+	font-size: 13px;
+	color: var(--tp-text);
+	background: var(--tp-white);
+	box-shadow: 0 1px 2px rgba(0,0,0,.04) inset;
+	transition: border-color .15s, box-shadow .15s;
+	box-sizing: border-box;
+	appearance: none;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236b7280' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 12px center;
+	padding-right: 36px;
+}
+.tpmeta-panel-field .tm-select-field:focus,
+.tpmeta-panel-field select:focus {
+	border-color: var(--tp-blue);
+	box-shadow: 0 0 0 3px rgba(51,98,255,.12);
+	outline: none;
+}
+
+/* Select2 overrides */
+.tpmeta-panel-field .select2-container { width: 100% !important; }
+.tpmeta-panel-field .select2-selection--single {
+	height: 36px !important;
+	border: 1.5px solid var(--tp-border) !important;
+	border-radius: var(--tp-radius-sm) !important;
+	display: flex; align-items: center;
+}
+.tpmeta-panel-field .select2-selection__rendered {
+	line-height: 36px !important;
+	padding-left: 6px !important;
+	font-size: 13px;
+	color: var(--tp-text) !important;
+}
+.tpmeta-panel-field .select2-selection__arrow { height: 36px !important; }
+
+/* Override vendor select2 default — drop the 20px right margin on the
+   "x" clear button so it sits flush with the dropdown arrow. */
+.select2-container--default .select2-selection--single .select2-selection__clear {
+	margin-right: 0 !important;
+}
+
+/* ============================================================
+   Switch toggle — fix checked state outside .tm-meta-wrapper
+   ============================================================ */
+.tpmeta-panel-field .tm-switch {
+	display: inline-flex;
+	align-items: center;
+	margin: 4px 0;
+}
+
+/* Restate checked colour since tpmeta-fields.css scopes it to .tm-meta-wrapper */
+.tpmeta-panel-field input[type="checkbox"]:checked + .tm-slider {
+	background-color: var(--tp-blue) !important;
+}
+.tpmeta-panel-field input[type="checkbox"]:checked + span.tm-slider::before {
+	left: 54%;
+	right: 3px;
+}
+
+/* Switch + label inline */
+.tpmeta-panel-field .tm-switch-label {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	cursor: pointer;
+	font-size: 13px;
+	color: var(--tp-text);
+}
+
+/* ============================================================
+   Color picker — compact swatch + label, iris floats below
+   ============================================================ */
+
+/* Raw input before WP init */
+.tpmeta-panel-field .tm-colorpicker-input {
+	display: inline-block;
+	height: 36px;
+	min-width: 160px;
+	padding: 0 12px;
+	border: 1.5px solid var(--tp-border);
+	border-radius: var(--tp-radius-sm);
+	font-size: 12px;
+	box-sizing: border-box;
+}
+
+/* Container — inline, position relative so the holder can float */
+.tpmeta-panel-field .wp-picker-container {
+	display: inline-block;
+	position: relative;
+	vertical-align: top;
+}
+
+/* ---- Swatch + label button ----
+   WP sets background-color inline (the selected colour).
+   ::before is a transparent flex child — the button's background-color
+   shows through it, making the left 40px a live colour swatch.
+   .wp-color-result-text then fills the rest with a white background. */
+.tpmeta-panel-field .wp-picker-container .wp-color-result {
+	display: inline-flex !important;
+	align-items: center;
+	height: 36px !important;
+	min-width: 160px;
+	padding: 0 !important;
+	border: 1.5px solid var(--tp-border) !important;
+	border-radius: var(--tp-radius-sm) !important;
+	overflow: hidden;
+	cursor: pointer;
+	box-shadow: none !important;
+	text-shadow: none !important;
+	vertical-align: top;
+	transition: border-color .15s, box-shadow .15s !important;
+	/* Do NOT override background-color — WP's inline style sets the colour */
+}
+/* Transparent flex child = colour swatch area */
+.tpmeta-panel-field .wp-picker-container .wp-color-result::before {
+	content: '';
+	display: block;
+	width: 40px;
+	flex-shrink: 0;
+	align-self: stretch;
+	border-right: 1px solid rgba(0,0,0,.12);
+	/* transparent = shows button's inline background-color */
+}
+.tpmeta-panel-field .wp-picker-container .wp-color-result:hover {
+	border-color: var(--tp-blue) !important;
+	box-shadow: 0 0 0 3px rgba(51,98,255,.10) !important;
+}
+.tpmeta-panel-field .wp-picker-container .wp-color-result[aria-expanded="true"] {
+	border-color: var(--tp-blue) !important;
+	box-shadow: 0 0 0 3px rgba(51,98,255,.12) !important;
+	/* popup floats as a separate card — keep full border-radius */
+}
+
+/* Label text — white background fills the rest of the button */
+.tpmeta-panel-field .wp-picker-container .wp-color-result-text {
+	flex: 1 1 auto;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	align-self: stretch;
+	padding: 0 10px 0 10px;
+	background: var(--tp-white);
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--tp-text);
+	white-space: nowrap;
+	gap: 6px;
+}
+/* Caret indicator — shows it's a dropdown */
+.tpmeta-panel-field .wp-picker-container .wp-color-result-text::after {
+	content: '';
+	display: inline-block;
+	width: 0;
+	height: 0;
+	border-left: 4px solid transparent;
+	border-right: 4px solid transparent;
+	border-top: 5px solid var(--tp-muted);
+	flex-shrink: 0;
+}
+.tpmeta-panel-field .wp-picker-container .wp-color-result[aria-expanded="true"]
+.wp-color-result-text::after {
+	border-top: none;
+	border-bottom: 5px solid var(--tp-blue);
+}
+
+/* ---- Picker popup — fixed card that escapes every overflow:hidden ancestor ---- */
+.tpmeta-panel-field .wp-picker-holder {
+	/* position: fixed !important;
+	z-index: 999999 !important; */
+	/* top / left set by JS via getBoundingClientRect() */
+	background: var(--tp-white) !important;
+	/* border: 1.5px solid rgba(51,98,255,.25) !important; */
+	border-radius: var(--tp-radius-sm) !important;
+	box-shadow: 0 4px 6px rgba(0,0,0,.06), 0 16px 48px rgba(0,0,0,.14) !important;
+	overflow: hidden;
+	margin-top: 5px;
+	min-width: 230px;
+}
+
+/* ---- Input wrap — top strip of the popup card ---- */
+.tpmeta-panel-field .wp-picker-input-wrap {
+	display: flex !important;
+	align-items: center;
+	gap: 6px;
+	padding: 8px 10px !important;
+	background: var(--tp-bg) !important;
+	border: none !important;
+	border-bottom: 1px solid var(--tp-border) !important;
+	border-radius: 0 !important;
+	box-shadow: none !important;
+	box-sizing: border-box;
+}
+.tpmeta-panel-field .wp-picker-input-wrap.hidden { display: none !important; }
+.tpmeta-panel-field .wp-picker-input-wrap label  { display: none !important; }
+
+/* Hex value input */
+.tpmeta-panel-field .wp-picker-input-wrap input[type="text"] {
+	flex: 1 1 auto;
+	min-width: 0;
+	height: 28px !important;
+	padding: 0 8px !important;
+	border: 1.5px solid var(--tp-border) !important;
+	border-radius: var(--tp-radius-sm) !important;
+	font-size: 11px !important;
+	font-family: ui-monospace, Menlo, Consolas, monospace !important;
+	letter-spacing: .04em;
+	background: var(--tp-white) !important;
+	color: var(--tp-text) !important;
+	box-shadow: none !important;
+}
+.tpmeta-panel-field .wp-picker-input-wrap input[type="text"]:focus {
+	border-color: var(--tp-blue) !important;
+	outline: none !important;
+}
+
+/* Clear + Default utility buttons */
+.tpmeta-panel-field .wp-picker-input-wrap .wp-picker-clear,
+.tpmeta-panel-field .wp-picker-input-wrap .wp-picker-default {
+	flex-shrink: 0;
+	height: 28px !important;
+	padding: 0 8px !important;
+	font-size: 10px !important;
+	font-weight: 700 !important;
+	border: 1.5px solid var(--tp-border) !important;
+	border-radius: var(--tp-radius-sm) !important;
+	background: var(--tp-white) !important;
+	color: var(--tp-muted) !important;
+	box-shadow: none !important;
+	text-shadow: none !important;
+	white-space: nowrap;
+	cursor: pointer;
+	transition: border-color .12s, color .12s, background .12s !important;
+}
+.tpmeta-panel-field .wp-picker-input-wrap .wp-picker-clear:hover,
+.tpmeta-panel-field .wp-picker-input-wrap .wp-picker-default:hover {
+	border-color: var(--tp-blue) !important;
+	color: var(--tp-blue) !important;
+	background: var(--tp-blue-lt) !important;
+}
+
+/* Iris — no extra border/shadow, the holder card provides it */
+.tpmeta-panel-field .iris-picker {
+	border: none !important;
+	border-radius: 0 !important;
+	box-shadow: none !important;
+	overflow: hidden;
+	display: block;
+}
+
+/* ============================================================
+   Button set / Tabs / Radio Buttonset — premium segmented control
+   ============================================================ */
+
+/* Track — pill-shaped segmented control container */
+.tpmeta-panel-field .tm-button-groups {
+	display: inline-flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 3px;
+	padding: 4px;
+	background: linear-gradient(135deg, rgba(51,98,255,.06) 0%, rgba(95,74,254,.04) 100%);
+	border-radius: calc(var(--tp-radius-sm) + 3px);
+	border: 1.5px solid rgba(51,98,255,.18);
+	box-shadow: inset 0 1px 3px rgba(0,0,0,.05), 0 1px 4px rgba(51,98,255,.07);
+}
+
+/* Each label wrapper — this is the animated pill */
+.tpmeta-panel-field .tm-button-groups .tm-button-radio {
+	display: inline-flex;
+	align-items: center;
+	border: 0 !important;
+	margin: 0 !important;
+	border-radius: var(--tp-radius-sm);
+	cursor: pointer;
+	transition:
+		background  .22s cubic-bezier(.34,.95,.64,1),
+		box-shadow  .22s cubic-bezier(.34,.95,.64,1),
+		transform   .22s cubic-bezier(.34,.95,.64,1);
+}
+
+/* Hide native radio visually */
+.tpmeta-panel-field .tm-button-groups input[type="radio"] {
+	position: absolute;
+	opacity: 0;
+	width: 0;
+	height: 0;
+	pointer-events: none;
+}
+
+/* Button text/icon face — inherits label's background */
+.tpmeta-panel-field .tm-button-groups .tm-button-radio span {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 5px;
+	padding: 7px 16px !important;
+	font-size: 12px !important;
+	font-weight: 600;
+	color: var(--tp-muted);
+	white-space: nowrap;
+	user-select: none;
+	letter-spacing: .01em;
+	transition: color .22s cubic-bezier(.34,.95,.64,1);
+	pointer-events: none;
+}
+
+/* Hover — subtle blue tint + lift on the label */
+.tpmeta-panel-field .tm-button-groups .tm-button-radio:hover {
+	background: rgba(51,98,255,.10);
+	transform: translateY(-1px);
+}
+.tpmeta-panel-field .tm-button-groups .tm-button-radio:hover span {
+	color: var(--tp-blue);
+}
+
+/* Active label — gradient pill with branded glow */
+.tpmeta-panel-field .tm-button-groups .tm-button-radio:has(input:checked) {
+	background: linear-gradient(135deg, var(--tp-blue) 0%, var(--tp-purple) 100%);
+	box-shadow: 0 4px 16px rgba(51,98,255,.42), 0 1px 4px rgba(0,0,0,.14);
+	transform: translateY(-1.5px) scale(1.03);
+}
+.tpmeta-panel-field .tm-button-groups .tm-button-radio:has(input:checked) span {
+	color: #fff;
+}
+
+/* ============================================================
+   Checkbox group
+   ============================================================ */
+.tpmeta-panel-field .tm-checkbox-group {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px 14px;
+	padding: 2px 0;
+}
+.tpmeta-panel-field .tm-checkbox-item {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	font-size: 13px;
+	color: var(--tp-text);
+	cursor: pointer;
+}
+.tpmeta-panel-field .tm-checkbox-item input[type="checkbox"] {
+	width: 16px;
+	height: 16px;
+	border: 1.5px solid var(--tp-border);
+	border-radius: 4px;
+	accent-color: var(--tp-blue);
+	cursor: pointer;
+}
+
+/* ============================================================
+   Image field
+   ============================================================ */
+.tpmeta-panel-field .tpmeta-image-field {
+	display: inline-block;
+}
+.tpmeta-panel-field .tpmeta-image-field .tm-image-item {
+	position: relative;
+	width: 300px;
+	max-width: 100%;
+	margin-bottom: 8px;
+}
+.tpmeta-panel-field .tpmeta-image-field .tm-image-img {
+	width: 100%;
+	border-radius: var(--tp-radius-sm);
+	border: 2px solid var(--tp-border);
+	overflow: hidden;
+	transition: border-color .15s;
+	background: var(--tp-bg);
+}
+.tpmeta-panel-field .tpmeta-image-field .tm-image-img img {
+	width: 100%;
+	height: auto;
+	display: block;
+}
+.tpmeta-panel-field .tpmeta-image-field .tm-image-img:hover { border-color: var(--tp-blue); }
+.tpmeta-panel-field .tpmeta-image-field .tm-image-actions {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	width: auto;
+	height: auto;
+	padding: 0;
+	display: inline-flex;
+	gap: 4px;
+	z-index: 2;
+	visibility: visible;
+	opacity: 1;
+}
+.tpmeta-panel-field .tpmeta-image-field .tpmeta-image-upload,
+.tpmeta-panel-field .tpmeta-image-field .tm-add-image {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 8px 16px;
+	background: var(--tp-bg);
+	border: 1.5px dashed var(--tp-border);
+	border-radius: var(--tp-radius-sm);
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--tp-muted);
+	cursor: pointer;
+	transition: all .15s;
+}
+.tpmeta-panel-field .tpmeta-image-field .tpmeta-image-upload:hover,
+.tpmeta-panel-field .tpmeta-image-field .tm-add-image:hover {
+	border-color: var(--tp-blue);
+	color: var(--tp-blue);
+	background: var(--tp-blue-lt);
+}
+.tpmeta-panel-field .tm-image-actions a {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 26px;
+	height: 26px;
+	border-radius: 50%;
+	text-decoration: none;
+	font-weight: 700;
+	font-size: 14px;
+	line-height: 1;
+	background: rgba(0, 0, 0, 0.55);
+	color: #fff;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+	backdrop-filter: blur(2px);
+	-webkit-backdrop-filter: blur(2px);
+	transition: background .15s, color .15s, transform .08s;
+}
+.tpmeta-panel-field .tm-image-actions a .dashicons {
+	font-size: 14px;
+	width: 14px;
+	height: 14px;
+	line-height: 1;
+	background: transparent;
+	border-radius: 0;
+	color: inherit;
+}
+.tpmeta-panel-field .tm-image-actions a:hover {
+	transform: translateY(-1px);
+}
+.tpmeta-panel-field .tm-image-actions .tpmeta-image-edit:hover {
+	background: var(--tp-blue);
+	color: #fff;
+}
+.tpmeta-panel-field .tm-image-actions .tpmeta-image-remove:hover {
+	background: var(--tp-danger);
+	color: #fff;
+}
+
+/* ============================================================
+   Datepicker input
+   ============================================================ */
+.tpmeta-panel-field .tm-datepicker-input {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 10px center;
+	padding-right: 36px;
+}
+
+/* ============================================================
+   Description / help text
+   ============================================================ */
+.tpmeta-panel-field .tpmeta-field-description,
+.tpmeta-panel-field .description {
+	display: block;
+	margin: 8px 0 0;
+	font-size: 12px;
+	color: var(--tp-muted);
+	line-height: 1.5;
+}
+
+/* ============================================================
+   Narrow cells (4-col, 6-col) — compact field layout
+   ============================================================ */
+.tpmeta-panel-row-inner.cols-4 .tpmeta-panel-field,
+.tpmeta-panel-row-inner.cols-6 .tpmeta-panel-field {
+	padding: 14px 16px;
+}
+.tpmeta-panel-row-inner.cols-4 .tpmeta-panel-field label,
+.tpmeta-panel-row-inner.cols-6 .tpmeta-panel-field label,
+.tpmeta-panel-row-inner.cols-4 .tpmeta-panel-field [class^="label-"],
+.tpmeta-panel-row-inner.cols-6 .tpmeta-panel-field [class^="label-"] {
+	font-size: 10px !important;
+	letter-spacing: .05em;
+}
+
+/* ============================================================
+   Full-width inputs & textareas — override any inherited constraints
+   ============================================================ */
+.tpmeta-panel-field input[type="text"],
+.tpmeta-panel-field input[type="url"],
+.tpmeta-panel-field input[type="email"],
+.tpmeta-panel-field input[type="number"],
+.tpmeta-panel-field input[type="search"],
+.tpmeta-panel-field input.tm-input,
+.tpmeta-panel-field .tm-input,
+.tpmeta-panel-field .tm-textarea,
+.tpmeta-panel-field textarea {
+	width: 100% !important;
+	max-width: 100% !important;
+	box-sizing: border-box !important;
+}
+
+/* ============================================================
+   Modern header enhancements
+   ============================================================ */
+.tpmeta-options-header {
+	background: linear-gradient(135deg, #ffffff 0%, #fafbff 100%) !important;
+	border-bottom: 1px solid rgba(51,98,255,.08) !important;
+	box-shadow: 0 1px 0 rgba(51,98,255,.05), 0 2px 20px rgba(0,0,0,.04) !important;
+}
+
+.tpmeta-options-title {
+	background: linear-gradient(135deg, var(--tp-blue) 0%, var(--tp-purple) 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+}
+
+/* ============================================================
+   Modern sidebar enhancements — left-border active indicator
+   ============================================================ */
+
+.tpmeta-options-nav ul { padding: 8px 10px 24px; }
+
+.tpmeta-options-nav-item {
+	border-left: 3px solid transparent;
+	padding-left: 10px;
+	transition: background .18s, color .18s, border-color .2s, padding-left .18s !important;
+}
+.tpmeta-options-nav-item:hover {
+	border-left-color: rgba(255,255,255,.25);
+}
+.tpmeta-options-nav-item.is-active {
+	border-left-color: var(--wp-admin-theme-color) !important;
+	padding-left: 8px;
+}
+body.admin-color-light .tpmeta-options-nav-item:hover { border-left-color: rgba(0,0,0,.2); }
+body.admin-color-light .tpmeta-options-nav-item.is-active { border-left-color: var(--wp-admin-theme-color) !important; }
+
+/* ============================================================
+   Smooth fade-slide-in animations
+   ============================================================ */
+@keyframes tpFadeSlideIn {
+	from { opacity: 0; transform: translateY(10px); }
+	to   { opacity: 1; transform: translateY(0); }
+}
+
+.tpmeta-options-section.is-active {
+	animation: tpFadeSlideIn .22s cubic-bezier(.22,.68,0,1.2) both;
+}
+
+/* Suppress animation when JS activates a section on initial hash-load */
+.tpmeta-options-section.is-active.tpmeta-section-no-anim,
+.tpmeta-options-section.is-active.tpmeta-section-no-anim * {
+	animation: none !important;
+	transition: none !important;
+}
+
+.tpmeta-options-section.is-active .tpmeta-options-section-header {
+	animation: tpFadeSlideIn .18s ease both;
+}
+
+/* Staggered row card entry */
+.tpmeta-options-section.is-active .tpmeta-panel-row:nth-child(1)   { animation: tpFadeSlideIn .26s ease 0.00s both; }
+.tpmeta-options-section.is-active .tpmeta-panel-row:nth-child(2)   { animation: tpFadeSlideIn .26s ease 0.04s both; }
+.tpmeta-options-section.is-active .tpmeta-panel-row:nth-child(3)   { animation: tpFadeSlideIn .26s ease 0.08s both; }
+.tpmeta-options-section.is-active .tpmeta-panel-row:nth-child(4)   { animation: tpFadeSlideIn .26s ease 0.12s both; }
+.tpmeta-options-section.is-active .tpmeta-panel-row:nth-child(5)   { animation: tpFadeSlideIn .26s ease 0.16s both; }
+.tpmeta-options-section.is-active .tpmeta-panel-row:nth-child(6)   { animation: tpFadeSlideIn .26s ease 0.20s both; }
+.tpmeta-options-section.is-active .tpmeta-panel-row:nth-child(n+7) { animation: tpFadeSlideIn .26s ease 0.24s both; }
+
+/* ============================================================
+   Enhanced section header
+   ============================================================ */
+.tpmeta-options-section-header {
+	background: linear-gradient(135deg, rgba(51,98,255,.04) 0%, rgba(95,74,254,.02) 100%);
+	border-radius: var(--tp-radius);
+	padding: 14px 16px;
+	border-bottom: 0;
+	margin-bottom: 18px;
+	border: 1px solid rgba(51,98,255,.08);
+}
+
+/* ============================================================
+   Enhanced form area background
+   ============================================================ */
+.tpmeta-options-form {
+	background: var(--tp-bg);
+}
+
+/* ============================================================
+   Panel row — subtle lift on hover with smooth transition
+   ============================================================ */
+.tpmeta-panel-row {
+	transition: box-shadow .22s ease, transform .22s ease !important;
+}
+.tpmeta-panel-row:hover {
+	box-shadow: 0 4px 20px rgba(51,98,255,.09), 0 1px 4px rgba(0,0,0,.04) !important;
+	transform: translateY(-1px);
+}
+
+/* ============================================================
+   Panel field — smooth focus glow propagation
+   ============================================================ */
+.tpmeta-panel-field {
+	transition: background .18s;
+}
+.tpmeta-panel-field:focus-within {
+	background: rgba(51,98,255,.018);
+}
+
+/* ============================================================
+   Radio Image field — visual card selector
+   ============================================================ */
+
+/* Lift the entire field cell above any Select2 dropdown overlays */
+.tpmeta-panel-field.tpmeta-field-radio_image {
+	position: relative;
+	z-index: 5;
+}
+
+/* Hard-kill any Select2 UI that may have leaked into this field */
+.tpmeta-panel-field.tpmeta-field-radio_image .select2-container,
+.tpmeta-panel-field.tpmeta-field-radio_image .select2-dropdown,
+.tpmeta-panel-field.tpmeta-field-radio_image .select2-search,
+.tpmeta-panel-field.tpmeta-field-radio_image select.tm-select-field {
+	display: none !important;
+}
+
+.tpmeta-panel-field .tm-ri-wrap {
+	display: flex;
+	flex-wrap: nowrap;
+	gap: 8px;
+	padding: 4px 2px;
+	align-items: flex-start;
+}
+
+/* Empty state */
+.tpmeta-panel-field .tm-ri-empty {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 14px 16px;
+	background: var(--tp-bg);
+	border: 1.5px dashed var(--tp-border);
+	border-radius: var(--tp-radius-sm);
+	color: var(--tp-muted);
+	font-size: 12px;
+}
+.tpmeta-panel-field .tm-ri-empty .dashicons {
+	font-size: 20px; width: 20px; height: 20px; opacity: .4; flex-shrink: 0;
+}
+.tpmeta-panel-field .tm-ri-empty p { margin: 0; }
+
+/* Card — each takes an equal share of the row width */
+.tpmeta-panel-field .tm-ri-card {
+	flex: 1 1 0;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 6px;
+	cursor: pointer;
+	user-select: none;
+	transition: transform .22s cubic-bezier(.34,.95,.64,1);
+}
+.tpmeta-panel-field .tm-ri-card:hover { transform: translateY(-3px); }
+
+/* Hide native radio input */
+.tpmeta-panel-field .tm-ri-card input[type="radio"] {
+	position: absolute;
+	opacity: 0;
+	width: 0; height: 0;
+	pointer-events: none;
+}
+
+/* Thumbnail wrapper */
+.tpmeta-panel-field .tm-ri-thumb {
+	position: relative;
+	width: 100%;
+	height: 60px;
+	border-radius: var(--tp-radius-sm);
+	overflow: hidden;
+	border: 2.5px solid var(--tp-border);
+	background: var(--tp-bg);
+	transition:
+		border-color .22s cubic-bezier(.34,.95,.64,1),
+		box-shadow   .22s cubic-bezier(.34,.95,.64,1);
+}
+.tpmeta-panel-field .tm-ri-thumb img {
+	display: block;
+	width: 100%;
+	object-fit: cover;
+	transition: transform .3s ease;
+}
+.tpmeta-panel-field .tm-ri-card:hover .tm-ri-thumb img { transform: scale(1.05); }
+
+/* No-image placeholder */
+.tpmeta-panel-field .tm-ri-thumb-placeholder {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+}
+.tpmeta-panel-field .tm-ri-thumb-placeholder .dashicons {
+	font-size: 18px; width: 18px; height: 18px;
+	color: var(--tp-muted); opacity: .3;
+}
+
+/* Checkmark badge — springs in when selected */
+.tpmeta-panel-field .tm-ri-badge {
+	position: absolute;
+	top: 6px; right: 6px;
+	display: flex;
+	opacity: 0;
+	transform: scale(0.3) rotate(-25deg);
+	transition:
+		opacity   .22s cubic-bezier(.34,.95,.64,1),
+		transform .28s cubic-bezier(.34,.95,.64,1);
+	filter: drop-shadow(0 1px 4px rgba(0,0,0,.22));
+	pointer-events: none;
+	z-index: 2;
+}
+
+/* Hover ring */
+.tpmeta-panel-field .tm-ri-card:hover .tm-ri-thumb {
+	border-color: rgba(51,98,255,.5);
+	box-shadow: 0 0 0 3px rgba(51,98,255,.10);
+}
+
+/* Active / selected */
+.tpmeta-panel-field .tm-ri-card.is-active .tm-ri-thumb,
+.tpmeta-panel-field .tm-ri-card:has(input:checked) .tm-ri-thumb {
+	border-color: var(--tp-blue);
+	box-shadow:
+		0 0 0 3.5px rgba(51,98,255,.25),
+		0 6px 20px rgba(51,98,255,.18);
+}
+.tpmeta-panel-field .tm-ri-card.is-active .tm-ri-badge,
+.tpmeta-panel-field .tm-ri-card:has(input:checked) .tm-ri-badge {
+	opacity: 1;
+	transform: scale(1) rotate(0deg);
+}
+.tpmeta-panel-field .tm-ri-card.is-active,
+.tpmeta-panel-field .tm-ri-card:has(input:checked) { transform: translateY(-3px); }
+
+/* Label */
+.tpmeta-panel-field .tm-ri-label {
+	font-size: 10px;
+	font-weight: 600;
+	color: var(--tp-muted);
+	text-align: center;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 100%;
+	transition: color .2s ease;
+}
+.tpmeta-panel-field .tm-ri-card:hover .tm-ri-label { color: var(--tp-blue); }
+.tpmeta-panel-field .tm-ri-card.is-active .tm-ri-label,
+.tpmeta-panel-field .tm-ri-card:has(input:checked) .tm-ri-label {
+	color: var(--tp-blue);
+	font-weight: 700;
+}
+
+/* ============================================================
+   Dimension field
+   ============================================================ */
+.tpmeta-panel-field .tm-dimension-wrap {
+	display: inline-flex;
+	align-items: stretch;
+	max-width: 180px;
+	width: 100%;
+}
+.tpmeta-panel-field .tm-dim-num {
+	flex: 1 1 auto;
+	min-width: 0;
+	height: 40px !important;
+	padding: 0 10px !important;
+	border: 1.5px solid var(--tp-border) !important;
+	border-right: none !important;
+	border-radius: var(--tp-radius-sm) 0 0 var(--tp-radius-sm) !important;
+	font-size: 13px !important;
+	box-sizing: border-box !important;
+	transition: border-color .15s !important;
+}
+.tpmeta-panel-field .tm-dim-num:focus {
+	border-color: var(--tp-blue) !important;
+	outline: none !important;
+	box-shadow: -3px 0 0 rgba(51,98,255,.12), 0 -3px 0 rgba(51,98,255,.12), 0 3px 0 rgba(51,98,255,.12) !important;
+}
+.tpmeta-panel-field .tm-dim-unit {
+	flex: 0 0 62px;
+	width: 62px !important;
+	height: 40px !important;
+	padding: 0 6px !important;
+	border: 1.5px solid var(--tp-border) !important;
+	border-radius: 0 var(--tp-radius-sm) var(--tp-radius-sm) 0 !important;
+	font-size: 12px !important;
+	font-weight: 600;
+	color: var(--tp-muted);
+	background: var(--tp-bg) !important;
+	box-sizing: border-box !important;
+	cursor: pointer;
+	appearance: none;
+	-webkit-appearance: none;
+	text-align: center;
+}
+.tpmeta-panel-field .tm-dim-unit:focus {
+	border-color: var(--tp-blue) !important;
+	outline: none !important;
+}
+
+/* ── Slider variant ────────────────────────────────────────────────────────
+   Activated by adding .tm-dimension-slider to .tm-dimension-wrap. Lays the
+   field out as: [number | unit] on top, [========●========] beneath. The
+   joined num+unit pill keeps the existing rules untouched.
+   ──────────────────────────────────────────────────────────────────────── */
+.tpmeta-panel-field .tm-dimension-wrap.tm-dimension-slider {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	gap: 10px;
+	max-width: 320px;
+	width: 100%;
+}
+.tpmeta-panel-field .tm-dimension-wrap.tm-dimension-slider .tm-dim-input-pair {
+	display: inline-flex;
+	align-items: stretch;
+	max-width: 180px;
+}
+/* Input element transparent — gradient lives on the track pseudo-element
+   below, since admin/global input bg resets would otherwise wipe it. */
+.tpmeta-panel-field .tm-dim-range {
+	-webkit-appearance: none !important;
+	appearance: none !important;
+	width: 100%;
+	height: 24px;
+	margin: 4px 0 8px;
+	padding: 0 !important;
+	background: transparent !important;
+	border: 0 !important;
+	box-shadow: none !important;
+	outline: none;
+	cursor: pointer;
+}
+.tpmeta-panel-field .tm-dim-range::-webkit-slider-runnable-track {
+	height: 6px;
+	background: linear-gradient(90deg, var(--tp-blue) 0%, var(--tp-purple) 100%);
+	border-radius: 999px;
+	border: 0;
+}
+.tpmeta-panel-field .tm-dim-range::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 18px;
+	height: 18px;
+	margin-top: -6px;
+	border-radius: 50%;
+	background: var(--tp-white);
+	border: 3px solid var(--tp-blue);
+	cursor: pointer;
+	box-shadow: 0 2px 6px rgba(51,98,255,.35);
+	transition: transform .15s ease, box-shadow .15s ease;
+}
+.tpmeta-panel-field .tm-dim-range::-webkit-slider-thumb:hover {
+	transform: scale(1.12);
+	box-shadow: 0 3px 10px rgba(51,98,255,.5);
+}
+.tpmeta-panel-field .tm-dim-range::-moz-range-track {
+	height: 6px;
+	background: linear-gradient(90deg, var(--tp-blue) 0%, var(--tp-purple) 100%);
+	border-radius: 999px;
+	border: 0;
+}
+.tpmeta-panel-field .tm-dim-range::-moz-range-thumb {
+	width: 18px;
+	height: 18px;
+	border-radius: 50%;
+	background: var(--tp-white);
+	border: 3px solid var(--tp-blue);
+	cursor: pointer;
+	box-shadow: 0 2px 6px rgba(51,98,255,.35);
+	transition: transform .15s ease, box-shadow .15s ease;
+}
+.tpmeta-panel-field .tm-dim-range::-moz-range-thumb:hover {
+	transform: scale(1.12);
+	box-shadow: 0 3px 10px rgba(51,98,255,.5);
+}
+.tpmeta-panel-field .tm-dim-range:focus { outline: none; }
+.tpmeta-panel-field .tm-dim-range:focus-visible::-webkit-slider-thumb {
+	box-shadow: 0 0 0 4px rgba(51,98,255,.18), 0 2px 6px rgba(51,98,255,.35);
+}
+
+/* ============================================================
+   Typography field — table-style refactor
+   ------------------------------------------------------------
+   Structure:
+   .tptypo-wrap            outer card
+     └ .tptypo-section     section card (head + rows)
+        ├ .tptypo-section-head   section title row
+        └ .tptypo-row            label | control grid row
+   Class hooks consumed by JS are unchanged.
+   ============================================================ */
+
+.tpmeta-panel-field .tptypo-wrap {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+	border: 1px solid var(--tp-border);
+	border-radius: var(--tp-radius);
+	overflow: hidden;
+	background: var(--tp-white);
+	box-shadow: 0 1px 2px rgba(15, 23, 42, .03);
+}
+
+/* ── Sections ───────────────────────────────────────────── */
+.tpmeta-panel-field .tptypo-section {
+	border-bottom: 1px solid var(--tp-border);
+}
+.tpmeta-panel-field .tptypo-section:last-child { border-bottom: 0; }
+
+.tpmeta-panel-field .tptypo-section-head {
+	display: flex;
+	align-items: baseline;
+	gap: 10px;
+	padding: 10px 16px;
+	background: linear-gradient(180deg, rgba(15,23,42,.025) 0%, rgba(15,23,42,.01) 100%);
+	border-bottom: 1px solid var(--tp-border);
+}
+.tpmeta-panel-field .tptypo-section-title {
+	font-size: 11px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: .08em;
+	color: var(--tp-text);
+}
+.tpmeta-panel-field .tptypo-section-hint {
+	font-size: 11px;
+	color: var(--tp-muted);
+	font-weight: 400;
+	letter-spacing: 0;
+	text-transform: none;
+}
+
+/* ── Row: label | control grid ──────────────────────────── */
+.tpmeta-panel-field .tptypo-row {
+	display: grid;
+	grid-template-columns: 140px 1fr;
+	gap: 16px;
+	align-items: center;
+	padding: 10px 16px;
+	border-bottom: 1px solid rgba(15, 23, 42, .04);
+}
+.tpmeta-panel-field .tptypo-row:last-child { border-bottom: 0; }
+.tpmeta-panel-field .tptypo-row-label {
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--tp-text);
+	line-height: 1.4;
+}
+.tpmeta-panel-field .tptypo-row-ctrl {
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+/* Tag rows breathe slightly less vertically */
+.tpmeta-panel-field .tptypo-row--tags { padding-top: 8px; padding-bottom: 8px; }
+
+@media (max-width: 640px) {
+	.tpmeta-panel-field .tptypo-row {
+		grid-template-columns: 1fr;
+		gap: 6px;
+	}
+}
+
+/* ── Source tabs ────────────────────────────────────────── */
+.tpmeta-panel-field .tptypo-source-tabs {
+	display: inline-flex;
+	border: 1px solid var(--tp-border);
+	border-radius: var(--tp-radius-sm);
+	overflow: hidden;
+	background: var(--tp-bg);
+	width: fit-content;
+	max-width: 100%;
+}
+.tpmeta-panel-field .tptypo-src-tab {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	padding: 8px 14px;
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--tp-muted);
+	background: none;
+	border: 0;
+	border-right: 1px solid var(--tp-border);
+	cursor: pointer;
+	transition: color .15s, background .15s;
+}
+.tpmeta-panel-field .tptypo-src-tab:last-child { border-right: 0; }
+.tpmeta-panel-field .tptypo-src-tab:hover { color: var(--tp-blue); background: var(--tp-blue-lt); }
+.tpmeta-panel-field .tptypo-src-tab:focus-visible {
+	outline: none;
+	box-shadow: inset 0 0 0 2px var(--tp-blue);
+}
+.tpmeta-panel-field .tptypo-src-tab.is-active {
+	color: #fff;
+	background: linear-gradient(135deg, var(--tp-blue) 0%, var(--tp-purple) 100%);
+}
+.tpmeta-panel-field .tptypo-src-tab svg { flex-shrink: 0; }
+
+/* ── Panels (only the active source's panel is visible) ── */
+.tpmeta-panel-field .tptypo-panel {
+	display: block;
+}
+.tpmeta-panel-field .tptypo-panel[hidden] { display: none; }
+
+/* ── Searchable Google Fonts combobox ───────────────────── */
+.tpmeta-panel-field .tptypo-combo {
+	position: relative;
+	width: 100%;
+	max-width: 380px;
+}
+.tpmeta-panel-field .tptypo-combo-trigger {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	width: 100%;
+	height: 36px;
+	padding: 0 12px;
+	background: var(--tp-white);
+	border: 1px solid var(--tp-border);
+	border-radius: var(--tp-radius-sm);
+	color: var(--tp-text);
+	font-size: 13px;
+	cursor: pointer;
+	text-align: left;
+	transition: border-color .15s, box-shadow .15s;
+}
+.tpmeta-panel-field .tptypo-combo-trigger:hover {
+	border-color: var(--tp-blue);
+}
+.tpmeta-panel-field .tptypo-combo-trigger:focus-visible,
+.tpmeta-panel-field .tptypo-combo-trigger.is-open {
+	border-color: var(--tp-blue);
+	box-shadow: 0 0 0 3px rgba(51,98,255,.12);
+	outline: none;
+}
+.tpmeta-panel-field .tptypo-combo-current {
+	flex: 1 1 auto;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-size: 13px;
+}
+.tpmeta-panel-field .tptypo-combo-current.is-placeholder {
+	color: var(--tp-muted);
+	font-style: italic;
+	font-family: inherit !important;
+}
+.tpmeta-panel-field .tptypo-combo-caret {
+	flex-shrink: 0;
+	color: var(--tp-muted);
+	transition: transform .18s;
+}
+.tpmeta-panel-field .tptypo-combo-trigger.is-open .tptypo-combo-caret {
+	transform: rotate(180deg);
+	color: var(--tp-blue);
+}
+
+/* Popover */
+.tpmeta-panel-field .tptypo-combo-pop {
+	position: absolute;
+	top: calc(100% + 6px);
+	left: 0;
+	right: 0;
+	z-index: 50;
+	background: var(--tp-white);
+	border: 1px solid var(--tp-border);
+	border-radius: var(--tp-radius-sm);
+	box-shadow: 0 12px 30px -8px rgba(15, 23, 42, .18), 0 4px 10px rgba(15, 23, 42, .06);
+	padding: 8px;
+	min-width: 280px;
+}
+
+/* Search input inside popover */
+.tpmeta-panel-field .tptypo-gf-search-wrap {
+	position: relative;
+	margin-bottom: 8px;
+}
+.tpmeta-panel-field .tptypo-gf-search-icon {
+	position: absolute;
+	left: 10px; top: 50%;
+	transform: translateY(-50%);
+	color: var(--tp-muted);
+	pointer-events: none;
+	display: flex;
+}
+.tpmeta-panel-field .tptypo-gf-search {
+	width: 100%;
+	height: 32px;
+	padding: 0 10px 0 32px;
+	border: 1px solid var(--tp-border);
+	border-radius: var(--tp-radius-sm);
+	font-size: 12px;
+	box-sizing: border-box;
+	transition: border-color .15s, box-shadow .15s;
+}
+.tpmeta-panel-field .tptypo-gf-search:focus {
+	border-color: var(--tp-blue);
+	box-shadow: 0 0 0 3px rgba(51,98,255,.12);
+	outline: none;
+}
+
+/* Dropdown list — items are stacked rows with a sample */
+.tpmeta-panel-field .tptypo-gf-list {
+	display: flex;
+	flex-direction: column;
+	max-height: 260px;
+	overflow-y: auto;
+	gap: 2px;
+}
+.tpmeta-panel-field .tptypo-gf-list::-webkit-scrollbar { width: 6px; }
+.tpmeta-panel-field .tptypo-gf-list::-webkit-scrollbar-thumb { background: var(--tp-border); border-radius: 3px; }
+
+.tpmeta-panel-field .tptypo-gf-item {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	padding: 7px 10px;
+	font-size: 13px;
+	border: 1px solid transparent;
+	border-radius: var(--tp-radius-sm);
+	background: transparent;
+	cursor: pointer;
+	color: var(--tp-text);
+	text-align: left;
+	transition: background .12s, color .12s, border-color .12s;
+	width: 100%;
+}
+.tpmeta-panel-field .tptypo-gf-item-name {
+	flex: 1 1 auto;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.tpmeta-panel-field .tptypo-gf-item-sample {
+	flex-shrink: 0;
+	font-size: 14px;
+	color: var(--tp-muted);
+	opacity: .8;
+}
+.tpmeta-panel-field .tptypo-gf-item:hover {
+	background: var(--tp-blue-lt);
+	color: var(--tp-blue);
+}
+.tpmeta-panel-field .tptypo-gf-item.is-active {
+	background: linear-gradient(135deg, var(--tp-blue) 0%, var(--tp-purple) 100%);
+	color: #fff;
+}
+.tpmeta-panel-field .tptypo-gf-item.is-active .tptypo-gf-item-sample { color: rgba(255,255,255,.85); }
+
+.tpmeta-panel-field .tptypo-gf-empty {
+	font-size: 12px; color: var(--tp-muted); padding: 12px 8px; text-align: center;
+}
+
+/* ── Custom font upload row ─────────────────────────────── */
+.tpmeta-panel-field .tptypo-custom-row {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	width: 100%;
+}
+.tpmeta-panel-field .tptypo-custom-preview {
+	flex: 1 1 auto;
+	min-width: 0;
+	font-size: 12px;
+	color: var(--tp-muted);
+	padding: 0 12px;
+	height: 36px;
+	display: flex;
+	align-items: center;
+	background: var(--tp-bg);
+	border: 1px solid var(--tp-border);
+	border-radius: var(--tp-radius-sm);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.tpmeta-panel-field .tptypo-upload-btn {
+	display: inline-flex !important;
+	align-items: center;
+	gap: 6px;
+	height: 36px !important;
+	padding: 0 14px !important;
+	font-size: 12px !important;
+	font-weight: 600 !important;
+	white-space: nowrap;
+	flex-shrink: 0;
+}
+.tpmeta-panel-field .tptypo-upload-remove {
+	width: 32px; height: 32px;
+	display: flex; align-items: center; justify-content: center;
+	background: none; border: 1px solid var(--tp-border);
+	border-radius: 50%; cursor: pointer; color: var(--tp-muted);
+	font-size: 13px; transition: all .15s; flex-shrink: 0;
+}
+.tpmeta-panel-field .tptypo-upload-remove:hover { background: #fbeaea; border-color: var(--tp-danger); color: var(--tp-danger); }
+
+/* ── System fonts — rendered inside the .tptypo-combo popover ─────
+   Buttons carry both .tptypo-gf-item AND .tptypo-system-btn. The
+   .tptypo-gf-item rules above handle the look; this block resets the
+   legacy pill rules so they don't conflict with dropdown rendering. */
+.tpmeta-panel-field .tptypo-gf-list .tptypo-system-btn {
+	padding: 7px 10px;
+	font-size: 13px;
+	border: 1px solid transparent;
+	border-radius: var(--tp-radius-sm);
+	background: transparent;
+	transform: none;
+}
+.tpmeta-panel-field .tptypo-gf-list .tptypo-system-btn:hover {
+	background: var(--tp-blue-lt);
+	color: var(--tp-blue);
+	border-color: transparent;
+	transform: none;
+}
+.tpmeta-panel-field .tptypo-gf-list .tptypo-system-btn.is-active {
+	background: linear-gradient(135deg, var(--tp-blue) 0%, var(--tp-purple) 100%);
+	color: #fff;
+	border-color: transparent;
+	box-shadow: none;
+}
+
+/* ── Generic inputs / selects inside tptypo ─────────────── */
+.tpmeta-panel-field .tptypo-input {
+	height: 36px;
+	padding: 0 12px;
+	border: 1px solid var(--tp-border);
+	border-radius: var(--tp-radius-sm);
+	font-size: 13px;
+	color: var(--tp-text);
+	background: var(--tp-white);
+	box-sizing: border-box;
+	width: 100%;
+	max-width: 220px;
+	transition: border-color .15s, box-shadow .15s;
+}
+.tpmeta-panel-field .tptypo-input:focus {
+	border-color: var(--tp-blue);
+	box-shadow: 0 0 0 3px rgba(51,98,255,.12);
+	outline: none;
+}
+.tpmeta-panel-field .tptypo-num { text-align: center; }
+
+/* Size number + unit combined control */
+.tpmeta-panel-field .tptypo-size-wrap {
+	display: inline-flex;
+	width: 180px;
+	max-width: 100%;
+	border: 1px solid var(--tp-border);
+	border-radius: var(--tp-radius-sm);
+	overflow: hidden;
+	background: var(--tp-white);
+	transition: border-color .15s, box-shadow .15s;
+}
+.tpmeta-panel-field .tptypo-size-wrap:focus-within {
+	border-color: var(--tp-blue);
+	box-shadow: 0 0 0 3px rgba(51,98,255,.12);
+}
+.tpmeta-panel-field .tptypo-size-wrap .tptypo-input {
+	flex: 1 1 auto;
+	max-width: none;
+	border: 0;
+	border-radius: 0;
+	box-shadow: none !important;
+}
+.tpmeta-panel-field .tptypo-unit-sel {
+	flex: 0 0 64px;
+	height: 36px;
+	border: 0;
+	border-left: 1px solid var(--tp-border);
+	border-radius: 0;
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--tp-text);
+	background: var(--tp-bg)
+		url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5' viewBox='0 0 8 5'%3E%3Cpath fill='%236b7280' d='M0 0l4 5 4-5z'/%3E%3C/svg%3E")
+		no-repeat right 8px center;
+	cursor: pointer;
+	padding: 0 20px 0 8px;
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	outline: none;
+	transition: color .15s, background-color .15s;
+}
+.tpmeta-panel-field .tptypo-unit-sel:hover {
+	color: var(--tp-blue);
+	background-color: var(--tp-blue-lt);
+}
+
+.tpmeta-panel-field .tptypo-select {
+	height: 36px;
+	padding: 0 32px 0 12px;
+	border: 1px solid var(--tp-border);
+	border-radius: var(--tp-radius-sm);
+	font-size: 13px;
+	color: var(--tp-text);
+	background: var(--tp-white)
+		url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7' viewBox='0 0 10 7'%3E%3Cpath fill='%236b7280' d='M0 0l5 7 5-7z'/%3E%3C/svg%3E")
+		no-repeat right 12px center;
+	appearance: none;
+	width: 100%;
+	max-width: 220px;
+	box-sizing: border-box;
+	transition: border-color .15s, box-shadow .15s;
+	cursor: pointer;
+}
+.tpmeta-panel-field .tptypo-select:focus {
+	border-color: var(--tp-blue);
+	box-shadow: 0 0 0 3px rgba(51,98,255,.12);
+	outline: none;
+}
+
+/* ── Toggle groups (Style / Transform) ──────────────────── */
+.tpmeta-panel-field .tptypo-toggle-grp label,
+.tpmeta-panel-field .tptypo-toggle {
+	display: inline-flex !important;
+	margin-bottom: 0 !important;
+}
+.tpmeta-panel-field .tptypo-toggle-grp {
+	display: inline-flex;
+	border: 1px solid var(--tp-border);
+	border-radius: var(--tp-radius-sm);
+	overflow: hidden;
+	height: 36px;
+	background: var(--tp-white);
+	width: fit-content;
+}
+.tpmeta-panel-field .tptypo-toggle {
+	min-width: 56px;
+	padding: 0 16px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 12px;
+	font-weight: 700;
+	color: var(--tp-muted);
+	background: var(--tp-white);
+	border-right: 1px solid var(--tp-border);
+	cursor: pointer;
+	transition: background .18s, color .18s;
+	user-select: none;
+}
+.tpmeta-panel-field .tptypo-toggle:last-child { border-right: 0; }
+.tpmeta-panel-field .tptypo-toggle input { position: absolute; opacity: 0; width: 0; height: 0; }
+.tpmeta-panel-field .tptypo-toggle:hover { background: var(--tp-blue-lt); color: var(--tp-blue); }
+.tpmeta-panel-field .tptypo-toggle.is-active,
+.tpmeta-panel-field .tptypo-toggle:has(input:checked) {
+	background: linear-gradient(135deg, var(--tp-blue) 0%, var(--tp-purple) 100%);
+	color: #fff;
+}
+.tpmeta-panel-field .tptypo-toggle:focus-within {
+	box-shadow: inset 0 0 0 2px rgba(51,98,255,.45);
+}
+
+/* ── Color row ──────────────────────────────────────────── */
+.tpmeta-panel-field .tptypo-color-row {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+}
+.tpmeta-panel-field .tptypo-color-native {
+	width: 0; height: 0;
+	opacity: 0;
+	position: absolute;
+	pointer-events: none;
+}
+.tpmeta-panel-field .tptypo-color-swatch {
+	width: 36px; height: 36px;
+	flex-shrink: 0;
+	border-radius: var(--tp-radius-sm);
+	border: 1px solid var(--tp-border);
+	cursor: pointer;
+	transition: box-shadow .15s, transform .12s;
+}
+.tpmeta-panel-field .tptypo-color-swatch:hover {
+	box-shadow: 0 0 0 3px rgba(51,98,255,.15);
+	transform: scale(1.03);
+}
+.tpmeta-panel-field .tptypo-color-text {
+	flex: 0 0 160px;
+	width: 160px;
+	max-width: 160px;
+	font-family: ui-monospace, Menlo, Consolas, monospace !important;
+	font-size: 12px !important;
+	letter-spacing: .04em;
+}
+
+/* ── Apply To: tag rows, selector input, active pills ───── */
+.tpmeta-panel-field .tptypo-tag-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+.tpmeta-panel-field .tptypo-tag-btn {
+	padding: 4px 11px;
+	font-size: 12px;
+	font-weight: 600;
+	font-family: ui-monospace, Menlo, Consolas, monospace;
+	border: 1px solid var(--tp-border);
+	border-radius: 16px;
+	background: var(--tp-bg);
+	color: var(--tp-text);
+	cursor: pointer;
+	transition: border-color .15s, background .15s, color .15s, transform .12s, box-shadow .15s;
+	white-space: nowrap;
+	line-height: 1.4;
+}
+.tpmeta-panel-field .tptypo-tag-btn:hover {
+	border-color: var(--tp-blue);
+	background: var(--tp-blue-lt);
+	color: var(--tp-blue);
+	transform: translateY(-1px);
+}
+.tpmeta-panel-field .tptypo-tag-btn.is-active {
+	border-color: transparent;
+	background: linear-gradient(135deg, var(--tp-blue) 0%, var(--tp-purple) 100%);
+	color: #fff;
+	transform: translateY(-1px);
+	box-shadow: 0 2px 8px rgba(51,98,255,.28);
+}
+.tpmeta-panel-field .tptypo-tag-btn:focus-visible {
+	outline: none;
+	box-shadow: 0 0 0 3px rgba(51,98,255,.25);
+}
+
+/* Selector input row */
+.tpmeta-panel-field .tptypo-selector-row {
+	display: flex;
+	align-items: center;
+	gap: 0;
+	border: 1px solid var(--tp-border);
+	border-radius: var(--tp-radius-sm);
+	overflow: hidden;
+	background: var(--tp-white);
+	transition: border-color .15s, box-shadow .15s;
+}
+.tpmeta-panel-field .tptypo-selector-row:focus-within {
+	border-color: var(--tp-blue);
+	box-shadow: 0 0 0 3px rgba(51,98,255,.12);
+}
+.tpmeta-panel-field .tptypo-selector-icon {
+	display: flex;
+	align-items: center;
+	padding: 0 8px 0 12px;
+	color: var(--tp-muted);
+	flex-shrink: 0;
+}
+.tpmeta-panel-field .tptypo-selector-input {
+	flex: 1 1 auto;
+	max-width: none !important;
+	height: 36px;
+	border: 0 !important;
+	border-radius: 0 !important;
+	box-shadow: none !important;
+	font-family: ui-monospace, Menlo, Consolas, monospace !important;
+	font-size: 12px !important;
+	padding-left: 0 !important;
+	background: transparent !important;
+}
+.tpmeta-panel-field .tptypo-selector-clear {
+	flex: 0 0 36px;
+	width: 36px;
+	height: 36px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: none;
+	border: 0;
+	border-left: 1px solid var(--tp-border);
+	cursor: pointer;
+	font-size: 13px;
+	color: var(--tp-muted);
+	transition: background .12s, color .12s;
+}
+.tpmeta-panel-field .tptypo-selector-clear:hover {
+	background: #fbeaea;
+	color: var(--tp-danger);
+}
+
+/* Active selector pills */
+.tpmeta-panel-field .tptypo-selector-pills {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	min-height: 0;
+}
+.tpmeta-panel-field .tptypo-selector-pills:empty { display: none; }
+.tpmeta-panel-field .tptypo-pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 3px 4px 3px 10px;
+	background: var(--tp-blue-lt);
+	border: 1px solid rgba(51,98,255,.2);
+	border-radius: 20px;
+	font-size: 12px;
+	color: var(--tp-blue);
+}
+.tpmeta-panel-field .tptypo-pill code {
+	font-family: ui-monospace, Menlo, Consolas, monospace;
+	font-size: 12px;
+	background: none;
+	color: inherit;
+	padding: 0;
+}
+.tpmeta-panel-field .tptypo-pill-remove {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 18px;
+	height: 18px;
+	background: rgba(51,98,255,.15);
+	border: 0;
+	border-radius: 50%;
+	cursor: pointer;
+	font-size: 12px;
+	line-height: 1;
+	color: var(--tp-blue);
+	transition: background .12s, color .12s;
+	padding: 0;
+}
+.tpmeta-panel-field .tptypo-pill-remove:hover {
+	background: var(--tp-danger);
+	color: #fff;
+}
+
+/* ── Preview card ───────────────────────────────────────── */
+.tpmeta-panel-field .tptypo-preview-wrap {
+	background: linear-gradient(135deg, rgba(51,98,255,.04) 0%, rgba(95,74,254,.03) 100%);
+}
+.tpmeta-panel-field .tptypo-preview-card {
+	margin: 12px 16px 16px;
+	padding: 20px 22px;
+	background: var(--tp-white);
+	border: 1px dashed var(--tp-border);
+	border-radius: var(--tp-radius);
+	position: relative;
+	overflow: hidden;
+}
+.tpmeta-panel-field .tptypo-preview-text {
+	font-size: 22px;
+	line-height: 1.45;
+	color: var(--tp-text);
+	min-height: 36px;
+	word-break: break-word;
+	transition: all .25s ease;
+}
+.tpmeta-panel-field .tptypo-preview-meta {
+	margin-top: 10px;
+	padding-top: 10px;
+	border-top: 1px solid rgba(15, 23, 42, .06);
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: .08em;
+	text-transform: uppercase;
+	color: var(--tp-muted);
+}
+
+/* ============================================================
+   Editor (TinyMCE) field
+   ============================================================ */
+.tpmeta-panel-field .tm-editor-wrap {
+	border: 1.5px solid var(--tp-border);
+	border-radius: var(--tp-radius-sm);
+	overflow: hidden;
+}
+.tpmeta-panel-field .tm-editor-wrap .wp-editor-container {
+	border: 0 !important;
+}
+.tpmeta-panel-field .tm-editor-wrap .mce-tinymce {
+	box-shadow: none !important;
+}
+
+/* ============================================================
+   Multicolor swatches
+   ============================================================ */
+.tpmeta-panel-field .tm-multicolor-group {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	align-items: flex-start;
+}
+.tpmeta-panel-field .tm-mcswatch-item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 5px;
+	cursor: pointer;
+	user-select: none;
+}
+.tpmeta-panel-field .tm-mcswatch-input {
+	position: absolute;
+	opacity: 0;
+	width: 0;
+	height: 0;
+	pointer-events: none;
+}
+.tpmeta-panel-field .tm-mcswatch-color {
+	display: block;
+	width: 36px;
+	height: 36px;
+	border-radius: 6px;
+	border: 2px solid transparent;
+	box-shadow: inset 0 0 0 1px rgba(0,0,0,.12), 0 1px 3px rgba(0,0,0,.15);
+	transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+	position: relative;
+	overflow: hidden;
+}
+.tpmeta-panel-field .tm-mcswatch-item:hover .tm-mcswatch-color {
+	transform: scale(1.08);
+	box-shadow: inset 0 0 0 1px rgba(0,0,0,.12), 0 3px 8px rgba(0,0,0,.2);
+}
+.tpmeta-panel-field .tm-mcswatch-input:checked + .tm-mcswatch-color {
+	border-color: var(--tp-primary, #3362FF);
+	transform: scale(1.12);
+	box-shadow: 0 0 0 3px rgba(51,98,255,.25), inset 0 0 0 1px rgba(0,0,0,.1);
+}
+.tpmeta-panel-field .tm-mcswatch-input:checked + .tm-mcswatch-color::after {
+	content: '';
+	position: absolute;
+	left: 50%;
+	top: 46%;
+	width: 10px;
+	height: 6px;
+	border: 2px solid #fff;
+	border-top: none;
+	border-right: none;
+	transform: translate(-50%, -50%) rotate(-45deg);
+	filter: drop-shadow(0 0 1.5px rgba(0,0,0,.5));
+}
+.tpmeta-panel-field .tm-mcswatch-label {
+	font-size: 10px;
+	font-weight: 600;
+	color: var(--tp-muted);
+	text-align: center;
+	max-width: 48px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	text-transform: uppercase;
+	letter-spacing: .04em;
+	line-height: 1.2;
+	transition: color .15s ease;
+}
+.tpmeta-panel-field .tm-mcswatch-item:has(.tm-mcswatch-input:checked) .tm-mcswatch-label {
+	color: var(--tp-primary, #3362FF);
+}
+
+/* ============================================================
+   Multicheck field
+   ============================================================ */
+.tpmeta-panel-field .tm-multicheck-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding-bottom: 10px;
+	margin-bottom: 10px;
+	border-bottom: 1px solid var(--tp-border);
+}
+.tpmeta-panel-field .tm-multicheck-all-label,
+.tpmeta-panel-field .tm-multicheck-item {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	cursor: pointer;
+	user-select: none;
+}
+.tpmeta-panel-field .tm-multicheck-all-label {
+	font-size: 12px;
+	font-weight: 700;
+	color: var(--tp-text);
+}
+.tpmeta-panel-field .tm-multicheck-all-label input,
+.tpmeta-panel-field .tm-multicheck-item input {
+	display: none;
+}
+.tpmeta-panel-field .tm-multicheck-checkmark {
+	width: 18px;
+	height: 18px;
+	flex-shrink: 0;
+	border: 2px solid var(--tp-border);
+	border-radius: 4px;
+	background: var(--tp-white);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: all .15s;
+	position: relative;
+}
+.tpmeta-panel-field .tm-multicheck-checkmark::after {
+	content: '';
+	width: 5px;
+	height: 9px;
+	border: 2px solid transparent;
+	border-top: 0;
+	border-left: 0;
+	transform: rotate(45deg) translate(-1px,-1px);
+	transition: border-color .12s;
+}
+.tpmeta-panel-field .tm-multicheck-item input:checked ~ .tm-multicheck-checkmark,
+.tpmeta-panel-field .tm-multicheck-all-label input:checked ~ .tm-multicheck-checkmark {
+	background: var(--tp-blue);
+	border-color: var(--tp-blue);
+}
+.tpmeta-panel-field .tm-multicheck-item input:checked ~ .tm-multicheck-checkmark::after,
+.tpmeta-panel-field .tm-multicheck-all-label input:checked ~ .tm-multicheck-checkmark::after {
+	border-color: #fff;
+}
+.tpmeta-panel-field .tm-multicheck-item:hover .tm-multicheck-checkmark {
+	border-color: var(--tp-blue);
+}
+.tpmeta-panel-field .tm-multicheck-items {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px 20px;
+}
+.tpmeta-panel-field .tm-multicheck-item-label {
+	font-size: 13px;
+	color: var(--tp-text);
+}
+.tpmeta-panel-field .tm-multicheck-count {
+	font-size: 11px;
+	color: var(--tp-muted);
+	font-weight: 600;
+}
+
+/* ============================================================
+   Code editor field
+   ============================================================ */
+.tpmeta-panel-field .tm-code-editor-wrap {
+	border: 1.5px solid #2d2f3a;
+	border-radius: var(--tp-radius-sm);
+	overflow: hidden;
+	background: #0d0f1a;
+}
+.tpmeta-panel-field .tm-code-toolbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 6px 10px;
+	background: #1a1c2a;
+	border-bottom: 1px solid #2d2f3a;
+}
+.tpmeta-panel-field .tm-code-lang-badge {
+	font-size: 10px;
+	font-weight: 700;
+	padding: 2px 8px;
+	border-radius: 3px;
+	color: #0d0f1a;
+	letter-spacing: .05em;
+}
+.tpmeta-panel-field .tm-code-copy-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	font-size: 11px;
+	font-weight: 600;
+	color: #9ca3af;
+	background: transparent;
+	border: 1px solid #374151;
+	border-radius: 4px;
+	padding: 3px 8px;
+	cursor: pointer;
+	transition: all .15s;
+}
+.tpmeta-panel-field .tm-code-copy-btn:hover,
+.tpmeta-panel-field .tm-code-copy-btn.is-copied {
+	background: #1f4a3f;
+	border-color: #10b981;
+	color: #10b981;
+}
+.tpmeta-panel-field .tm-code-copy-btn .dashicons {
+	font-size: 13px;
+	width: 13px;
+	height: 13px;
+}
+.tpmeta-panel-field .tm-code-textarea {
+	display: block;
+	width: 100% !important;
+	min-height: 220px;
+	padding: 14px 16px !important;
+	background: #0d0f1a !important;
+	color: #f0f0f0 !important;
+	font-family: ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace !important;
+	font-size: 13px !important;
+	line-height: 1.7 !important;
+	border: 0 !important;
+	resize: vertical;
+	outline: none !important;
+	box-shadow: none !important;
+	box-sizing: border-box;
+	tab-size: 2;
+}
+
+/* ============================================================
+   Radio Buttonset — icon variant enhancements
+   ============================================================ */
+.tpmeta-panel-field .tm-rbs-group .tm-button-radio .tm-rbs-icon {
+	font-size: 15px;
+	width: 15px;
+	height: 15px;
+	flex-shrink: 0;
+	line-height: 1;
+	transition: transform .22s cubic-bezier(.34,.95,.64,1);
+}
+
+/* Icon pops slightly when its button is active */
+.tpmeta-panel-field .tm-rbs-group .tm-button-radio:has(input:checked) .tm-rbs-icon {
+	transform: scale(1.18);
+}
+
+/* ============================================================
+   Repeater field
+   ============================================================ */
+.tpmeta-panel-field .tm-repeater {
+	border: 1.5px solid var(--tp-border);
+	border-radius: var(--tp-radius-sm);
+	overflow: hidden;
+}
+.tpmeta-panel-field .tm-repeater-rows { background: var(--tp-bg); }
+.tpmeta-panel-field .tm-repeater-row {
+	border-bottom: 1px solid var(--tp-border);
+	background: var(--tp-white);
+	transition: background .15s;
+}
+.tpmeta-panel-field .tm-repeater-row:last-child { border-bottom: 0; }
+.tpmeta-panel-field .tm-rptr-header {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 10px 14px;
+	background: var(--tp-bg);
+	border-bottom: 1px solid var(--tp-border);
+	cursor: pointer;
+}
+.tpmeta-panel-field .tm-rptr-handle {
+	display: flex;
+	align-items: center;
+	padding: 0 2px;
+	color: var(--tp-muted);
+	cursor: grab;
+	flex-shrink: 0;
+	opacity: .5;
+	transition: opacity .15s;
+}
+.tpmeta-panel-field .tm-rptr-handle:hover { opacity: 1; }
+.tpmeta-panel-field .tm-rptr-handle:active { cursor: grabbing; }
+.tpmeta-panel-field .tm-rptr-toggle {
+	width: 24px;
+	height: 24px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: transparent;
+	border: 0;
+	cursor: pointer;
+	color: var(--tp-muted);
+	flex-shrink: 0;
+	transition: transform .2s;
+}
+.tpmeta-panel-field .tm-repeater-row.is-collapsed .tm-rptr-toggle {
+	transform: rotate(-90deg);
+}
+.tpmeta-panel-field .tm-rptr-title {
+	flex: 1 1 auto;
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--tp-text);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.tpmeta-panel-field .tm-rptr-actions {
+	display: flex;
+	gap: 4px;
+}
+.tpmeta-panel-field .tm-rptr-remove {
+	width: 24px;
+	height: 24px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: transparent;
+	border: 0;
+	color: var(--tp-muted);
+	cursor: pointer;
+	border-radius: 4px;
+	transition: all .15s;
+}
+.tpmeta-panel-field .tm-rptr-remove:hover {
+	background: rgba(214,54,56,.08);
+	color: var(--tp-danger);
+}
+.tpmeta-panel-field .tm-rptr-body {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	padding: 14px;
+	box-sizing: border-box;
+}
+.tpmeta-panel-field .tm-repeater-row.is-collapsed .tm-rptr-body {
+	display: none;
+}
+
+/* column layout — driven by data-columns on .tm-repeater */
+.tpmeta-panel-field .tm-repeater .tm-rptr-field {
+	width: 100%;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+.tpmeta-panel-field .tm-repeater[data-columns="2"] .tm-rptr-field { width: calc(50% - 6px); }
+.tpmeta-panel-field .tm-repeater[data-columns="3"] .tm-rptr-field { width: calc(33.33% - 8px); }
+.tpmeta-panel-field .tm-repeater[data-columns="4"] .tm-rptr-field { width: calc(25% - 9px); }
+.tpmeta-panel-field .tm-rptr-label {
+	font-size: 10px !important;
+	font-weight: 700 !important;
+	color: var(--tp-muted) !important;
+	text-transform: uppercase;
+	letter-spacing: .06em;
+	margin: 0 !important;
+}
+.tpmeta-panel-field .tm-repeater-add-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	width: 100%;
+	padding: 10px;
+	background: var(--tp-white);
+	border: 0;
+	border-top: 1.5px dashed var(--tp-border);
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--tp-muted);
+	cursor: pointer;
+	transition: all .15s;
+}
+.tpmeta-panel-field .tm-repeater-add-btn:hover {
+	background: var(--tp-blue-lt);
+	color: var(--tp-blue);
+	border-color: var(--tp-blue);
+}
+.tpmeta-panel-field .tm-repeater-add-btn .dashicons {
+	font-size: 15px;
+	width: 15px;
+	height: 15px;
+}
+
+/* ── Dragula mirror (the element that follows the cursor) ─────────────
+   NOTE: dragula appends .gu-mirror to <body>, so CSS vars scoped to
+   .tpmeta-options-wrap are unavailable here. Use hardcoded values.    */
+.gu-mirror.tm-repeater-row {
+	width: var(--gu-mirror-w, 560px) !important; /* JS sets --gu-mirror-w on :root */
+	background: #ffffff !important;
+	border: 1.5px solid #3362ff !important;
+	border-radius: 6px !important;
+	box-shadow: 0 6px 24px rgba(0,0,0,.18) !important;
+	overflow: hidden !important;
+	list-style: none !important;
+	cursor: grabbing !important;
+}
+/* Mirror: show only the header — hide the field body */
+.gu-mirror.tm-repeater-row .tm-rptr-body { display: none !important; }
+/* Mirror header: self-contained flex layout (no parent-scoped CSS applies) */
+.gu-mirror.tm-repeater-row .tm-rptr-header {
+	display: flex !important;
+	align-items: center !important;
+	gap: 8px !important;
+	padding: 10px 14px !important;
+	background: #f4f6fb !important;
+	border-bottom: none !important;
+	cursor: grabbing !important;
+}
+.gu-mirror.tm-repeater-row .tm-rptr-handle,
+.gu-mirror.tm-repeater-row .tm-rptr-toggle {
+	display: flex !important;
+	align-items: center !important;
+	flex-shrink: 0 !important;
+}
+.gu-mirror.tm-repeater-row .tm-rptr-title {
+	flex: 1 1 auto !important;
+	font-size: 12px !important;
+	font-weight: 600 !important;
+	color: #010f1c !important;
+	white-space: nowrap !important;
+	overflow: hidden !important;
+	text-overflow: ellipsis !important;
+}
+/* Mirror: hide the remove button — no point showing it on the drag ghost */
+.gu-mirror.tm-repeater-row .tm-rptr-actions { display: none !important; }
+
+/* ── Dragula transit (drop-position placeholder left in the list) ──── */
+.gu-transit.tm-repeater-row {
+	opacity: 1 !important;
+	background: #eef2ff !important;
+	border: 1.5px dashed #3362ff !important;
+	border-radius: 6px !important;
+	overflow: hidden !important;
+}
+/* Transit: hide field body — keep only a compact header as the indicator */
+.gu-transit.tm-repeater-row .tm-rptr-body { display: none !important; }
+.gu-transit.tm-repeater-row .tm-rptr-header {
+	background: transparent !important;
+	border-bottom: none !important;
+	opacity: .55 !important;
+}
+
+/* ============================================================
+   Color Gradient field
+   ============================================================ */
+.tpmeta-panel-field .tm-gradient-wrap {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+.tpmeta-panel-field .tm-gradient-preview {
+	height: 52px;
+	border-radius: var(--tp-radius-sm);
+	border: 1.5px solid var(--tp-border);
+	background: linear-gradient(135deg, #3362FF 0%, #5F4AFE 100%);
+	transition: background .2s;
+}
+.tpmeta-panel-field .tm-gradient-controls {
+	background: var(--tp-bg);
+	border: 1.5px solid var(--tp-border);
+	border-radius: var(--tp-radius-sm);
+	padding: 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+.tpmeta-panel-field .tm-gradient-row {
+	display: flex;
+	align-items: flex-end;
+	gap: 16px;
+	flex-wrap: wrap;
+}
+.tpmeta-panel-field .tm-gradient-field {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+.tpmeta-panel-field .tm-gradient-stops {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+.tpmeta-panel-field .tm-grd-stop {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+.tpmeta-panel-field .tm-grd-stop .wp-picker-container { flex-shrink: 0; }
+.tpmeta-panel-field .tpgrd-remove-stop {
+	width: 28px;
+	height: 28px;
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: transparent;
+	border: 1.5px solid var(--tp-border);
+	border-radius: var(--tp-radius-sm);
+	color: var(--tp-muted);
+	cursor: pointer;
+	transition: all .15s;
+}
+.tpmeta-panel-field .tpgrd-remove-stop:hover {
+	background: rgba(214,54,56,.08);
+	border-color: var(--tp-danger);
+	color: var(--tp-danger);
+}
+.tpmeta-panel-field .tpgrd-add-stop {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	padding: 6px 12px;
+	background: var(--tp-white);
+	border: 1.5px dashed var(--tp-border);
+	border-radius: var(--tp-radius-sm);
+	font-size: 11px;
+	font-weight: 600;
+	color: var(--tp-muted);
+	cursor: pointer;
+	transition: all .15s;
+	align-self: flex-start;
+}
+.tpmeta-panel-field .tpgrd-add-stop:hover {
+	border-color: var(--tp-blue);
+	color: var(--tp-blue);
+	background: var(--tp-blue-lt);
+}
+
+/* ============================================================
+   Spacing field — compact 2×2 grid
+   ============================================================ */
+.tpmeta-panel-field .tm-spacing-wrap {
+    display: flex;
+    min-width: 0;
+    align-items: start;
+    column-gap: 10px;
+}
+.tpmeta-panel-field .tm-spacing-grid {
+	display: flex;
+	column-gap: 6px;
+	width: 190px;
+}
+.tm-spacing-grid > * {
+    width: 25%;
+}
+.tpmeta-panel-field .tm-spc-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    max-width: 55px;
+}
+/* High-specificity selector beats the global width:100% rule */
+.tpmeta-panel-field .tm-spacing-grid input[type="number"].tm-spc-num {
+	width: 100% !important;
+	max-width: 100% !important;
+	min-width: 0 !important;
+	height: 36px !important;
+	text-align: center !important;
+	padding: 0 6px !important;
+	font-size: 13px !important;
+	border: 1.5px solid var(--tp-border) !important;
+	border-radius: var(--tp-radius-sm) !important;
+	box-sizing: border-box !important;
+	background: var(--tp-white) !important;
+	color: var(--tp-text) !important;
+	box-shadow: none !important;
+	-moz-appearance: textfield !important;
+}
+.tpmeta-panel-field .tm-spacing-grid input[type="number"].tm-spc-num::-webkit-inner-spin-button,
+.tpmeta-panel-field .tm-spacing-grid input[type="number"].tm-spc-num::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+.tpmeta-panel-field .tm-spacing-grid input[type="number"].tm-spc-num:focus {
+	border-color: var(--tp-blue) !important;
+	outline: none !important;
+	box-shadow: 0 0 0 3px rgba(51,98,255,.12) !important;
+}
+.tpmeta-panel-field .tm-spc-lbl {
+	font-size: 9px;
+	font-weight: 700;
+	color: var(--tp-muted);
+	text-transform: uppercase;
+	letter-spacing: .06em;
+}
+.tpmeta-panel-field .tm-spacing-footer {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    /* margin-top: 8px; */
+    width: 90px;
+}
+.tpmeta-panel-field .tm-spc-link {
+	width: 30px;
+	height: 30px;
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: var(--tp-bg);
+	border: 1.5px solid var(--tp-border);
+	border-radius: 50%;
+	cursor: pointer;
+	color: var(--tp-muted);
+	transition: all .15s;
+}
+.tpmeta-panel-field .tm-spc-link.is-linked {
+	background: var(--tp-blue-lt);
+	border-color: var(--tp-blue);
+	color: var(--tp-blue);
+}
+.tpmeta-panel-field .tm-spc-link:hover { border-color: var(--tp-blue); color: var(--tp-blue); }
+.tpmeta-panel-field .tm-spc-link .dashicons { font-size: 14px; width: 14px; height: 14px; }
+.tpmeta-panel-field .tm-spc-unit-sel {
+    flex: 1 1 auto;
+    height: 30px !important;
+    padding: 0 6px !important;
+    font-size: 12px !important;
+    font-weight: 600;
+    text-align: center;
+    border: 1.5px solid var(--tp-border) !important;
+    border-radius: var(--tp-radius-sm) !important;
+    background: var(--tp-bg) !important;
+    color: var(--tp-muted) !important;
+    box-sizing: border-box !important;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    box-shadow: none !important;
+    max-width: 50px;
+}
+.tpmeta-panel-field .tm-spc-unit-sel:focus { border-color: var(--tp-blue) !important; outline: none !important; }

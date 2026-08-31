@@ -1,0 +1,2615 @@
+/*!
+ * PureMetaFields - v1.3.1 - 2022-03-12
+ * https://tpmetabox.net
+ * Copyright (c) 2022
+ * Licensed GPLv2+
+ */
+
+
+.tm-meta-wrapper {
+    /* Design tokens — mirror the options panel for visual consistency */
+    --tp-blue:      #3362FF;
+    --tp-blue-lt:   #eef2ff;
+    --tp-purple:    #5F4AFE;
+    --tp-text:      #010F1C;
+    --tp-muted:     #6b7280;
+    --tp-border:    #e5e7eb;
+    --tp-bg:        #f4f6fb;
+    --tp-white:     #ffffff;
+    --tp-danger:    #d63638;
+    --tp-radius-sm: 6px;
+}
+
+.tm-meta-wrapper:not(#side-sortables .tm-meta-wrapper) {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.tm-meta-column-1:not(#side-sortables .tm-meta-wrapper) .tm-field-row:not(#side-sortables .tm-meta-wrapper) {
+    flex: 0 0 100%;
+}
+
+.tm-meta-column-2:not(#side-sortables .tm-meta-wrapper) .tm-field-row:not(#side-sortables .tm-meta-wrapper) {
+    flex: 0 0 50%;
+}
+
+.tm-meta-column-3:not(#side-sortables .tm-meta-wrapper) .tm-field-row:not(#side-sortables .tm-meta-wrapper) {
+    flex: 0 0 33.33%;
+}
+
+.tm-meta-column-4:not(#side-sortables .tm-meta-wrapper) .tm-field-row:not(#side-sortables .tm-meta-wrapper) {
+    flex: 0 0 25%;
+}
+
+.tm-meta-column-5:not(#side-sortables .tm-meta-wrapper) .tm-field-row:not(#side-sortables .tm-meta-wrapper) {
+    flex: 0 0 20%;
+}
+.tm-meta-column-6:not(#side-sortables .tm-meta-wrapper) .tm-field-row:not(#side-sortables .tm-meta-wrapper) {
+    flex: 0 0 16.66%;
+}
+
+.tm-meta-column-7:not(#side-sortables .tm-meta-wrapper) .tm-field-row:not(#side-sortables .tm-meta-wrapper) {
+    flex: 0 0 14.28%;
+}
+
+.tm-meta-column-8:not(#side-sortables .tm-meta-wrapper) .tm-field-row:not(#side-sortables .tm-meta-wrapper) {
+    flex: 0 0 12.5%;
+}
+
+.tm-meta-column-9:not(#side-sortables .tm-meta-wrapper) .tm-field-row:not(#side-sortables .tm-meta-wrapper) {
+    flex: 0 0 11.11%;
+}
+
+.tm-meta-column-10:not(#side-sortables .tm-meta-wrapper) .tm-field-row:not(#side-sortables .tm-meta-wrapper) {
+    flex: 0 0 10%;
+}
+
+.tm-meta-column-11:not(#side-sortables .tm-meta-wrapper) .tm-field-row:not(#side-sortables .tm-meta-wrapper) {
+    flex: 0 0 9%;
+}
+
+.tm-meta-column-12:not(#side-sortables .tm-meta-wrapper) .tm-field-row:not(#side-sortables .tm-meta-wrapper) {
+    flex: 0 0 8.33%;
+}
+
+.tm-field-row:not(#side-sortables .tm-meta-wrapper) {
+    width: 33.33%;
+    padding: 8px 10px 14px;
+}
+
+#side-sortables .tm-meta-wrapper .tm-field-row {
+    width: 100%;
+}
+
+.repeater-field .tm-field-row:not(#side-sortables .tm-meta-wrapper) {
+    width: 100%;
+}
+
+#side-sortables .tm-meta-wrapper .tm-field-row {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.tm-field-row .tm-field-row {
+    padding: 0 2px 15px;
+    margin-top: 10px;
+}
+
+/* Repeater rows follow the section's column count like any other field
+   (per user direction: only .section_heading is full width). The earlier
+   `grid-column: span 6 / span 6` was a no-op in the flex container and
+   has been removed. */
+
+.tm-field-row>label,
+.tm-field-row>.label {
+    display: block !important;
+    font-weight: 600;
+    margin-bottom: 8px !important;
+    font-size: 13px;
+    line-height: 1.4;
+    color: #1d2327;
+}
+
+.tm-field-row>label.label-repeater,
+.tm-field-row>.label {
+    font-size: 20px;
+}
+
+#tm-meta-box .postbox-header h2 {
+    font-size: 16px;
+}
+
+.tm-input {
+    height: 40px;
+}
+
+.tm-input-sm {
+    width: 100%;
+}
+
+.tm-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 22px;
+}
+
+.tm-switch input,
+.tm-button-groups input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    display: none;
+}
+
+.tm-slider {
+    display: inline-block;
+    width: 46px;
+    height: 24px;
+    background: #cad2ef;
+    border-radius: 20px;
+    position: relative;
+    -webkit-transition: all .3s 0s ease-out;
+    -moz-transition: all .3s 0s ease-out;
+    -ms-transition: all .3s 0s ease-out;
+    -o-transition: all .3s 0s ease-out;
+    transition: all .3s 0s ease-out;
+    cursor: pointer;
+}
+
+.tm-slider::before {
+    display: inline-block;
+    position: absolute;
+    content: "";
+    top: 3px;
+    left: 3px;
+    bottom: 3px;
+    right: 54%;
+    border-radius: 50%;
+    box-shadow: 1px 2px 3px rgba(18, 20, 32, .3);
+    background-image: -webkit-linear-gradient(180deg, #FFFFFF 0%, #D6DCEF 100%);
+    background-image: -moz-linear-gradient(180deg, #FFFFFF 0%, #D6DCEF 100%);
+    background-image: -ms-linear-gradient(180deg, #FFFFFF 0%, #D6DCEF 100%);
+    background-image: -o-linear-gradient(180deg, #FFFFFF 0%, #D6DCEF 100%);
+    background-image: linear-gradient(180deg, #FFFFFF 0%, #D6DCEF 100%);
+    transition: .25s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+    transition-property: all;
+    transition-delay: 0s;
+    transition-property: left, right;
+    transition-delay: 0s, .08s;
+}
+
+
+.tm-meta-wrapper input:checked+.tm-slider,
+.tm-meta-wrapper input:checked+span {
+    background-color: #3362FF;
+    color: #fefefe;
+    border-color: #f1eded;
+}
+/* Active border on the button-radio label itself when its radio is checked */
+.tm-meta-wrapper .tm-button-groups .tm-button-radio:has(input:checked) {
+    border-color: #3362FF;
+}
+.tm-meta-wrapper input:focus+.tm-slider,
+.tm-meta-wrapper input:focus+span {
+    box-shadow: 0 0 1px #010F1C;
+}
+
+.tm-meta-wrapper input:checked+.tm-slider:before {
+    left: 54%;
+    right: 3px;
+    transition: .25s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+    transition-property: all;
+    transition-delay: 0s;
+    transition-property: left, right;
+    transition-delay: .08s, 0s;
+}
+
+.tm-button-groups {
+    display: flex;
+    flex-wrap: wrap;
+
+}
+
+
+.tm-button-groups .tm-button-radio {
+    border: 1px solid #f1eded;
+    display: flex;
+    text-align: center;
+    margin-right: 3px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+}
+
+.tm-button-groups .tm-button-radio span {
+    width: 100%;
+    padding: 12px 37px;
+    transition: 0.4s;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.tm-textarea {
+    height: 150px;
+    width: 100%;
+}
+.tm-meta-wrapper .tm-textarea {
+    height: 150px;
+    line-height: 1.5;
+    resize: vertical;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tm-gallery-field button,
+.tm-image-field button {
+    font-size: 14px;
+    color: #3c434a;
+    text-align: center;
+    border: 1px solid #E0E2E3;
+    font-weight: 500;
+    -webkit-transition: all 0.3s 0s ease-in-out;
+    -moz-transition: all 0.3s 0s ease-in-out;
+    -ms-transition: all 0.3s 0s ease-in-out;
+    -o-transition: all 0.3s 0s ease-in-out;
+    transition: all 0.3s 0s ease-in-out;
+    background-color: #f6f6f9;
+    border-radius: 6px;
+    padding: 11px 17px;
+    display: flex;
+    align-items: center;
+}
+
+.tm-gallery-field button svg,
+.tm-image-field button svg {
+    -webkit-transform: translateY(2px);
+    -moz-transform: translateY(2px);
+    -ms-transform: translateY(2px);
+    -o-transform: translateY(2px);
+    transform: translateY(2px);
+
+}
+
+.tm-gallery-field button>*,
+.tm-image-field button>* {
+    margin: 0 3px;
+}
+
+.tm-gallery-field button:hover,
+.tm-image-field button:hover {
+    background-color: #5F4AFE;
+    border-color: #5F4AFE;
+    color: #fff;
+    cursor: pointer;
+}
+.tm-field-row:not(.image) .tm-gallery-container {
+    margin-top: 15px;
+}
+
+.tm-gallery-actions,
+.tm-gallery-img-actions {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all .4s ease;
+}
+.tm-gallery-item:hover .tm-gallery-actions,
+.tm-gallery-img-actions {
+    opacity: 1;
+    visibility: visible;
+}
+
+.tm-gallery-actions a,
+.tm-gallery-img-actions a {
+    color: #fff;
+    font-size: 11px;
+    text-decoration: none;
+    display: inline-block;
+    background: #3362FF;
+    transition: 0.3s;
+}
+
+.tm-gallery-actions a:hover,
+.tm-gallery-img-actions a:hover {
+    color: #fff;
+    background: #f00;
+
+}
+
+.tm-gallery-actions span,
+.tm-gallery-img-actions span {
+    font-size: 15px;
+    width: 24px;
+    height: 24px;
+    line-height: 23px;
+    text-align: center;
+    transform: translateX(1px);
+}
+
+.tm-gallery-img img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border: 1px solid #E0E2E3;
+}
+
+.tm-image-actions {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    color: #fff;
+    box-sizing: border-box;
+    padding: 10px;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.3s;
+    text-align: right;
+}
+
+.tm-image-actions a {
+    color: #fff;
+}
+.tm-image-actions a.delete {
+    margin-left: auto;
+}
+
+.tm-image-actions a:hover {
+    color: #ccc;
+    transition: 0.3s;
+}
+
+.tm-gallery-item {
+    margin: 0 10px 10px 0;
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    width: 170px;
+    height: auto;
+    transition: 0.3s;
+}
+
+.tm-gallery-item:hover>.tm-image-actions {
+    visibility: visible;
+    opacity: 1;
+    transition: 0.3s;
+}
+
+.tp-metabox-repeater .tp-metabox-repeater-item-wrapper {
+    padding: 10px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+.tp-metabox-repeater .tp-metabox-repeater-item-wrapper .tm-field-row {
+    padding: 0;
+}
+
+/* ── Repeater column layout ──────────────────────────────────────────────── */
+
+/* Default: all fields full-width */
+.tp-metabox-repeater .tp-metabox-repeater-item-wrapper .repeater-field {
+    box-sizing: border-box;
+    min-width: 0; /* prevent grid blowout */
+}
+
+/* 1-column (default, explicit) */
+.tp-metabox-repeater .tp-metabox-repeater-item-wrapper[data-columns="1"] .repeater-field,
+.tp-metabox-repeater .tp-metabox-repeater-item-wrapper.columns-1 .repeater-field {
+    width: 100%;
+}
+
+/* 2-column — CSS grid, equal columns, 14px gap */
+.tp-metabox-repeater .tp-metabox-repeater-item-wrapper[data-columns="2"],
+.tp-metabox-repeater .tp-metabox-repeater-item-wrapper.columns-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px 14px;
+}
+/* Color pickers need a fixed min-width so the Iris widget fits */
+.tp-metabox-repeater .tp-metabox-repeater-item-wrapper[data-columns="2"] .repeater-field:has(.tm-field-row.colorpicker),
+.tp-metabox-repeater .tp-metabox-repeater-item-wrapper.columns-2 .repeater-field:has(.tm-field-row.colorpicker) {
+    min-width: 220px;
+}
+
+/* 3-column — CSS grid, equal columns, 10px gap */
+.tp-metabox-repeater .tp-metabox-repeater-item-wrapper[data-columns="3"],
+.tp-metabox-repeater .tp-metabox-repeater-item-wrapper.columns-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px 10px;
+}
+.tp-metabox-repeater .tp-metabox-repeater-item-wrapper[data-columns="3"] .repeater-field:has(.tm-field-row.colorpicker),
+.tp-metabox-repeater .tp-metabox-repeater-item-wrapper.columns-3 .repeater-field:has(.tm-field-row.colorpicker) {
+    min-width: 220px;
+}
+
+.tp-metabox-repeater .tp-metabox-repeater-row:not(:last-child) {
+    margin-bottom: 8px;
+}
+
+.tp-metabox-repeater .tp-metabox-repeater-row {
+    border: 1px solid #E0E2E3;
+    outline: 0;
+    text-align: left;
+}
+
+/* #side-sortables .tp-metabox-repeater .tp-metabox-repeater-row {
+    padding: 17px 0px 17px 10px;
+} */
+/* #side-sortables .tm-field-row:not(.image) .tm-gallery-container {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0px;
+} */
+.tp-metabox-repeater .tp-metabox-repeater-row .tp-metabox-repeater-collapse,
+.tp-metabox-repeater-row .tp-metabox-repeater-collapse {
+    padding: 10px 20px;
+    display: flex;
+    width: 100%;
+    background-color: transparent;
+    border: 0;
+    border-bottom: 1px solid #ddd;
+    font-size: 16px;
+    font-weight: 500;
+    color: #010F1C;
+    -webkit-transition: all 0.3s 0s ease-in-out;
+    -moz-transition: all 0.3s 0s ease-in-out;
+    -ms-transition: all 0.3s 0s ease-in-out;
+    -o-transition: all 0.3s 0s ease-in-out;
+    transition: all 0.3s 0s ease-in-out;
+}
+
+.tp-metabox-repeater .tp-metabox-repeater-row .tp-metabox-repeater-collapse span svg {
+    margin-right: 3px;
+}
+
+
+.tp-metabox-repeater .tp-metabox-repeater-row .tp-metabox-repeater-collapse:hover {
+    color: #3362FF;
+    cursor: pointer;
+}
+
+.tp-metabox-repeater .tp-metabox-repeater-row.dragged {
+    background: #efefef;
+}
+
+.tp-metabox-repeater .tp-metabox-repeater-row.dragged {
+    cursor: grabbing;
+}
+
+.tp-metabox-repeater .tp-metabox-repeater-row table {
+    width: 100%;
+}
+
+.tp-metabox-repeater .tp-metabox-repeater-row table tr {
+    margin-bottom: 20px;
+}
+
+.tp-metabox-repeater .tp-metabox-repeater-row table th {
+    text-align: left;
+    vertical-align: baseline;
+}
+
+.repeater-field {
+    margin-bottom: 20px;
+}
+
+
+/* external css */
+.tm-meta-wrapper .select2-container {
+    max-width: 380px !important;
+    width: 100% !important;
+}
+
+.tm-meta-wrapper .select2-container .select2-selection--single {
+    height: 36px !important;
+}
+
+.tm-meta-wrapper .select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: #444;
+    line-height: 36px !important;
+}
+
+.tm-meta-wrapper .select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 36px !important;
+}
+
+/* Override vendor select2 default — drop the 20px right margin on the
+   "x" clear button so it sits flush with the dropdown arrow. */
+.select2-container--default .select2-selection--single .select2-selection__clear {
+    margin-right: 0 !important;
+}
+
+.tm-meta-wrapper .wp-picker-container {
+    max-width: 380px;
+    width: 100%;
+}
+
+.tm-meta-wrapper .wp-picker-container .wp-color-result.button,
+.tm-meta-wrapper .wp-color-result {
+    padding: 0 0 0 50px;
+    max-width: 200px !important;
+    width: 100% !important;
+    font-size: 14px;
+    color: #010F1C;
+    outline: 0;
+    -webkit-transition: all 0.3s 0s ease-in-out;
+    -moz-transition: all 0.3s 0s ease-in-out;
+    -ms-transition: all 0.3s 0s ease-in-out;
+    -o-transition: all 0.3s 0s ease-in-out;
+    transition: all 0.3s 0s ease-in-out;
+    border: 1px solid #E0E2E3;
+    background: #f6f6f9;
+    border-radius: 6px;
+}
+.tm-meta-wrapper .wp-color-result-text {
+	border-left: 1px solid #E0E2E3;
+}
+
+.tm-meta-wrapper .wp-color-result {
+    height: 44px;
+}
+
+.tm-meta-wrapper .wp-picker-clear {
+    height: 26px;
+    padding: 0 10px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 24px;
+    border-radius: 50px;
+    border: 1.5px solid #e2e6ed;
+    background: #fff;
+    color: #5b6470;
+    cursor: pointer;
+    -webkit-transition: border-color .15s, color .15s, background .15s;
+    transition: border-color .15s, color .15s, background .15s;
+    box-shadow: none;
+    text-shadow: none;
+    vertical-align: middle;
+}
+
+.tm-meta-wrapper .wp-picker-clear:hover,
+.tm-meta-wrapper .wp-picker-clear:focus {
+    border-color: #d63638;
+    color: #d63638;
+    background: #fbeaea;
+    box-shadow: none;
+    outline: none;
+}
+
+.tm-meta-wrapper .wp-color-result-text {
+    line-height: 2.8;
+    height: 40px;
+    color: #3c434a;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+
+.tm-meta-wrapper input[type=text],
+.tm-meta-wrapper input[type=email],
+.tm-meta-wrapper input[type=tel],
+.tm-meta-wrapper input[type=number],
+.tm-meta-wrapper input[type=password],
+.tm-meta-wrapper input[type=url],
+.tm-meta-wrapper input[type=search] {
+    outline: none;
+    height: 45px;
+    width: 100%;
+    line-height: 45px;
+    font-size: 14px;
+    color: #010F1C;
+    outline: 0;
+    padding: 16px 27px 16px 20px;
+    -webkit-transition: all 0.3s 0s ease-in-out;
+    -moz-transition: all 0.3s 0s ease-in-out;
+    -ms-transition: all 0.3s 0s ease-in-out;
+    -o-transition: all 0.3s 0s ease-in-out;
+    transition: all 0.3s 0s ease-in-out;
+    border: 1px solid #e0e1e3;;
+    background: transparent;
+    border-radius: 6px;
+}
+.tm-meta-wrapper textarea {
+    width: 100%;
+    font-size: 14px;
+    color: #010F1C;
+    padding: 12px 20px;
+    border: 1px solid #e0e1e3;
+    background: transparent;
+    border-radius: 6px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    resize: vertical;
+}
+
+.tm-meta-wrapper input[type=text]::-webkit-input-placeholder,
+.tm-meta-wrapper input[type=email]::-webkit-input-placeholder,
+.tm-meta-wrapper input[type=tel]::-webkit-input-placeholder,
+.tm-meta-wrapper input[type=number]::-webkit-input-placeholder,
+.tm-meta-wrapper input[type=password]::-webkit-input-placeholder,
+.tm-meta-wrapper input[type=url]::-webkit-input-placeholder,
+.tm-meta-wrapper input[type=search]::-webkit-input-placeholder,
+.tm-meta-wrapper textarea::-webkit-input-placeholder {
+    color: #a3aab2;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+
+input[type=text]:focus,
+input[type=email]:focus,
+input[type=tel]:focus,
+input[type=number]:focus,
+input[type=password]:focus,
+input[type=url]:focus,
+input[type=search]:focus,
+.tm-meta-wrapper textarea:focus {
+    outline: 0;
+    box-shadow: none;
+    border-color: #5F4AFE;;
+}
+
+input[type=text]:focus::placeholder,
+input[type=email]:focus::placeholder,
+input[type=tel]:focus::placeholder,
+input[type=number]:focus::placeholder,
+input[type=password]:focus::placeholder,
+input[type=url]:focus::placeholder,
+input[type=search]:focus::placeholder,
+.tm-meta-wrapper textarea:focus::placeholder {
+    opacity: 0;
+}
+
+#side-sortables .tm-meta-wrapper input[type=text],
+#side-sortables .tm-meta-wrapper input[type=email],
+#side-sortables .tm-meta-wrapper input[type=tel],
+#side-sortables .tm-meta-wrapper input[type=number],
+#side-sortables .tm-meta-wrapper input[type=password],
+#side-sortables .tm-meta-wrapper input[type=url],
+#side-sortables .tm-meta-wrapper input[type=search],
+#side-sortables .tm-meta-wrapper textarea {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#side-sortables .tm-meta-wrapper input[type=text] {
+    height: 45px;
+}
+
+.tm-meta-wrapper textarea {
+    line-height: 1.4;
+    padding-top: 17px;
+    padding-bottom: 17px;
+    height: 165px;
+}
+
+.tp-repeater-row-add-btn {
+    font-size: 14px;
+    color: #010F1C;
+    text-align: center;
+    padding: 9px 30px;
+    border: 1px solid #E0E2E3;
+    font-weight: 600;
+    margin-top: 15px;
+    -webkit-transition: all 0.3s 0s ease-in-out;
+    -moz-transition: all 0.3s 0s ease-in-out;
+    -ms-transition: all 0.3s 0s ease-in-out;
+    -o-transition: all 0.3s 0s ease-in-out;
+    transition: all 0.3s 0s ease-in-out;
+    background-color: #F5F5F5;
+    
+}
+
+.tp-repeater-row-add-btn:hover {
+    background-color: #010F1C;
+    border-color: #010F1C;
+    color: #fff;
+    cursor: pointer;
+}
+
+.tp-repeater-row-delete-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: 0;
+    outline: 0;
+    background-color: transparent;
+    color: #010F1C;
+    border-left: 1px solid #E0E2E3;
+    width: 50px;
+    height: 40px;
+    text-align: center;
+    line-height: 38px;
+    -webkit-transition: all 0.3s 0s ease-in-out;
+    -moz-transition: all 0.3s 0s ease-in-out;
+    -ms-transition: all 0.3s 0s ease-in-out;
+    -o-transition: all 0.3s 0s ease-in-out;
+    transition: all 0.3s 0s ease-in-out;
+    
+}
+
+.tp-repeater-row-delete-btn svg {
+
+    -webkit-transform: translateY(4px);
+    -moz-transform: translateY(4px);
+    -ms-transform: translateY(4px);
+    -o-transform: translateY(4px);
+    transform: translateY(4px);
+}
+
+.tp-repeater-row-delete-btn:hover {
+    color: #f00;
+    cursor: pointer;
+}
+
+.tp-metabox-repeater-row {
+    position: relative;
+}
+
+
+.tm-field-row .select2-container--default .select2-selection--single {
+    background-color: #fff;
+    border: 1px solid #E0E2E3;
+    border-radius: 0;
+}
+
+.tm-meta-wrapper .select2-container .select2-selection--single {
+    height: 36px !important;
+}
+
+.tm-meta-wrapper .select2-container .select2-selection--single {
+    border-color: #E0E2E3 !important;
+}
+
+.tm-meta-wrapper .select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: #010F1C;
+    line-height: 36px !important;
+}
+
+.tm-meta-wrapper .select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 36px !important;
+}
+
+.tm-meta-wrapper .select2-container .select2-selection--single .select2-selection__arrow {
+    right: 11px !important;
+}
+
+.tm-meta-wrapper .select2-container .select2-selection--single .select2-selection__rendered {
+    padding-right: 26px;
+}
+
+.tm-meta-wrapper .select2-container .select2-selection--single .select2-selection__rendered {
+    padding-left: 26px;
+}
+
+.tm-meta-wrapper .select2-shofy_product_single_layout-select-container:focus-visible {
+    outline: 0;
+}
+
+.tm-meta-wrapper .select2-container.select2-container--focus .select2-selection--single,
+.tm-meta-wrapper .select2-container.select2-container--open .select2-selection--multiple,
+.tm-meta-wrapper .select2-container.select2-container--open .select2-selection--single {
+    border-color: #3362FF !important;
+    box-shadow: none !important;
+}
+
+.tm-meta-column-5 .tp-metabox-repeater-row {
+    padding-right: 17px !important;
+}
+
+.select2-dropdown.select2-dropdown--below {
+    box-shadow: none !important;
+    border: 1px solid #3362FF !important;
+}
+
+.select2-dropdown.select2-dropdown--above {
+    box-shadow: none !important;
+    border: 1px solid #3362FF !important;
+}
+
+.select2-dropdown {
+    border-color: #010F1C !important;
+}
+
+.select2-results__option.select2-results__option--highlighted {
+    background-color: #3362FF !important;
+    color: #fff !important;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected],
+.select2-container--default .select2-results__option--highlighted[data-selected] {
+    background-color: #3362FF !important;
+    color: #fff !important;
+}
+
+/* ── Multicolor swatches ─────────────────────────────────────────────────── */
+.tm-multicolor-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.tm-mcswatch-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Hide the native checkbox — state is shown via the swatch border */
+.tm-mcswatch-input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+.tm-mcswatch-color {
+    display: block;
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    border: 2px solid transparent;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,.12), 0 1px 3px rgba(0,0,0,.15);
+    transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.tm-mcswatch-item:hover .tm-mcswatch-color {
+    transform: scale(1.08);
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,.12), 0 3px 8px rgba(0,0,0,.2);
+}
+
+/* Selected state: ring + scale */
+.tm-mcswatch-input:checked + .tm-mcswatch-color {
+    border-color: #3362FF;
+    transform: scale(1.12);
+    box-shadow: 0 0 0 3px rgba(51,98,255,.25), inset 0 0 0 1px rgba(0,0,0,.1);
+}
+
+/* Checkmark inside the swatch when selected */
+.tm-mcswatch-input:checked + .tm-mcswatch-color::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 46%;
+    width: 10px;
+    height: 6px;
+    border: 2px solid #fff;
+    border-top: none;
+    border-right: none;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    filter: drop-shadow(0 0 1.5px rgba(0,0,0,.5));
+}
+
+.tm-mcswatch-label {
+    font-size: 10px;
+    font-weight: 500;
+    color: #555d66;
+    text-align: center;
+    max-width: 48px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 1.2;
+    transition: color .15s ease;
+}
+
+.tm-mcswatch-item:has(.tm-mcswatch-input:checked) .tm-mcswatch-label {
+    color: #3362FF;
+}
+
+.tm-meta-wrapper .tpmeta-checkbox {
+    margin-bottom: 8px;
+}
+
+.tm-meta-wrapper .tpmeta-checkbox input[type=checkbox]::before {
+    display: none;
+}
+
+.tm-meta-wrapper .tpmeta-checkbox input[type=checkbox] {
+    display: none;
+}
+
+.tm-meta-wrapper .tpmeta-checkbox label {
+    position: relative;
+    padding-left: 26px;
+    font-size: 14px;
+    color: #010F1C;
+    cursor: pointer;
+}
+
+.tm-meta-wrapper .tpmeta-checkbox label::before {
+    position: absolute;
+    content: '';
+    left: 0;
+    top: 0px;
+    width: 16px;
+    height: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: transparent;
+    border-radius: 4px;
+}
+
+.tm-meta-wrapper .tpmeta-checkbox label::after {
+    position: absolute;
+    /* CSS-only checkmark — no external SVG dependency */
+    content: '';
+    left: 5px;
+    top: 2px;
+    width: 5px;
+    height: 9px;
+    border: 2px solid #ffffff;
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg);
+    visibility: hidden;
+    opacity: 0;
+}
+
+.tm-meta-wrapper .tpmeta-checkbox input[type=checkbox]:checked~label {}
+
+.tm-meta-wrapper .tpmeta-checkbox input[type=checkbox]:checked~label::before {
+    background-color: #3362FF;
+    border-color: #3362FF;
+}
+
+.tm-meta-wrapper .tpmeta-checkbox input[type=checkbox]:checked~label::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+span.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #3362FF;
+    border: none;
+    border-radius: 4px;
+    cursor: default;
+    float: left;
+    margin-right: 5px;
+    margin-top: 5px;
+    padding: 0 5px;
+    color: #fff;
+}
+
+
+
+span.select2-container .select2-selection--multiple .select2-selection__choice {
+    padding: 2px 6px;
+    padding-left: 25px;
+}
+
+span.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: #fff;
+}
+
+span.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    border-right: 1px solid rgba(255, 255, 255, .1);
+    padding: 0 4px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+span.select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover,
+span.select2-container--default .select2-selection--multiple .select2-selection__choice__remove:focus {
+    background-color: #f00;
+    color: #fff;
+    outline: none;
+}
+
+span.select2-container .select2-selection--multiple {
+    min-height: 45px;
+    border-color: #E0E2E3;
+    border-radius: 0;
+}
+
+span.select2-container--default .select2-selection--multiple {
+    background-color: #fff;
+    border: 1px solid #E0E2E3;
+    border-radius: 0;
+    cursor: text;
+}
+
+.select2-container .select2-selection--multiple {
+    min-height: 30px !;
+    border-color: #E0E2E3 !important;
+    border-radius: 0 !important;
+}
+
+.tm-select-field.normal {
+    border: 1px solid #E0E2E3;
+    padding: 13px 18px !important;
+    border-radius: 0;
+}
+
+.tm-select-field.normal:focus-visible {
+    color: transparent;
+    outline: 0;
+    text-shadow: none;
+    border-color: #3362FF;
+}
+
+.tm-select-field.normal option[selected=selected] {
+    background-color: #3362FF;
+    color: #fff;
+}
+
+.tm-select-field.normal:hover {
+    color: #95999D;
+}
+
+.tm-select-field.normal option:not([selected=selected]):hover {
+	color: #3362FF;
+}
+
+/* harun-css-here */
+.inside.pure-metafields {
+    margin:0 !important;
+    padding: 0;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.zoom-toggle {
+    transition: all 0.3s ease;
+    transform-origin: top;
+}
+
+.zoom-hidden {
+    opacity: 0;
+    transform: scale(0.9);
+    pointer-events: none;
+    height: 0;
+    overflow: hidden;
+}
+
+[class*="tm-meta-column-"] .tm-field-row {
+    border-right: 1px solid #eaecf0;
+    padding: 18px !important;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #eaecf0;
+    padding-bottom: 11px !important;
+}
+
+.tm-meta-wrapper > * {
+	box-sizing: border-box;
+}
+[class*="tm-meta-column-"] .tpmeta-checkbox input[type="checkbox"]:checked ~ label::before {
+	background-color: #5F4AFE;
+	border-color: #5F4AFE;
+}
+[class*="tm-meta-column-"] input:checked + .tm-slider, .tm-meta-wrapper input:checked + span {
+	background-color: #5F4AFE;
+}
+[class*="tm-meta-column-"] .tpmeta-checkbox label::after {
+	left: 5px;
+	top: 2px;
+	width: 5px;
+	height: 9px;
+}
+[class*="tm-meta-column-"] .dashicons, .dashicons-before::before {
+	transition: all .4s ease;
+}
+.tm-image-item {
+    position: relative;
+    display: inline-block;
+}
+.tm-image-item:hover .tm-image-actions{
+    opacity: 1;
+    visibility: visible;
+}
+.tm-image-item .tm-image-actions a{
+    box-shadow: none;
+    outline: none;
+} 
+.tm-image-actions a .dashicons {
+    width: 25px;
+    height: 25px;
+    background: #010F1C;
+    display: inline-block;
+    border-radius: 50%;
+    color: #fff;
+    border: none;
+    text-decoration: none !important;
+    line-height: 25px;
+    font-size: 16px;
+}
+.tm-image-actions a.tm-delete:hover span{
+    color: #fe4a59;
+}
+
+.tm-image-actions a .dashicons:focus {
+    outline: none;
+}
+.tm-image-item .tm-image-prev {
+    margin-bottom: 10px;
+}
+.tm-gallery-item .tm-gallery-actions a{
+    background: none;
+    box-shadow: none;
+    outline: none;
+}
+.tm-gallery-item .tm-gallery-actions span{
+    width: 25px;
+    height: 25px;
+    background: #010F1C;
+    display: inline-block;
+    border-radius: 50%;
+    color: #fff;
+    border: none;
+    text-decoration: none !important;
+    line-height: 25px;
+    font-size: 16px;
+}
+.tm-gallery-item .tm-gallery-actions a:hover span{
+    color: #fe4a59;
+}
+.tm-gallery-item{
+    padding-bottom: 6px;
+}
+
+[class*="tm-meta-column-"] .tm-field-row .tm-field-row{
+    width: auto!important;
+    padding: 0!important;
+    border: none;
+}
+[class*="tm-meta-column-"] .tm-field-row .tm-select-field {
+    height: 45px;
+    width: 100%;
+    font-size: 14px;
+    color: #3c434a;
+    outline: 0;
+    position: relative;
+    padding: 12px 27px 12px 20px;
+    transition: all 0.3s 0s ease-in-out;
+    border: 1px solid transparent;
+    box-shadow: 0 1px 1px 0 rgba(25, 24, 34, 0.12), 0 0 1px 0 rgba(25, 24, 34, 0.12);
+    background-color: #f6f6f9;
+    border-radius: 6px;
+    font-weight: 400;
+    line-height: 1;
+}
+[class*="tm-meta-column-"] .tm-field-row .tm-select-field[multiple] {
+    min-height: 150px;
+}
+/* Change selected option background + text color */
+[class*="tm-meta-column-"] .tm-field-row .tm-select-field[multiple] option:checked {
+    background-color: #5F4AFE!important; /* WP blue */
+    color: #fff;              /* White text */
+}
+.tp-metabox-repeater .tp-metabox-repeater-row {
+    border: none;
+}
+.tp-metabox-repeater .tp-metabox-repeater-row .tp-metabox-repeater-collapse, .tp-metabox-repeater-row .tp-metabox-repeater-collapse {
+    height: 45px;
+    width: 100%;
+    line-height: 7px;
+    font-size: 18px;
+    color: #010F1C;
+    outline: 0;
+    padding: 16px 27px 16px 20px;
+    -webkit-transition: all 0.3s 0s ease-in-out;
+    -moz-transition: all 0.3s 0s ease-in-out;
+    -ms-transition: all 0.3s 0s ease-in-out;
+    -o-transition: all 0.3s 0s ease-in-out;
+    transition: all 0.3s 0s ease-in-out;
+    border: 1px solid #e0e1e3;
+    background: transparent;
+    border-radius: 6px;
+}
+.tp-metabox-repeater .tp-metabox-repeater-row .tp-metabox-repeater-collapse span svg {
+	margin-right: 10px;
+	width: 13px;
+}
+.tp-repeater-row-delete-btn {
+	height: 44px;
+}
+.tp-repeater-row-delete-btn svg {
+    width: 16px;
+}
+.tp-repeater-row-add-btn {
+	border-radius: 6px;
+}
+.tp-repeater-row-add-btn:hover {
+    background: #5F4AFE;
+    border-color: #5F4AFE;
+}
+.tp-metabox-repeater .tp-metabox-repeater-item-wrapper {
+	padding: 10px 0px;
+}
+
+.single-image-edit .attachments-wrapper, 
+.single-image-edit .attachments-browser .media-toolbar{
+    display: none;
+}
+
+.single-image-edit .media-sidebar {
+    width: 100%;
+    left: 0;
+    box-sizing: border-box;
+}
+
+.single-image-edit .media-sidebar .attachment-info {
+	position: absolute;
+	border: 0;
+	width: 25%;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.single-image-edit .media-sidebar .attachment-info .thumbnail.thumbnail-image,
+.single-image-edit .media-sidebar .attachment-info .thumbnail img {
+	max-width: unset;
+	max-height: unset;
+}
+
+.single-image-edit .media-sidebar .attachment-info > * {
+	flex: 0 0 100%;
+}
+
+.single-image-edit .attachment-details {
+    min-height: 600px;
+}
+
+/* date field  */
+
+.tm-datepicker-input {
+	max-width: 400px;
+}
+.tm-datepicker.ui-datepicker.ui-widget {
+    border-radius: 0;
+    box-shadow: 0 10px 20px 4px rgba(20, 20, 20, 0.14);
+    background: #fff;
+    padding: 30px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    width: 340px;
+    padding-top: 20px;
+    padding-bottom: 35px;
+}
+.tm-datepicker.ui-datepicker td {
+	padding: 0!important;
+}
+.tm-datepicker.ui-datepicker td span, .tm-datepicker.ui-datepicker td a {
+    border: 1px solid #e8e8e8;
+    border-radius: 0;
+    width: 45px;
+    max-width: 45px;
+    margin-right: -1px;
+    height: 45px;
+    margin-top: -1px;
+    font-size: 16px;
+    letter-spacing: -0.02em;
+    text-align: center!important;
+    padding: 0!important;
+    line-height: 45px;
+    color: #000;
+    font-weight: 500;
+    display: inline-block;
+    text-decoration: none;
+
+}
+/* Hover on any non-selected day — soft light-blue fill so it's clearly
+   distinct from the solid blue used for the user-selected day. */
+.tm-datepicker.ui-datepicker td a:hover {
+    background: #EEF2FF;
+    color: #3362FF;
+    border-color: #C7D2FE;
+}
+/* Today (when NOT the selected day) — outline marker only, so it doesn't
+   masquerade as the user-selected day. */
+.tm-datepicker.ui-datepicker td.ui-datepicker-today a {
+    background: #fff;
+    color: #3362FF;
+    border: 1px solid #3362FF;
+}
+/* The user-selected day — always wins over the today badge AND hover. */
+.tm-datepicker.ui-datepicker td.ui-datepicker-current-day a,
+.tm-datepicker.ui-datepicker td a.ui-state-active,
+.tm-datepicker.ui-datepicker td.ui-datepicker-current-day a:hover,
+.tm-datepicker.ui-datepicker td a.ui-state-active:hover {
+    background: #3362FF;
+    color: #fff;
+    border-color: #3362FF;
+}
+.tm-datepicker .wp-person a:focus .gravatar, a:focus, a:focus .media-icon img, a:focus .plugin-icon {
+	color: #fff;
+	box-shadow: none;
+	outline: none;
+    background: #3362FF;
+}
+.tm-datepicker.ui-datepicker table {
+	font-size: 18px!important;
+}
+.tm-datepicker.ui-datepicker .ui-datepicker-header {
+    margin-bottom: 10px;
+    background: #f6f6f6;
+    padding: 15px!important;
+    position: relative;
+    text-align: center;
+}
+.tm-datepicker.ui-datepicker .ui-datepicker-title {
+	font-size: 18px;
+    font-weight: bold;
+}
+.tm-datepicker.ui-datepicker .ui-datepicker-prev {
+	position: relative;
+}
+
+.tm-datepicker .ui-widget-header .ui-icon {
+	background-image: url("../images/ui-icons_444444_256x240.png");
+}
+
+.tm-datepicker.ui-datepicker .ui-icon {
+	display: block;
+	text-indent: -99999px;
+	overflow: hidden;
+	background-repeat: no-repeat;
+	left: .5em;
+	top: .3em;
+}
+.tm-datepicker.ui-datepicker .ui-datepicker-prev span, .tm-datepicker.ui-datepicker .ui-datepicker-next span {
+    margin-left: 8px !important;
+    margin-top: 7px !important;
+}
+
+.tm-datepicker .ui-icon {
+	width: 16px;
+	height: 16px;
+}
+
+.tm-datepicker .ui-icon-circle-triangle-e {
+	background-position: -48px -192px;
+}
+.tm-datepicker .ui-icon-circle-triangle-w {
+	background-position: -80px -192px;
+}
+.tm-datepicker.ui-datepicker .ui-datepicker-prev, .tm-datepicker.ui-datepicker .ui-datepicker-next {
+	position: absolute;
+	top: 10px;
+	width: 30px;
+	height: 30px;
+    cursor: pointer;
+}
+.tm-datepicker.ui-datepicker .ui-datepicker-prev {
+	left: 12px;
+}
+.tm-datepicker.ui-datepicker .ui-datepicker-next {
+	right: 12px;
+}
+
+/* ============================================================
+   PURE FIELDS — Modern Metabox UI
+   ThemePure palette: Blue #3362FF · Purple #5F4AFE · Pink #E91E8C
+   ============================================================ */
+
+/* ── Postbox shell ───────────────────────────────────────── */
+.postbox:has(.inside.pure-metafields) {
+	border: 1px solid #e2e6ed !important;
+	border-radius: 10px !important;
+	box-shadow: 0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.03) !important;
+	overflow: hidden;
+	margin-bottom: 16px !important;
+}
+
+.postbox:has(.inside.pure-metafields) .postbox-header {
+	background: #ffffff !important;
+	border-bottom: 1px solid #e2e6ed !important;
+	padding: 0 !important;
+	min-height: 0 !important;
+}
+
+.postbox:has(.inside.pure-metafields) .postbox-header h2.hndle {
+	font-size: 12px !important;
+	font-weight: 700 !important;
+	letter-spacing: .05em !important;
+	text-transform: uppercase !important;
+	color: #010F1C !important;
+	padding: 12px 16px 12px 20px !important;
+	margin: 0 !important;
+	line-height: 1 !important;
+	border-left: 3px solid #3362FF;
+	flex: 1;
+}
+
+.postbox:has(.inside.pure-metafields) .handle-actions {
+	padding-right: 10px;
+}
+
+/* ── Inner area ──────────────────────────────────────────── */
+.inside.pure-metafields {
+	margin: 0 !important;
+	padding: 14px !important;
+	background: #f4f6fb !important;
+	font-size: 13px;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* ── Flex layout — replaces the earlier grid version so we can drive each
+   field's width (and per-row exceptions like section_heading) with
+   flex-basis. flex-wrap: wrap means children flow to the next line when
+   their combined basis exceeds 100%. Default basis is 100% (1 column);
+   .tm-meta-column-N narrows children to 100/N % so they fit N per row. */
+[class*="tm-meta-column-"]:not(#side-sortables *) {
+	display: flex !important;
+	flex-wrap: wrap !important;
+	gap: 10px;
+}
+
+/* .tm-meta-row is a per-row flex container the metabox renderer wraps
+   around fields belonging to one builder row, so each row can carry its
+   own column count. It's a direct child of the (column-1) section, so it
+   takes the full row width; inside, its own tm-meta-column-N decides how
+   many fields fit per line. The row element itself is NOT a field card —
+   drop the white card chrome the column rules add to .tm-field-row. */
+[class*="tm-meta-column-"]:not(#side-sortables *) > .tm-meta-row {
+	flex: 0 0 100% !important;
+	max-width: 100% !important;
+	background: transparent !important;
+	border: 0 !important;
+	box-shadow: none !important;
+	padding: 0 !important;
+}
+
+/* Child column widths. `calc(... - gap_compensation)` keeps N children per
+   row exactly even when the parent has a 10px gap between siblings. */
+[class*="tm-meta-column-"]:not(#side-sortables *) > .tm-field-row {
+	flex: 0 0 100% !important;
+	max-width: 100% !important;
+}
+.tm-meta-column-2:not(#side-sortables *) > .tm-field-row  { flex: 0 0 calc(50%      - 5px)    !important; max-width: calc(50%      - 5px)    !important; }
+.tm-meta-column-3:not(#side-sortables *) > .tm-field-row  { flex: 0 0 calc(33.333%  - 6.67px) !important; max-width: calc(33.333%  - 6.67px) !important; }
+.tm-meta-column-4:not(#side-sortables *) > .tm-field-row  { flex: 0 0 calc(25%      - 7.5px)  !important; max-width: calc(25%      - 7.5px)  !important; }
+.tm-meta-column-5:not(#side-sortables *) > .tm-field-row  { flex: 0 0 calc(20%      - 8px)    !important; max-width: calc(20%      - 8px)    !important; }
+.tm-meta-column-6:not(#side-sortables *) > .tm-field-row  { flex: 0 0 calc(16.666%  - 8.33px) !important; max-width: calc(16.666%  - 8.33px) !important; }
+.tm-meta-column-12:not(#side-sortables *) > .tm-field-row { flex: 0 0 calc(8.333%   - 9.17px) !important; max-width: calc(8.333%   - 9.17px) !important; }
+
+/* ── Field card ──────────────────────────────────────────── */
+[class*="tm-meta-column-"]:not(#side-sortables *) > .tm-field-row {
+	width: auto !important;
+	min-height: unset !important;
+	padding: 12px 14px 14px !important;
+	background: #ffffff;
+	border: 1.5px solid #e2e6ed !important;
+	border-right: 1.5px solid #e2e6ed !important;
+	border-bottom: 1.5px solid #e2e6ed !important;
+	border-radius: 8px;
+	box-shadow: 0 1px 3px rgba(0,0,0,.04);
+	transition: border-color .15s, box-shadow .15s;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+[class*="tm-meta-column-"]:not(#side-sortables *) > .tm-field-row:hover {
+	border-color: rgba(51,98,255,.35) !important;
+	box-shadow: 0 2px 8px rgba(51,98,255,.08);
+}
+
+/* ── Field label ─────────────────────────────────────────── */
+[class*="tm-meta-column-"] .tm-field-row > label {
+	display: block;
+	font-size: 10px !important;
+	font-weight: 700 !important;
+	letter-spacing: .06em !important;
+	text-transform: uppercase !important;
+	color: #5b6470 !important;
+	line-height: 1 !important;
+}
+
+/* ── Text / Textarea ─────────────────────────────────────── */
+[class*="tm-meta-column-"] .tm-field-row input[type=text],
+[class*="tm-meta-column-"] .tm-field-row input[type=url],
+[class*="tm-meta-column-"] .tm-field-row input[type=number],
+[class*="tm-meta-column-"] .tm-field-row input[type=email],
+[class*="tm-meta-column-"] .tm-field-row input[type=search] {
+	height: 38px !important;
+	width: 100% !important;
+	padding: 0 10px !important;
+	border: 1.5px solid #e2e6ed !important;
+	border-radius: 6px !important;
+	font-size: 13px !important;
+	color: #010F1C !important;
+	background: #fafbfd !important;
+	box-shadow: none !important;
+	outline: none !important;
+	line-height: 38px !important;
+	box-sizing: border-box;
+	transition: border-color .15s, box-shadow .15s;
+}
+
+[class*="tm-meta-column-"] .tm-field-row textarea {
+	min-height: 110px !important;
+	width: 100% !important;
+	padding: 9px 10px !important;
+	border: 1.5px solid #e2e6ed !important;
+	border-radius: 6px !important;
+	font-size: 13px !important;
+	color: #010F1C !important;
+	background: #fafbfd !important;
+	box-shadow: none !important;
+	outline: none !important;
+	line-height: 1.55 !important;
+	resize: vertical;
+	box-sizing: border-box;
+	transition: border-color .15s, box-shadow .15s;
+}
+
+[class*="tm-meta-column-"] .tm-field-row input[type=text]:focus,
+[class*="tm-meta-column-"] .tm-field-row input[type=url]:focus,
+[class*="tm-meta-column-"] .tm-field-row input[type=number]:focus,
+[class*="tm-meta-column-"] .tm-field-row input[type=email]:focus,
+[class*="tm-meta-column-"] .tm-field-row input[type=search]:focus,
+[class*="tm-meta-column-"] .tm-field-row textarea:focus {
+	border-color: #3362FF !important;
+	box-shadow: 0 0 0 3px rgba(51,98,255,.1) !important;
+	background: #fff !important;
+	outline: none !important;
+}
+
+/* ── Native select ───────────────────────────────────────── */
+[class*="tm-meta-column-"] .tm-field-row .tm-select-field {
+	height: 38px !important;
+	width: 100% !important;
+	padding: 0 32px 0 10px !important;
+	border: 1.5px solid #e2e6ed !important;
+	border-radius: 6px !important;
+	font-size: 13px !important;
+	color: #010F1C !important;
+	background: #fafbfd !important;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7' viewBox='0 0 11 7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='%235b6470' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+	background-repeat: no-repeat !important;
+	background-position: right 10px center !important;
+	box-shadow: none !important;
+	outline: none !important;
+	-webkit-appearance: none !important;
+	appearance: none !important;
+	cursor: pointer;
+	box-sizing: border-box;
+	transition: border-color .15s, box-shadow .15s;
+	line-height: 38px !important;
+}
+
+[class*="tm-meta-column-"] .tm-field-row .tm-select-field:focus {
+	border-color: #3362FF !important;
+	box-shadow: 0 0 0 3px rgba(51,98,255,.1) !important;
+	background-color: #fff !important;
+	outline: none !important;
+}
+
+[class*="tm-meta-column-"] .tm-field-row .tm-select-field[multiple] {
+	height: auto !important;
+	min-height: 110px !important;
+	padding: 6px 10px !important;
+	background-image: none !important;
+}
+
+/* ── Select2 ─────────────────────────────────────────────── */
+[class*="tm-meta-column-"] .tm-meta-wrapper .select2-container {
+	width: 100% !important;
+	max-width: 100% !important;
+}
+
+[class*="tm-meta-column-"] .tm-meta-wrapper .select2-container--default .select2-selection--single {
+	height: 36px !important;
+	border: 1.5px solid #e2e6ed !important;
+	border-radius: 6px !important;
+	background: #fafbfd !important;
+	box-shadow: none !important;
+}
+
+[class*="tm-meta-column-"] .tm-meta-wrapper .select2-container--default .select2-selection--single .select2-selection__rendered {
+	line-height: 36px !important;
+	padding-left: 10px !important;
+	font-size: 13px !important;
+	color: #010F1C !important;
+}
+
+[class*="tm-meta-column-"] .tm-meta-wrapper .select2-container--default .select2-selection--single .select2-selection__arrow {
+	height: 36px !important;
+}
+
+[class*="tm-meta-column-"] .tm-meta-wrapper .select2-container.select2-container--focus .select2-selection--single,
+[class*="tm-meta-column-"] .tm-meta-wrapper .select2-container.select2-container--open .select2-selection--single {
+	border-color: #3362FF !important;
+	box-shadow: 0 0 0 3px rgba(51,98,255,.1) !important;
+}
+
+/* ── Switch toggle ───────────────────────────────────────── */
+[class*="tm-meta-column-"] .tm-slider {
+	width: 42px;
+	height: 24px;
+	border-radius: 12px;
+	background: #d1d9e0 !important;
+	display: inline-block;
+	vertical-align: middle;
+	cursor: pointer;
+	transition: background .22s;
+	flex-shrink: 0;
+}
+
+[class*="tm-meta-column-"] .tm-slider::before {
+	content: "";
+	display: inline-block;
+	position: absolute;
+	top: 3px; left: 3px;
+	width: 18px; height: 18px;
+	border-radius: 50%;
+	background: #fff;
+	box-shadow: 0 1px 4px rgba(0,0,0,.22);
+	transition: left .2s cubic-bezier(.4,0,.2,1);
+	right: auto;
+	bottom: auto;
+}
+
+[class*="tm-meta-column-"] input:checked + .tm-slider {
+	background: #5F4AFE !important;
+}
+
+[class*="tm-meta-column-"] input:checked + .tm-slider::before {
+	left: 21px;
+}
+
+/* ── Color picker ────────────────────────────────────────── */
+[class*="tm-meta-column-"] .tm-field-row .wp-picker-container {
+	width: 100% !important;
+}
+
+[class*="tm-meta-column-"] .tm-field-row .wp-color-result.button,
+[class*="tm-meta-column-"] .tm-field-row .wp-color-result {
+	height: 38px !important;
+	width: 100% !important;
+	max-width: 100% !important;
+	padding: 0 0 0 44px !important;
+}
+
+/* ============================================================
+   Metabox Repeater — tm-repeater design (matches options panel)
+   ============================================================ */
+
+/* Full-width inside metabox column layout */
+[class*="tm-meta-column-"] .tm-field-row.repeater {
+    flex: 0 0 100% !important;
+    max-width: 100%;
+}
+
+.tm-meta-wrapper .tm-repeater {
+    border: 1.5px solid var(--tp-border);
+    border-radius: var(--tp-radius-sm);
+    overflow: hidden;
+    width: 100%;
+    box-sizing: border-box;
+}
+.tm-meta-wrapper .tm-repeater-rows {
+    background: var(--tp-bg);
+}
+.tm-meta-wrapper .tm-repeater-row {
+    border-bottom: 1px solid var(--tp-border);
+    background: var(--tp-white);
+    transition: background .15s;
+}
+.tm-meta-wrapper .tm-repeater-row:last-child {
+    border-bottom: 0;
+}
+
+/* ── Row header ── */
+.tm-meta-wrapper .tm-rptr-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: var(--tp-bg);
+    border-bottom: 1px solid var(--tp-border);
+    cursor: pointer;
+    user-select: none;
+}
+.tm-meta-wrapper .tm-rptr-handle {
+    display: flex;
+    align-items: center;
+    padding: 0 2px;
+    color: var(--tp-muted);
+    cursor: grab;
+    flex-shrink: 0;
+    opacity: .5;
+    transition: opacity .15s;
+}
+.tm-meta-wrapper .tm-rptr-handle:hover { opacity: 1; }
+.tm-meta-wrapper .tm-rptr-handle:active { cursor: grabbing; }
+
+.tm-meta-wrapper .tm-rptr-toggle {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    color: var(--tp-muted);
+    flex-shrink: 0;
+    transition: transform .2s;
+    padding: 0;
+}
+.tm-meta-wrapper .tm-repeater-row.is-collapsed .tm-rptr-toggle {
+    transform: rotate(-90deg);
+}
+.tm-meta-wrapper .tm-rptr-title {
+    flex: 1 1 auto;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--tp-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.tm-meta-wrapper .tm-rptr-actions {
+    display: flex;
+    gap: 4px;
+}
+.tm-meta-wrapper .tm-rptr-remove {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 0;
+    color: var(--tp-muted);
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all .15s;
+    padding: 0;
+}
+.tm-meta-wrapper .tm-rptr-remove:hover {
+    background: rgba(214, 54, 56, .08);
+    color: var(--tp-danger);
+}
+
+/* ── Row body ── */
+.tm-meta-wrapper .tm-rptr-body {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 14px;
+    box-sizing: border-box;
+}
+.tm-meta-wrapper .tm-repeater-row.is-collapsed .tm-rptr-body {
+    display: none;
+}
+
+/* ── Field units inside body ── */
+.tm-meta-wrapper .tm-rptr-field {
+    width: 100%;
+    box-sizing: border-box;
+    min-width: 0;
+}
+/* Column layout — driven by data-columns on .tm-repeater */
+.tm-meta-wrapper .tm-repeater[data-columns="2"] .tm-rptr-field { width: calc(50% - 6px); }
+.tm-meta-wrapper .tm-repeater[data-columns="3"] .tm-rptr-field { width: calc(33.33% - 8px); }
+.tm-meta-wrapper .tm-repeater[data-columns="4"] .tm-rptr-field { width: calc(25% - 9px); }
+
+/* Strip the default tm-field-row chrome inside a repeater body */
+.tm-meta-wrapper .tm-rptr-body .tm-field-row {
+    padding: 0 !important;
+    min-height: 0 !important;
+    margin: 0;
+}
+/* Style the field label as a small caps label */
+.tm-meta-wrapper .tm-rptr-body .tm-field-row > label {
+    display: block;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    color: var(--tp-muted) !important;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin: 0 0 4px !important;
+}
+
+/* ── Add-row button ── */
+.tm-meta-wrapper .tm-repeater-add-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    padding: 10px;
+    background: var(--tp-white);
+    border: 0;
+    border-top: 1.5px dashed var(--tp-border);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--tp-muted);
+    cursor: pointer;
+    transition: all .15s;
+    box-sizing: border-box;
+}
+.tm-meta-wrapper .tm-repeater-add-btn:hover {
+    background: var(--tp-blue-lt);
+    color: var(--tp-blue);
+    border-color: var(--tp-blue);
+}
+.tm-meta-wrapper .tm-repeater-add-btn .dashicons {
+    font-size: 15px;
+    width: 15px;
+    height: 15px;
+}
+
+/* ── Dimension / unit pair (angle input + stop-position inputs in gradient) ──
+   tpmeta-options.css scopes these to .tpmeta-panel-field; for the metabox
+   context we add equivalent rules scoped to .tm-meta-wrapper.               */
+.tm-meta-wrapper .tm-dimension-wrap {
+    display: inline-flex;
+    align-items: stretch;
+    max-width: 180px;
+    width: 100%;
+}
+.tm-meta-wrapper .tm-dim-num {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 36px;
+    padding: 0 8px;
+    border: 1.5px solid var(--tp-border);
+    border-right: none;
+    border-radius: 5px 0 0 5px;
+    font-size: 12px;
+    box-sizing: border-box;
+    background: var(--tp-white);
+    color: var(--tp-text);
+    transition: border-color .15s;
+}
+.tm-meta-wrapper .tm-dim-num:focus {
+    border-color: var(--tp-blue);
+    outline: none;
+}
+.tm-meta-wrapper .tm-dim-unit {
+    flex: 0 0 52px;
+    width: 52px;
+    height: 36px;
+    padding: 0 4px;
+    border: 1.5px solid var(--tp-border);
+    border-radius: 0 5px 5px 0;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--tp-muted);
+    background: var(--tp-bg);
+    box-sizing: border-box;
+    cursor: pointer;
+    text-align: center;
+    appearance: none;
+    -webkit-appearance: none;
+}
+.tm-meta-wrapper .tm-dim-unit:focus {
+    border-color: var(--tp-blue);
+    outline: none;
+}
+
+/* Slider variant — joined [num | unit] pill above, range below */
+.tm-meta-wrapper .tm-dimension-wrap.tm-dimension-slider {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    max-width: 320px;
+    width: 100%;
+}
+.tm-meta-wrapper .tm-dimension-wrap.tm-dimension-slider .tm-dim-input-pair {
+    display: inline-flex;
+    align-items: stretch;
+    max-width: 180px;
+}
+/* Input element itself is transparent — the gradient lives on the track
+   pseudo-element below, otherwise WP-admin's input background reset wipes
+   it and the track renders invisibly. Input height accommodates the thumb. */
+.tm-meta-wrapper .tm-dim-range {
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    width: 100%;
+    height: 22px;
+    margin: 4px 0 8px;
+    padding: 0;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    outline: none;
+    cursor: pointer;
+}
+.tm-meta-wrapper .tm-dim-range::-webkit-slider-runnable-track {
+    height: 6px;
+    background: linear-gradient(90deg, var(--tp-blue) 0%, var(--tp-purple) 100%);
+    border-radius: 999px;
+    border: 0;
+}
+.tm-meta-wrapper .tm-dim-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    margin-top: -5px;
+    border-radius: 50%;
+    background: var(--tp-white);
+    border: 3px solid var(--tp-blue);
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(51,98,255,.35);
+    transition: transform .15s ease, box-shadow .15s ease;
+}
+.tm-meta-wrapper .tm-dim-range::-webkit-slider-thumb:hover {
+    transform: scale(1.12);
+}
+.tm-meta-wrapper .tm-dim-range::-moz-range-track {
+    height: 6px;
+    background: linear-gradient(90deg, var(--tp-blue) 0%, var(--tp-purple) 100%);
+    border-radius: 999px;
+    border: 0;
+}
+.tm-meta-wrapper .tm-dim-range::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--tp-white);
+    border: 3px solid var(--tp-blue);
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(51,98,255,.35);
+}
+.tm-meta-wrapper .tm-dim-range:focus { outline: none; }
+.tm-meta-wrapper .tm-dim-range:focus-visible::-webkit-slider-thumb {
+    box-shadow: 0 0 0 4px rgba(51,98,255,.18), 0 2px 6px rgba(51,98,255,.35);
+}
+
+/* ── Sub-label for gradient controls (Type, Angle) ────────────────────── */
+.tm-meta-wrapper .tm-typo-label {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--tp-muted);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin-bottom: 4px;
+}
+
+/* ── Gradient field — metabox context ───────────────────────────────────
+   Full layout mirrors options/css/tpmeta-options.css (.tpmeta-panel-field
+   scope). Scoped to .tm-meta-wrapper so the Options Panel is unaffected.  */
+.tm-meta-wrapper .tm-gradient-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.tm-meta-wrapper .tm-gradient-preview {
+    height: 48px;
+    border-radius: 6px;
+    border: 1.5px solid var(--tp-border);
+    background: linear-gradient(135deg, #3362FF 0%, #5F4AFE 100%);
+    transition: background .2s;
+}
+.tm-meta-wrapper .tm-gradient-controls {
+    background: var(--tp-bg);
+    border: 1.5px solid var(--tp-border);
+    border-radius: 6px;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.tm-meta-wrapper .tm-gradient-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+.tm-meta-wrapper .tm-gradient-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.tm-meta-wrapper .tm-gradient-stops {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+.tm-meta-wrapper .tm-grd-stop {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+.tm-meta-wrapper .tm-grd-stop .wp-picker-container { flex-shrink: 0; }
+.tm-meta-wrapper .tpgrd-remove-stop {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1.5px solid var(--tp-border);
+    border-radius: 5px;
+    color: var(--tp-muted);
+    cursor: pointer;
+    padding: 0;
+    transition: all .15s;
+}
+.tm-meta-wrapper .tpgrd-remove-stop:hover {
+    background: rgba(214,54,56,.08);
+    border-color: #d63638;
+    color: #d63638;
+}
+.tm-meta-wrapper .tpgrd-add-stop {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    background: var(--tp-white);
+    border: 1.5px dashed var(--tp-border);
+    border-radius: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--tp-muted);
+    cursor: pointer;
+    transition: all .15s;
+    align-self: flex-start;
+}
+.tm-meta-wrapper .tpgrd-add-stop:hover {
+    border-color: var(--tp-blue);
+    color: var(--tp-blue);
+    background: var(--tp-blue-lt);
+}
+.tm-meta-wrapper .tpgrd-add-stop .dashicons {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+}
+/* Active state for the Linear / Radial type toggle inside the gradient */
+.tm-meta-wrapper .tm-gradient-controls .tm-button-radio:has(input:checked) {
+    border-color: var(--tp-blue);
+}
+.tm-meta-wrapper .tm-gradient-controls .tm-button-radio:has(input:checked) span {
+    background: var(--tp-blue);
+    color: #fff;
+}
+
+/* ── Dragula drag ghost & transit placeholder (metabox repeater) ─────────
+   .gu-mirror and .gu-transit are appended directly to <body> by Dragula,
+   so parent-scoped CSS variables are unavailable — hardcoded values used.
+   tpmeta-options.css has identical selectors for the Options Panel context
+   (loaded later, so it wins there); these rules cover the post-edit screen.
+   ──────────────────────────────────────────────────────────────────────── */
+
+/* Ghost: the pill that follows the cursor during drag */
+.gu-mirror.tm-repeater-row {
+    width: var(--gu-mirror-w, 560px) !important; /* JS sets --gu-mirror-w on :root at drag start */
+    background: #ffffff !important;
+    border: 1.5px solid #3362ff !important;
+    border-radius: 6px !important;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, .18) !important;
+    overflow: hidden !important;
+    list-style: none !important;
+    cursor: grabbing !important;
+}
+/* Ghost: show only the row header — hide all field content */
+.gu-mirror.tm-repeater-row .tm-rptr-body { display: none !important; }
+/* Ghost header: self-contained flex row (no ancestor CSS applies at body level) */
+.gu-mirror.tm-repeater-row .tm-rptr-header {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 10px 14px !important;
+    background: #f4f6fb !important;
+    border-bottom: none !important;
+    cursor: grabbing !important;
+}
+.gu-mirror.tm-repeater-row .tm-rptr-handle,
+.gu-mirror.tm-repeater-row .tm-rptr-toggle {
+    display: flex !important;
+    align-items: center !important;
+    flex-shrink: 0 !important;
+}
+.gu-mirror.tm-repeater-row .tm-rptr-title {
+    flex: 1 1 auto !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    color: #010f1c !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+/* Ghost: hide the delete button — irrelevant while dragging */
+.gu-mirror.tm-repeater-row .tm-rptr-actions { display: none !important; }
+
+/* Transit: the dashed drop-position indicator left in the original list */
+.gu-transit.tm-repeater-row {
+    opacity: 1 !important;
+    background: #eef2ff !important;
+    border: 1.5px dashed #3362ff !important;
+    border-radius: 6px !important;
+    overflow: hidden !important;
+}
+/* Transit: collapse to a compact header strip — no need to show fields */
+.gu-transit.tm-repeater-row .tm-rptr-body { display: none !important; }
+.gu-transit.tm-repeater-row .tm-rptr-header {
+    background: transparent !important;
+    border-bottom: none !important;
+    opacity: .55 !important;
+}
+
+[class*="tm-meta-column-"] .tm-field-row .wp-color-result:hover,
+[class*="tm-meta-column-"] .tm-field-row .wp-color-result:focus {
+	border-color: #3362FF !important;
+}
+
+[class*="tm-meta-column-"] .tm-field-row .wp-color-result-text {
+	height: 36px !important;
+	line-height: 36px !important;
+	font-size: 12px !important;
+	color: #5b6470 !important;
+	border-left: 1.5px solid #e2e6ed !important;
+}
+
+/* ── Date picker ─────────────────────────────────────────── */
+[class*="tm-meta-column-"] .tm-field-row .tm-datepicker-input {
+	max-width: 100% !important;
+	width: 100% !important;
+}
+
+/* ── Tabs / button-group field ───────────────────────────── */
+[class*="tm-meta-column-"] .tm-button-groups {
+	display: flex !important;
+	flex-wrap: wrap;
+	gap: 3px;
+	border: 1.5px solid #e2e6ed;
+	border-radius: 6px;
+	padding: 3px;
+	background: #f4f6fb;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+[class*="tm-meta-column-"] .tm-button-groups .tm-button-radio {
+	flex: 1;
+	margin: 0 !important;
+	border: none !important;
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+[class*="tm-meta-column-"] .tm-button-groups .tm-button-radio span {
+	padding: 5px 8px;
+	font-size: 12px;
+	font-weight: 600;
+	color: #5b6470;
+	background: transparent;
+	border-radius: 4px;
+	cursor: pointer;
+	text-align: center;
+	display: block;
+	transition: background .15s, color .15s;
+	white-space: nowrap;
+}
+
+[class*="tm-meta-column-"] .tm-button-groups input:checked + span {
+	background: #fff;
+	color: #3362FF;
+	box-shadow: 0 1px 3px rgba(0,0,0,.1);
+}
+
+/* ── Gallery / Image upload button ──────────────────────── */
+[class*="tm-meta-column-"] .tm-gallery-field button,
+[class*="tm-meta-column-"] .tm-image-field button {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 6px 12px;
+	font-size: 12px;
+	font-weight: 600;
+	border: 1.5px solid #e2e6ed;
+	border-radius: 6px;
+	background: #ffffff;
+	color: #5b6470;
+	cursor: pointer;
+	transition: all .15s;
+	text-shadow: none;
+	box-shadow: none;
+}
+
+[class*="tm-meta-column-"] .tm-gallery-field button:hover,
+[class*="tm-meta-column-"] .tm-image-field button:hover {
+	border-color: #5F4AFE;
+	background: #ede9ff;
+	color: #5F4AFE;
+}
+
+[class*="tm-meta-column-"] .tm-gallery-img img {
+	height: 76px;
+	border-radius: 5px;
+	border: 1.5px solid #e2e6ed;
+	object-fit: cover;
+}
+
+/* ── Repeater — full-width card ──────────────────────────── */
+[class*="tm-meta-column-"] .tm-field-row.repeater {
+	grid-column: 1 / -1;
+}
+
+[class*="tm-meta-column-"] .tp-repeater-row-add-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 7px 16px;
+	font-size: 12px;
+	font-weight: 600;
+	border-radius: 6px;
+	border: 1.5px solid #e2e6ed;
+	background: #ffffff;
+	color: #5b6470;
+	cursor: pointer;
+	text-shadow: none;
+	box-shadow: none;
+	transition: all .15s;
+}
+
+[class*="tm-meta-column-"] .tp-repeater-row-add-btn:hover {
+	background: #5F4AFE;
+	border-color: #5F4AFE;
+	color: #fff;
+}
+
+/* Nested field rows inside repeater */
+[class*="tm-meta-column-"] .tm-field-row .tm-field-row {
+	padding: 0 !important;
+	border: none !important;
+	border-radius: 0 !important;
+	box-shadow: none !important;
+	background: transparent !important;
+	width: auto !important;
+	flex: unset !important;
+	display: block;
+}
+
+/* ── Side metaboxes (sidebar column) ─────────────────────── */
+#side-sortables .inside.pure-metafields {
+	padding: 10px !important;
+}
+
+#side-sortables [class*="tm-meta-column-"] {
+	display: block !important;
+}
+
+#side-sortables .tm-field-row {
+	width: 100%;
+	border-right: none !important;
+	border-bottom: 1px solid #eaecf0 !important;
+	border-radius: 0 !important;
+	box-shadow: none !important;
+	margin-bottom: 0;
+	padding: 10px 0 !important;
+	background: transparent !important;
+}
+
+#side-sortables .tm-field-row:last-child {
+	border-bottom: none !important;
+}
+
+/* ── Section heading pseudo-field (injected by Metafield Builder loader) ── */
+
+/* Span the whole row so the heading always runs full width. Selector
+   mirrors the new flex column rules above so it carries the same
+   specificity (the `:not(#side-sortables *)` argument's ID contributes
+   1,0,0 to specificity) and reliably overrides the per-column basis. */
+[class*="tm-meta-column-"]:not(#side-sortables *) > .tm-field-row.section_heading {
+	flex: 0 0 100% !important;
+	max-width: 100% !important;
+	width: 100% !important;
+	background: transparent !important;
+	border: none !important;
+	box-shadow: none !important;
+	padding: 6px 0 4px !important;
+	margin-top: 6px;
+	gap: 0 !important;
+	min-height: 0 !important;
+}
+
+/* Hide the auto-generated label WP outputs above every field */
+.tm-field-row.section_heading > label.label-section_heading {
+	display: none !important;
+}
+
+/* The actual visual heading */
+.tpmf-section-heading {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	width: 100%;
+}
+
+.tpmf-section-heading-label {
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: .07em;
+	text-transform: uppercase;
+	color: #3362FF;
+	white-space: nowrap;
+	flex-shrink: 0;
+}
+
+.tpmf-section-heading-line {
+	flex: 1;
+	height: 1px;
+	background: linear-gradient(90deg, rgba(51,98,255,.35) 0%, rgba(51,98,255,.06) 100%);
+	border-radius: 1px;
+	display: block;
+}
+
+/* First section heading needs no top gap (specificity matches the flex
+   column rules so this and they don't trade places). */
+[class*="tm-meta-column-"]:not(#side-sortables *) > .tm-field-row.section_heading:first-child {
+	margin-top: 0;
+	padding-top: 0 !important;
+}
+
+/* ── .tm-metabox-section: wrapper around a section heading + its fields ──
+   Emitted by tpmeta_metabox_render() only when section_heading pseudo-fields
+   exist (Metafield Builder output). Each section div also carries the
+   `tm-meta-wrapper tm-meta-column-N` classes, so its flex container behaviour
+   and inner field column widths are inherited from the existing rules above —
+   this rule only adds the light tint and a small bottom gap so adjacent
+   sections read as separate groups. */
+.tm-metabox-section {
+    background: #f0f0f1;
+    margin-bottom: 8px;
+    padding: 7px;
+}
+
+.tm-metabox-section:last-child {
+	margin-bottom: 0;
+}
+
+/* Sidebar (narrow) metabox: drop the tint so the panel stays compact. */
+#side-sortables .tm-metabox-section {
+	background: transparent;
+	margin-bottom: 0;
+}
+
+/* Outer wrapper that no longer carries the column grid (sections-mode only).
+   Just a passthrough block — sections stack vertically as block siblings. */
+.tm-meta-wrapper-outer {
+	display: block;
+}
+
+/* ============================================================
+   Metabox image preview — fixed 300px wrapper, full-bleed image,
+   action pills pinned to the top-right corner. Mirrors the options
+   panel image render.
+
+   Scope: .tm-field-row narrows these rules to metabox renders so
+   the options panel (`.tpmeta-panel-field`) keeps its own scoped
+   rules at options/css/tpmeta-options.css.
+
+   Resets the legacy `.tm-image-actions` overlay (visibility:hidden,
+   width:100%, height:100%, padding:10px) declared at lines 330-343
+   above and the inner `.dashicons` `#010F1C` pill at line 1096-1107.
+   ============================================================ */
+.tm-field-row .tm-image-field .tm-image-item,
+.tm-field-row .tm-gallery-field .tm-image-item {
+	position: relative;
+	/* width: 100%; */
+	width: 250px;
+	margin-bottom: 8px;
+	display: inline-block;
+}
+.tm-field-row .tm-image-field .tm-image-item .tm-image-prev,
+.tm-field-row .tm-gallery-field .tm-image-item .tm-image-prev {
+	width: 100%;
+	margin-bottom: 0;
+	border-radius: 4px;
+	border: 2px solid #E0E2E3;
+	overflow: hidden;
+	background: #f6f7f7;
+	transition: border-color .15s;
+}
+.tm-field-row .tm-image-field .tm-image-item .tm-image-prev:hover,
+.tm-field-row .tm-gallery-field .tm-image-item .tm-image-prev:hover {
+	border-color: #2271b1;
+}
+.tm-field-row .tm-image-field .tm-image-item .tm-image-prev img,
+.tm-field-row .tm-gallery-field .tm-image-item .tm-image-prev img {
+	max-width: 100%;
+	height: auto;
+	display: block;
+	border: none;
+}
+/* Action buttons: visible by default, pinned top-right corner.
+   Override of legacy hover-overlay rules above. */
+.tm-field-row .tm-image-field .tm-image-item .tm-image-actions,
+.tm-field-row .tm-gallery-field .tm-image-item .tm-image-actions {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	bottom: auto;
+	left: auto;
+	width: auto;
+	height: auto;
+	padding: 0;
+	display: inline-flex;
+	gap: 4px;
+	visibility: visible;
+	opacity: 1;
+	z-index: 2;
+	text-align: left;
+	transition: none;
+}
+.tm-field-row .tm-image-field .tm-image-item:hover .tm-image-actions,
+.tm-field-row .tm-gallery-field .tm-image-item:hover .tm-image-actions {
+	opacity: 1;
+	visibility: visible;
+}
+.tm-field-row .tm-image-field .tm-image-item .tm-image-actions a,
+.tm-field-row .tm-gallery-field .tm-image-item .tm-image-actions a {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 26px;
+	height: 26px;
+	border-radius: 50%;
+	text-decoration: none;
+	background: rgba(0, 0, 0, 0.55);
+	color: #fff;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+	backdrop-filter: blur(2px);
+	-webkit-backdrop-filter: blur(2px);
+	transition: background .15s, color .15s, transform .08s;
+}
+/* Reset the inner-icon pill that the legacy `.tm-image-actions a .dashicons`
+   rule (line 1096-1107) renders as a #010F1C circle. We want the icon to
+   inherit the pill background from its parent <a>, not stack a circle on top. */
+.tm-field-row .tm-image-field .tm-image-item .tm-image-actions a .dashicons,
+.tm-field-row .tm-gallery-field .tm-image-item .tm-image-actions a .dashicons {
+	width: 14px;
+	height: 14px;
+	background: transparent;
+	border-radius: 0;
+	color: inherit;
+	font-size: 14px;
+	line-height: 1;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+.tm-field-row .tm-image-field .tm-image-item .tm-image-actions a:hover,
+.tm-field-row .tm-gallery-field .tm-image-item .tm-image-actions a:hover {
+	transform: translateY(-1px);
+}
+.tm-field-row .tm-image-field .tm-image-item .tm-image-actions a.tm-edit:hover,
+.tm-field-row .tm-gallery-field .tm-image-item .tm-image-actions a.tm-edit:hover {
+	background: #2271b1;
+	color: #fff;
+}
+.tm-field-row .tm-image-field .tm-image-item .tm-image-actions a.tm-delete:hover,
+.tm-field-row .tm-gallery-field .tm-image-item .tm-image-actions a.tm-delete:hover {
+	background: #d63638;
+	color: #fff;
+}
+/* Override the legacy red-on-hover for the inner span so the pill
+   colour shift above is the only hover treatment. */
+.tm-field-row .tm-image-field .tm-image-actions a.tm-delete:hover span,
+.tm-field-row .tm-gallery-field .tm-image-actions a.tm-delete:hover span {
+	color: inherit;
+}
+
+/* ============================================================
+   Metabox gallery preview — show the real image (no crop) by
+   replacing the legacy `object-fit: cover` + fixed-height rules
+   with aspect-correct `contain` rendering inside a bounded cell.
+
+   Scope: .tm-field-row narrows these rules to metabox renders.
+   Overrides legacy rules at:
+     - tpmeta-fields.css:323-328  (.tm-gallery-img img: 104px cover)
+     - tpmeta-fields.css:357-365  (.tm-gallery-item: 100x100 fixed)
+     - tpmeta-fields.css:2106-2111 (column-grid override: 76px cover)
+   ============================================================ */
+.tm-field-row .tm-gallery-field .tm-gallery-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin-top: 8px;
+    margin-bottom: 8px;
+}
+.tm-field-row .tm-gallery-field .tm-gallery-item {
+	position: relative;
+	width: 140px;
+	/* height: 140px; */
+	margin: 0;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: #f6f7f7;
+	border-radius: 4px;
+	border: 2px solid #E0E2E3;
+	overflow: hidden;
+	cursor: grab;
+	transition: border-color .15s;
+}
+.tm-field-row .tm-gallery-field .tm-gallery-item:hover {
+	border-color: #2271b1;
+}
+.tm-field-row .tm-gallery-field .tm-gallery-item .tm-gallery-img {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+[class*="tm-meta-column-"] .tm-field-row .tm-gallery-field .tm-gallery-item .tm-gallery-img img,
+.tm-field-row .tm-gallery-field .tm-gallery-item .tm-gallery-img img {
+	width: 100%;
+	height: 100%;
+	max-width: 100%;
+	max-height: 100%;
+	object-fit: contain;
+	border: none;
+	border-radius: 0;
+	display: block;
+}
+/* Action pills pinned top-right of each gallery cell, always visible. */
+.tm-field-row .tm-gallery-field .tm-gallery-item .tm-gallery-actions {
+	position: absolute;
+	top: 6px;
+	right: 6px;
+	bottom: auto;
+	left: auto;
+	display: inline-flex;
+	gap: 4px;
+	visibility: visible;
+	opacity: 1;
+	transition: none;
+}
+.tm-field-row .tm-gallery-field .tm-gallery-item .tm-gallery-actions a {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	background: rgba(0, 0, 0, 0.55);
+	color: #fff;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+	backdrop-filter: blur(2px);
+	-webkit-backdrop-filter: blur(2px);
+	font-size: 12px;
+	transition: background .15s, color .15s, transform .08s;
+}
+.tm-field-row .tm-gallery-field .tm-gallery-item .tm-gallery-actions a span {
+	width: 12px;
+	height: 12px;
+	font-size: 12px;
+	line-height: 1;
+	background: transparent;
+	border-radius: 0;
+	color: inherit;
+	transform: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+.tm-field-row .tm-gallery-field .tm-gallery-item .tm-gallery-actions a:hover {
+	transform: translateY(-1px);
+}
+.tm-field-row .tm-gallery-field .tm-gallery-item .tm-gallery-actions a.tm-edit:hover {
+	background: #2271b1;
+	color: #fff;
+}
+.tm-field-row .tm-gallery-field .tm-gallery-item .tm-gallery-actions a.tm-delete:hover {
+	background: #d63638;
+	color: #fff;
+}
+.tm-field-row .tm-gallery-field .tm-gallery-item .tm-gallery-actions a:hover span {
+	color: inherit;
+	background: transparent;
+}

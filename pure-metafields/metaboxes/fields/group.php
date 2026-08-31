@@ -1,9 +1,34 @@
 <?php
 /**
- * Text
+ * Group
+ *
+ * Variables below are populated at runtime via extract() by the field
+ * renderer — declared here for static analysis (Intelephense).
+ *
+ * @var string $id
+ * @var string $post_type
+ * @var string $placeholder
+ * @var string $default
+ * @var string $bind
+ * @var mixed  $row_db_value
  */
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
+
+global $post;
+$fields = isset($fields) ? $fields : array();
+
+// Skip incomplete field definitions silently.
+if ( empty( $field['type'] ) || empty( $field['id'] ) ) {
+    return;
+}
+
+// Pseudo-fields injected by the Metafield Builder loader (row markers).
+// The metabox renderer handles them inline to open/close .tm-meta-row
+// flex containers; group.php must never render them as fields.
+if ( '_tpmf_row' === $field['type'] ) {
+    return;
+}
 
 if( !empty($field['conditional']) ){
     $compare_results = tpmeta_is_condition_matched($field['conditional'], $fields);
@@ -13,21 +38,22 @@ if( !empty($field['conditional']) ){
 
 $format = get_post_format() ? : 'standard';
 $field['field_type'] = isset($field_type)? $field_type : '';
-$field['post'] = $post;
-$min_height = ($field['type'] == 'textarea')? '200px;' : '95px;';
+$field['post'] = isset($post) ? $post : null;
+$_field_label = $field['label'] ?? '';
+$min_height = ($field['type'] === 'textarea') ? '200px;' : '95px;';
 ?>
 
 <?php if(isset($field['post_format']) && $field['post_format'] != ""): ?>
-<div 
-    class="tm-field-row <?php echo esc_attr($field['type']); ?> <?php echo esc_attr($field['id']); ?>" 
+<div
+    class="tm-field-row <?php echo esc_attr($field['type']); ?> <?php echo esc_attr($field['id']); ?>"
     style="display:<?php echo !$compare_results || ($format != $field['post_format'])? 'none' : 'block'; ?>;min-height:<?php echo esc_attr($min_height); ?>">
-    <label class="label-<?php echo esc_attr($field['type']); ?>"><?php echo esc_html($field['label']); ?></label>
+    <label class="label-<?php echo esc_attr($field['type']); ?>"><?php echo esc_html($_field_label); ?></label>
     <?php tpmeta_load_template('metaboxes/fields/'.$field['type'].'.php', $field); ?>
 </div>
 <?php else: ?>
     <?php if($field['type'] == 'tabs'): ?>
     <div class="tm-field-row <?php echo esc_attr($field['type']); ?> <?php echo esc_attr(esc_html($field['id'])); ?>" style="display:<?php echo !$compare_results? 'none' : 'block'; ?>;min-height:<?php echo esc_attr($min_height); ?>">
-        <label class="label-<?php echo esc_attr($field['type']); ?>"><?php echo esc_html($field['label']); ?></label>
+        <label class="label-<?php echo esc_attr($field['type']); ?>"><?php echo esc_html($_field_label); ?></label>
         <?php tpmeta_load_template('metaboxes/fields/'.$field['type'].'.php', $field); ?>
         <?php
             $tabs_childs = array_filter($fields, function($item) use ($field){
@@ -36,19 +62,19 @@ $min_height = ($field['type'] == 'textarea')? '200px;' : '95px;';
                 }
             });
         ?>
-        <?php foreach($tabs_childs as $tab_child): 
-        $hide_tab_content = tpmeta_is_condition_matched($tab_child['conditional'], $tabs_childs);    
+        <?php foreach($tabs_childs as $tab_child):
+        $hide_tab_content = tpmeta_is_condition_matched($tab_child['conditional'] ?? [], $tabs_childs);
         ?>
-        <div class="tm-field-row <?php echo esc_attr($tab_child['type']); ?> <?php echo esc_attr(esc_html($tab_child['id'])); ?>" style="display:<?php echo !$hide_tab_content? 'none' : 'block'; ?>">
-            <label class="label-<?php echo esc_attr($tab_child['type']); ?>"><?php echo esc_html($tab_child['label']); ?></label>
-            <?php tpmeta_load_template('metaboxes/fields/'.$tab_child['type'].'.php', $tab_child); ?>
+        <div class="tm-field-row <?php echo esc_attr($tab_child['type'] ?? ''); ?> <?php echo esc_attr(esc_html($tab_child['id'] ?? '')); ?>" style="display:<?php echo !$hide_tab_content? 'none' : 'block'; ?>">
+            <label class="label-<?php echo esc_attr($tab_child['type'] ?? ''); ?>"><?php echo esc_html($tab_child['label'] ?? ''); ?></label>
+            <?php if(!empty($tab_child['type'])) tpmeta_load_template('metaboxes/fields/'.$tab_child['type'].'.php', $tab_child); ?>
         </div>
         <?php endforeach; ?>
     </div>
     <?php else: ?>
         <?php if(!isset($field['parent'])): ?>
         <div class="tm-field-row <?php echo esc_attr($field['type']); ?> <?php echo esc_attr(esc_html($field['id'])); ?>" style="display:<?php echo !$compare_results? 'none' : 'block'; ?>;min-height:<?php echo esc_attr($min_height); ?>">
-            <label class="label-<?php echo esc_attr($field['type']); ?>"><?php echo esc_html($field['label']); ?></label>
+            <label class="label-<?php echo esc_attr($field['type']); ?>"><?php echo esc_html($_field_label); ?></label>
             <?php tpmeta_load_template('metaboxes/fields/'.$field['type'].'.php', $field); ?>
         </div>
         <?php endif; ?>

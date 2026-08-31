@@ -1,17 +1,32 @@
 <?php
 
 /**
- * 
  * Tabs
+ *
+ * Variables below are populated at runtime via extract() by the field
+ * renderer — declared here for static analysis (Intelephense).
+ *
+ * @var string $id
+ * @var string $post_type
+ * @var string $placeholder
+ * @var string $default
+ * @var string $bind
+ * @var mixed  $row_db_value
  */
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if(!isset($default)){
     $default = false;
 }
 ?>
+<?php
+// Support both keys: builder-registered fields use 'options' (normalised to
+// assoc {value:label} by the loader); manually-registered fields may use
+// the legacy 'choices' key. Try choices first for backward compat.
+$_choices = isset($choices) ? $choices : ( isset($options) ? $options : array() );
+?>
 <?php if(!isset($row_db_value)): ?>
 <div class="tm-button-groups">
-    <?php foreach($choices as $key => $val): ?>
+    <?php foreach($_choices as $key => $val): ?>
     <label class="tm-button-radio">
         <?php if(tpmeta_field($id) == ''): ?>
         <input 
@@ -30,11 +45,11 @@ if(!isset($default)){
     </label>
     <?php endforeach; ?>
 </div>
-<?php else: 
-$bind_keys = isset($bind)? $bind : '';     
+<?php else:
+$bind_keys = isset($bind)? $bind : '';
 ?>
 <div class="tm-button-groups">
-    <?php foreach($choices as $key => $val): ?>
+    <?php foreach($_choices as $key => $val): ?>
     <label class="tm-button-radio">
         <input
         data-key="<?php echo esc_attr($bind_keys); ?>" 

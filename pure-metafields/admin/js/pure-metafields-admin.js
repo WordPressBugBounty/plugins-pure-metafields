@@ -28,32 +28,42 @@
 	 * Although scripts in the WordPress core, Plugins and Themes may be
 	 * practising this, we should strive to set a better example in our own work.
 	 */
+	/**
+	 * Show/hide post-format-bound metaboxes based on the active post format.
+	 *
+	 * Symmetric: matching boxes are .show()n, non-matching are .hide()n.
+	 * Calling this on initial load (not just on change) recovers from stale
+	 * `metaboxhidden_<screen>` user-meta — without it, a matching box that was
+	 * previously hidden by WP's screen-options system stays hidden until the
+	 * user touches the radio.
+	 */
+	function applyFormatVisibility(format) {
+		jQuery('[data-post-format]').filter(function() {
+			return jQuery(this).data('post-format') !== '';
+		}).each(function() {
+			var $wrap     = jQuery(this);
+			var metaBoxId = $wrap.data('metabox-id');
+			if (!metaBoxId) return;
+			var $box = jQuery('#' + metaBoxId);
+			if (!$box.length) return;
+			if ($wrap.data('post-format') === format) {
+				$box.show();
+			} else {
+				$box.hide();
+			}
+		});
+	}
+
 	document.addEventListener('DOMContentLoaded', function() {
 		jQuery(function($) {
-			$('[data-post-format]').filter(function() {
-				return $(this).data('post-format') !== '';
-			}).each(function() {
-				let metaBoxId = $(this).data('metabox-id');
-				if($('#post-formats-select input[name="post_format"]:checked').val() !== $(this).data('post-format')) {
-					$(`#${metaBoxId}`).hide();
-				}
-			});
+			var initial = $('#post-formats-select input[name="post_format"]:checked').val() || '';
+			applyFormatVisibility(initial);
 		});
-	});	
+	});
 
 	$(document).on('change', '#post-formats-select input[name="post_format"]', function(e) {
 		e.preventDefault();
-		let format = $(this).val();
-		$('[data-post-format]').filter(function() {
-			return $(this).data('post-format') !== '';
-		}).each(function() {
-			let metaBoxId = $(this).data('metabox-id');
-			if ($(this).data('post-format') === format) {
-				$(`#${metaBoxId}`).show();
-			} else {
-				$(`#${metaBoxId}`).hide();
-			}
-		});
+		applyFormatVisibility($(this).val());
 	});
 
 })( jQuery );

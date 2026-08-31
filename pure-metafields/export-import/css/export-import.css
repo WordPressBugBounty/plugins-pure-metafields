@@ -1,0 +1,92 @@
+/* Export / Import */
+#wpcontent { padding-left: 0 !important; }
+
+.ei-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 24px;
+	align-items: start;
+}
+
+/* Export cards */
+.ei-export-cards { display: flex; flex-direction: column; gap: 12px; }
+
+.ei-export-card {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	background: var(--pf-bg);
+	border: 1.5px solid var(--pf-border);
+	border-radius: var(--pf-radius);
+	padding: 14px 16px;
+	transition: border-color .15s, box-shadow .15s;
+}
+
+.ei-export-card:hover {
+	border-color: #c8d6ff;
+	box-shadow: 0 2px 10px rgba(51,98,255,.08);
+}
+
+/* "Export Everything" highlighted */
+.ei-export-card[data-type="all"] {
+	background: linear-gradient(135deg, var(--pf-blue-lt) 0%, var(--pf-purple-lt) 100%);
+	border-color: rgba(51,98,255,.25);
+}
+
+.ei-export-card-icon {
+	width: 40px;
+	height: 40px;
+	border-radius: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+
+.ei-export-card-icon .dashicons { font-size: 20px; width: 20px; height: 20px; }
+
+.ei-export-card-info { flex: 1; min-width: 0; }
+
+.ei-export-card-label {
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--pf-text);
+	margin-bottom: 2px;
+}
+
+.ei-export-card-desc { font-size: 12px; color: var(--pf-muted); }
+
+/* Drop zone */
+.ei-dropzone {
+	border: 2px dashed var(--pf-border);
+	border-radius: var(--pf-radius);
+	padding: 36px 24px;
+	text-align: center;
+	transition: border-color .15s, background .15s;
+	cursor: pointer;
+}
+
+.ei-dropzone.is-over {
+	border-color: var(--pf-blue);
+	background: var(--pf-blue-lt);
+}
+
+.ei-dropzone-icon {
+	font-size: 36px;
+	width: 36px;
+	height: 36px;
+	color: var(--pf-border);
+	display: block;
+	margin: 0 auto 10px;
+}
+
+.ei-dropzone p { font-size: 13px; color: var(--pf-muted); margin: 0 0 4px; }
+
+.ei-file-name {
+	font-size: 12px;
+	color: var(--pf-blue);
+	font-weight: 600;
+	margin-top: 10px;
+}
+
+.ei-import-preview { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }

@@ -1,0 +1,12 @@
+<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="28" cy="28" r="28" fill="#3362FF"/>
+  <!-- T crossbar -->
+  <rect x="11" y="14" width="27" height="7" rx="3.5" fill="white"/>
+  <!-- T vertical stem -->
+  <rect x="21" y="21" width="8" height="21" rx="2" fill="white"/>
+  <!-- P right arm (bridges T and P bowl) -->
+  <rect x="29" y="19" width="7" height="8" fill="white"/>
+  <!-- P bowl (white disc + blue negative space) -->
+  <circle cx="36" cy="32" r="7.5" fill="white"/>
+  <circle cx="36" cy="32" r="4.2" fill="#3362FF"/>
+</svg>

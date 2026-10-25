@@ -93,7 +93,9 @@ class TPMeta_Metafields_REST {
 		if ( empty( $data['metabox_id'] ) ) {
 			return new WP_Error( 'missing_id', 'metabox_id is required', array( 'status' => 400 ) );
 		}
-		$saved = TPMeta_Metafields_Store::save( $data );
+		// ?import=1 — JSON import from the builder; never purge existing field data.
+		$purge = ! rest_sanitize_boolean( $request->get_param( 'import' ) );
+		$saved = TPMeta_Metafields_Store::save( $data, $purge );
 		if ( ! $saved ) {
 			return new WP_Error( 'save_failed', 'Could not save metabox', array( 'status' => 500 ) );
 		}

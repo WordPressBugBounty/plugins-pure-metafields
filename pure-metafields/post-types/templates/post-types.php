@@ -3,9 +3,6 @@
 
 	<!-- Page header -->
 	<div class="cpt-page-header">
-		<div class="cpt-page-header-icon has-logo">
-			<img class="cpt-page-header-logo" src="<?php echo esc_url( TPMETA_URL . 'assets/img/logo.png' ); ?>" alt="" />
-		</div>
 		<div class="cpt-page-header-title">
 			<h1><?php esc_html_e( 'Post Types', 'pure-metafields' ); ?></h1>
 			<p><?php esc_html_e( 'Register custom post types with all WordPress arguments — no PHP required.', 'pure-metafields' ); ?></p>

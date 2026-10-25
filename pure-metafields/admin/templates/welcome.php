@@ -1,245 +1,297 @@
 <?php
 /**
- * Pure Fields — Dashboard
+ * Pure Fields — Welcome
  */
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-$logo_url  = TPMETA_URL . 'assets/img/logo.png';
-$admin_url = admin_url( 'admin.php' );
+$admin_url  = admin_url( 'admin.php' );
+$is_pro     = tpmeta_is_pro();
+$options_on = class_exists( 'TPMeta_Builder_Store' );
 
-$overview = array(
-	array(
-		'slug'  => 'pure-fields-metafields',
-		'icon'  => 'editor-table',
-		'color' => 'blue',
-		'count' => count( TPMeta_Metafields_Store::all() ),
-		'label' => __( 'Metaboxes', 'pure-metafields' ),
-	),
-	array(
-		'slug'  => 'pure-fields-options-builder',
-		'icon'  => 'admin-customizer',
-		'color' => 'purple',
-		'count' => class_exists( 'TPMeta_Builder_Store' ) ? count( TPMeta_Builder_Store::all() ) : '🔒',
-		'label' => __( 'Option Panels', 'pure-metafields' ),
-	),
-	array(
-		'slug'  => 'pure-fields-post-types',
-		'icon'  => 'admin-post',
-		'color' => 'pink',
-		'count' => count( TPMeta_Post_Types_Store::all() ),
-		'label' => __( 'Post Types', 'pure-metafields' ),
-	),
-	array(
-		'slug'  => 'pure-fields-taxonomies',
-		'icon'  => 'tag',
-		'color' => 'teal',
-		'count' => count( TPMeta_Taxonomies_Store::all() ),
-		'label' => __( 'Taxonomies', 'pure-metafields' ),
-	),
-);
+// Unlicensed Pro replaces the "Pro Features" page with its license screen.
+$has_pro_page  = (bool) menu_page_url( 'pure-fields-pro', false );
+$pro_slug      = $has_pro_page ? 'pure-fields-pro' : 'pure-fields-license';
+$needs_license = ! $is_pro && ! $has_pro_page;
+
+$n_boxes = count( TPMeta_Metafields_Store::all() );
+$n_types = count( TPMeta_Post_Types_Store::all() );
+$n_taxes = count( TPMeta_Taxonomies_Store::all() );
+$n_panel = $options_on ? count( TPMeta_Builder_Store::all() ) : 0;
+
+$recent = array();
+foreach ( array_slice( array_reverse( TPMeta_Metafields_Store::all() ), 0, 3 ) as $box ) {
+	if ( ! is_array( $box ) ) {
+		continue;
+	}
+	if ( 'user' === ( $box['target'] ?? 'post' ) ) {
+		$where = __( 'user profiles', 'pure-metafields' );
+	} else {
+		$where = implode( ', ', array_map( 'sanitize_key', (array) ( $box['post_type'] ?? array() ) ) );
+	}
+	$recent[] = array(
+		'title' => ! empty( $box['title'] ) ? $box['title'] : ( $box['metabox_id'] ?? '' ),
+		'where' => $where,
+	);
+}
 
 $tools = array(
 	array(
-		'slug'  => 'pure-fields-metafields',
-		'icon'  => 'editor-table',
-		'color' => 'blue',
-		'title' => __( 'Metafield Builder', 'pure-metafields' ),
-		'desc'  => __( 'Drag-and-drop metaboxes for any post type — no PHP required.', 'pure-metafields' ),
+		'id'     => 'metafields',
+		'slug'   => 'pure-fields-metafields',
+		'title'  => __( 'Metafield Builder', 'pure-metafields' ),
+		'lead'   => __( 'Add custom fields to posts, pages and user profiles.', 'pure-metafields' ),
+		'count'  => $n_boxes,
+		'unit'   => _n( 'metabox', 'metaboxes', $n_boxes, 'pure-metafields' ),
+		'facts'  => array(
+			__( 'Makes', 'pure-metafields' )       => __( 'Metaboxes with drag-and-drop fields', 'pure-metafields' ),
+			__( 'Saved as', 'pure-metafields' )    => __( 'Post meta or user meta', 'pure-metafields' ),
+			__( 'Shows up in', 'pure-metafields' ) => __( 'Post, page and user edit screens', 'pure-metafields' ),
+		),
+		'action' => __( 'Open builder', 'pure-metafields' ),
+		'wide'   => true,
+		'recent' => $recent,
 	),
 	array(
-		'slug'  => 'pure-fields-options-builder',
-		'icon'  => 'admin-customizer',
-		'color' => 'purple',
-		'title' => __( 'Option Builder', 'pure-metafields' ),
-		'desc'  => __( 'Visual theme options panels, exported as clean production-ready PHP.', 'pure-metafields' ),
+		'id'     => 'post-types',
+		'slug'   => 'pure-fields-post-types',
+		'title'  => __( 'Post Types', 'pure-metafields' ),
+		'lead'   => __( 'Add new content types, such as Portfolio or Team.', 'pure-metafields' ),
+		'count'  => $n_types,
+		'unit'   => _n( 'post type', 'post types', $n_types, 'pure-metafields' ),
+		'facts'  => array(
+			__( 'Makes', 'pure-metafields' )       => __( 'Custom post types', 'pure-metafields' ),
+			__( 'Saved as', 'pure-metafields' )    => __( 'Plugin settings', 'pure-metafields' ),
+			__( 'Shows up in', 'pure-metafields' ) => __( 'The admin menu', 'pure-metafields' ),
+		),
+		'action' => __( 'Manage', 'pure-metafields' ),
 	),
 	array(
-		'slug'  => 'pure-fields-post-types',
-		'icon'  => 'admin-post',
-		'color' => 'pink',
-		'title' => __( 'Post Types', 'pure-metafields' ),
-		'desc'  => __( 'Register custom post types with every WordPress argument from a visual form.', 'pure-metafields' ),
+		'id'     => 'taxonomies',
+		'slug'   => 'pure-fields-taxonomies',
+		'title'  => __( 'Taxonomies', 'pure-metafields' ),
+		'lead'   => __( 'Group content with your own categories or tags.', 'pure-metafields' ),
+		'count'  => $n_taxes,
+		'unit'   => _n( 'taxonomy', 'taxonomies', $n_taxes, 'pure-metafields' ),
+		'facts'  => array(
+			__( 'Makes', 'pure-metafields' )       => __( 'Custom taxonomies', 'pure-metafields' ),
+			__( 'Saved as', 'pure-metafields' )    => __( 'Plugin settings', 'pure-metafields' ),
+			__( 'Shows up in', 'pure-metafields' ) => __( 'Editors of the post types you attach', 'pure-metafields' ),
+		),
+		'action' => __( 'Manage', 'pure-metafields' ),
 	),
 	array(
-		'slug'  => 'pure-fields-taxonomies',
-		'icon'  => 'tag',
-		'color' => 'teal',
-		'title' => __( 'Taxonomies', 'pure-metafields' ),
-		'desc'  => __( 'Create and attach custom taxonomies to any post type in one click.', 'pure-metafields' ),
+		'id'     => 'options',
+		'slug'   => $options_on ? 'pure-fields-options-builder' : $pro_slug,
+		'title'  => __( 'Option Builder', 'pure-metafields' ),
+		'lead'   => __( 'Build theme settings panels, optionally inside the Customizer.', 'pure-metafields' ),
+		'count'  => $n_panel,
+		'unit'   => _n( 'option panel', 'option panels', $n_panel, 'pure-metafields' ),
+		'facts'  => array(
+			__( 'Makes', 'pure-metafields' )       => __( 'Theme option panels', 'pure-metafields' ),
+			__( 'Saved as', 'pure-metafields' )    => __( 'Theme mods', 'pure-metafields' ),
+			__( 'Shows up in', 'pure-metafields' ) => __( 'Its own admin page, and the Customizer if enabled', 'pure-metafields' ),
+		),
+		'action' => $options_on
+			? __( 'Open builder', 'pure-metafields' )
+			: ( $needs_license ? __( 'Activate license', 'pure-metafields' ) : __( 'See Pro features', 'pure-metafields' ) ),
+		'locked' => ! $options_on,
 	),
 	array(
-		'slug'  => 'pure-fields-export-import',
-		'icon'  => 'database-import',
-		'color' => 'orange',
-		'title' => __( 'Export / Import', 'pure-metafields' ),
-		'desc'  => __( 'Back up and restore all fields, post types, and panels as JSON.', 'pure-metafields' ),
-		'wide'  => true,
+		'id'     => 'export-import',
+		'slug'   => 'pure-fields-export-import',
+		'title'  => __( 'Export / Import', 'pure-metafields' ),
+		'lead'   => __( 'Back up your setup or move it to another site.', 'pure-metafields' ),
+		'count'  => null,
+		'unit'   => '',
+		'facts'  => array(
+			__( 'Makes', 'pure-metafields' )       => __( 'One JSON file', 'pure-metafields' ),
+			__( 'Includes', 'pure-metafields' )    => $options_on
+				? __( 'Metaboxes, post types, taxonomies, option panels', 'pure-metafields' )
+				: __( 'Metaboxes, post types, taxonomies', 'pure-metafields' ),
+			__( 'Restores on', 'pure-metafields' ) => __( 'Any site running Pure Fields', 'pure-metafields' ),
+		),
+		'action' => __( 'Export or import', 'pure-metafields' ),
 	),
 );
+
+$features = array(
+	__( 'Option Builder', 'pure-metafields' )         => $options_on,
+	__( 'Bake to PHP', 'pure-metafields' )            => class_exists( 'TPMeta_Metafields_Codegen' ),
+	__( 'Customizer integration', 'pure-metafields' ) => class_exists( 'TPMeta_Customizer' ),
+);
+
+if ( $is_pro ) {
+	$edition_label = __( 'Pro edition', 'pure-metafields' );
+	$edition_tone  = 'green';
+} elseif ( $needs_license ) {
+	$edition_label = __( 'Pro, license inactive', 'pure-metafields' );
+	$edition_tone  = 'yellow';
+} else {
+	$edition_label = __( 'Free edition', 'pure-metafields' );
+	$edition_tone  = 'neutral';
+}
+$locked_value = $needs_license ? __( 'License needed', 'pure-metafields' ) : __( 'Pro only', 'pure-metafields' );
 ?>
 
-<div class="pfw-app" id="pfw-page">
+<div class="pfw" id="pfw-page">
+	<div class="pfw-inner">
 
-	<!-- ── DASHBOARD ────────────────────────────────────────────────────── -->
-	<div class="pfw-dashboard">
-
-		<!-- Main column -->
-		<main class="pfw-main">
-
-			<!-- Welcome panel -->
-			<div class="pfw-banner">
-				<div class="pfw-banner-brand">
-					<img src="<?php echo esc_url( $logo_url ); ?>" alt="" width="38" height="38" aria-hidden="true">
-					<div>
-						<div class="pfw-banner-name">Pure Fields</div>
-						<div class="pfw-banner-sub"><?php esc_html_e( 'The complete WordPress fields framework', 'pure-metafields' ); ?></div>
-					</div>
-				</div>
-				<div class="pfw-banner-chips">
-					<span class="pfw-chip"><strong>5</strong>&nbsp;<?php esc_html_e( 'Tools', 'pure-metafields' ); ?></span>
-					<span class="pfw-chip"><strong>13+</strong>&nbsp;<?php esc_html_e( 'Field Types', 'pure-metafields' ); ?></span>
-					<span class="pfw-chip pfw-chip--green">
-						<svg width="9" height="9" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-							<path d="M3 8l3.5 3.5L13 4" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-						</svg>
-						<?php esc_html_e( 'PHP Export', 'pure-metafields' ); ?>
-					</span>
-				</div>
+		<header class="pfw-head">
+			<div class="pfw-head-text">
+				<h1 class="pfw-title"><?php esc_html_e( 'Pure Fields', 'pure-metafields' ); ?></h1>
+				<p class="pfw-subtitle"><?php esc_html_e( 'Build metaboxes, post types and taxonomies without writing registration code.', 'pure-metafields' ); ?></p>
 			</div>
-
-			<!-- Overview stats -->
-			<div class="pfw-section-head">
-				<span class="pfw-eyebrow"><?php esc_html_e( 'Overview', 'pure-metafields' ); ?></span>
+			<div class="pfw-head-meta">
+				<kbd class="pfw-kbd">v<?php echo esc_html( TPMETA_VERSION ); ?></kbd>
+				<span class="pfw-tag pfw-tag--<?php echo esc_attr( $edition_tone ); ?>"><?php echo esc_html( $edition_label ); ?></span>
 			</div>
+		</header>
 
-			<div class="pfw-stats">
-				<?php foreach ( $overview as $o ) : ?>
-				<a href="<?php echo esc_url( add_query_arg( 'page', $o['slug'], $admin_url ) ); ?>"
-				   class="pfw-stat pfw-color-<?php echo esc_attr( $o['color'] ); ?>">
-					<span class="pfw-stat-icon" aria-hidden="true">
-						<span class="dashicons dashicons-<?php echo esc_attr( $o['icon'] ); ?>"></span>
-					</span>
-					<span class="pfw-stat-body">
-						<span class="pfw-stat-count"><?php echo esc_html( $o['count'] ); ?></span>
-						<span class="pfw-stat-label"><?php echo esc_html( $o['label'] ); ?></span>
-					</span>
-				</a>
-				<?php endforeach; ?>
-			</div>
+		<h2 class="screen-reader-text"><?php esc_html_e( 'Tools', 'pure-metafields' ); ?></h2>
 
-			<!-- Section label -->
-			<div class="pfw-section-head">
-				<span class="pfw-eyebrow"><?php esc_html_e( 'Tools', 'pure-metafields' ); ?></span>
-			</div>
-
-			<!-- 2-col tool grid -->
-			<div class="pfw-grid">
-				<?php foreach ( $tools as $t ) :
-					$is_wide = ! empty( $t['wide'] );
-				?>
-				<a href="<?php echo esc_url( add_query_arg( 'page', $t['slug'], $admin_url ) ); ?>"
-				   class="pfw-tool pfw-color-<?php echo esc_attr( $t['color'] ); ?><?php echo $is_wide ? ' pfw-tool--wide' : ''; ?>">
-
-					<div class="pfw-tool-hd">
-						<span class="pfw-tool-icon" aria-hidden="true">
-							<span class="dashicons dashicons-<?php echo esc_attr( $t['icon'] ); ?>"></span>
+		<ul class="pfw-bento">
+			<?php foreach ( $tools as $i => $t ) :
+				$locked = ! empty( $t['locked'] );
+				if ( $locked ) {
+					$tag_tone  = 'yellow';
+					$tag_label = $needs_license ? __( 'License', 'pure-metafields' ) : __( 'Pro', 'pure-metafields' );
+				} elseif ( 0 === $t['count'] ) {
+					$tag_tone  = 'neutral';
+					$tag_label = __( 'Empty', 'pure-metafields' );
+				} else {
+					$tag_tone  = 'green';
+					$tag_label = __( 'Ready', 'pure-metafields' );
+				}
+				$classes = 'pfw-card pfw-tool pfw-tool--' . $t['id'] . ( ! empty( $t['wide'] ) ? ' is-wide' : '' ) . ( $locked ? ' is-locked' : '' );
+				$btn     = ( ! empty( $t['wide'] ) && ! $locked ) ? 'pfw-btn pfw-btn--primary' : 'pfw-btn';
+			?>
+			<li class="<?php echo esc_attr( $classes ); ?>" style="--i:<?php echo (int) $i; ?>">
+				<div class="pfw-tool-main">
+					<div class="pfw-tool-top">
+						<span class="pfw-tool-icon">
+							<?php echo TPMeta_Main_Menu::icon( $t['id'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?>
 						</span>
-						<span class="pfw-tool-name"><?php echo esc_html( $t['title'] ); ?></span>
-					</div>
-
-					<div class="pfw-tool-bd">
-						<p class="pfw-tool-desc"><?php echo esc_html( $t['desc'] ); ?></p>
-					</div>
-
-					<div class="pfw-tool-ft">
-						<span class="pfw-tool-open">
-							<?php esc_html_e( 'Open', 'pure-metafields' ); ?>
-							<svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-								<path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-							</svg>
+						<span class="pfw-tag pfw-tag--<?php echo esc_attr( $tag_tone ); ?>">
+							<?php
+							if ( $locked ) {
+								echo TPMeta_Main_Menu::icon( $needs_license ? 'key' : 'lock' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon().
+							}
+							echo esc_html( $tag_label );
+							?>
 						</span>
 					</div>
 
-				</a>
-				<?php endforeach; ?>
-			</div>
+					<h3 class="pfw-tool-name"><?php echo esc_html( $t['title'] ); ?></h3>
+					<p class="pfw-tool-lead"><?php echo esc_html( $t['lead'] ); ?></p>
 
-		</main>
-
-		<!-- Sidebar -->
-		<aside class="pfw-sidebar">
-
-			<!-- System card -->
-			<div class="pfw-card">
-				<div class="pfw-card-head">
-					<span class="pfw-eyebrow"><?php esc_html_e( 'System', 'pure-metafields' ); ?></span>
-					<span class="pfw-pill pfw-pill--green">
-						<span class="pfw-dot" aria-hidden="true"></span>
-						<?php esc_html_e( 'Active', 'pure-metafields' ); ?>
-					</span>
+					<?php if ( ! empty( $t['recent'] ) ) : ?>
+					<ul class="pfw-recent" aria-label="<?php esc_attr_e( 'Your metaboxes', 'pure-metafields' ); ?>">
+						<?php foreach ( $t['recent'] as $box ) : ?>
+						<li>
+							<span class="pfw-recent-title"><?php echo esc_html( $box['title'] ); ?></span>
+							<span class="pfw-recent-meta"><?php echo esc_html( $box['where'] ); ?></span>
+						</li>
+						<?php endforeach; ?>
+						<?php if ( $t['count'] > count( $t['recent'] ) ) : ?>
+						<li class="pfw-recent-more">
+							<?php
+							/* translators: %s: number of further metaboxes. */
+							echo esc_html( sprintf( __( '%s more in the builder', 'pure-metafields' ), number_format_i18n( $t['count'] - count( $t['recent'] ) ) ) );
+							?>
+						</li>
+						<?php endif; ?>
+					</ul>
+					<?php elseif ( isset( $t['recent'] ) ) : ?>
+					<p class="pfw-recent-empty"><?php esc_html_e( 'Start with one metabox, pick the post types it belongs to, then drag fields into it.', 'pure-metafields' ); ?></p>
+					<?php endif; ?>
 				</div>
-				<dl class="pfw-meta">
-					<div class="pfw-meta-row">
+
+				<dl class="pfw-facts">
+					<?php foreach ( $t['facts'] as $label => $value ) : ?>
+					<div class="pfw-fact">
+						<dt><?php echo esc_html( $label ); ?></dt>
+						<dd><?php echo esc_html( $value ); ?></dd>
+					</div>
+					<?php endforeach; ?>
+				</dl>
+
+				<div class="pfw-tool-foot">
+					<span class="pfw-count">
+						<?php
+						if ( $locked ) {
+							echo $needs_license
+								? esc_html__( 'Activate your license to unlock', 'pure-metafields' )
+								: esc_html__( 'Available in Pure Fields Pro', 'pure-metafields' );
+						} elseif ( 0 === $t['count'] ) {
+							/* translators: %s: plural item noun (e.g. "metaboxes"). */
+							echo esc_html( sprintf( __( 'No %s yet', 'pure-metafields' ), $t['unit'] ) );
+						} elseif ( null !== $t['count'] ) {
+							echo '<span class="pfw-num">' . esc_html( number_format_i18n( $t['count'] ) ) . '</span> ' . esc_html( $t['unit'] );
+						}
+						?>
+					</span>
+					<a class="<?php echo esc_attr( $btn ); ?>" href="<?php echo esc_url( add_query_arg( 'page', $t['slug'], $admin_url ) ); ?>">
+						<span><?php echo esc_html( $t['action'] ); ?></span>
+						<span class="screen-reader-text"><?php echo esc_html( ' — ' . $t['title'] ); ?></span>
+						<?php echo TPMeta_Main_Menu::icon( 'arrow' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?>
+					</a>
+				</div>
+			</li>
+			<?php endforeach; ?>
+
+			<li class="pfw-card pfw-install" style="--i:5">
+				<h2 class="pfw-panel-title"><?php esc_html_e( 'This install', 'pure-metafields' ); ?></h2>
+				<dl class="pfw-install-grid">
+					<div class="pfw-install-item">
 						<dt><?php esc_html_e( 'Version', 'pure-metafields' ); ?></dt>
-						<dd>v<?php echo esc_html( TPMETA_VERSION ); ?></dd>
+						<dd class="pfw-num"><?php echo esc_html( TPMETA_VERSION ); ?></dd>
 					</div>
-					<div class="pfw-meta-row">
-						<dt><?php esc_html_e( 'Tools', 'pure-metafields' ); ?></dt>
-						<dd>5</dd>
+					<div class="pfw-install-item">
+						<dt><?php esc_html_e( 'Edition', 'pure-metafields' ); ?></dt>
+						<dd><?php echo esc_html( $edition_label ); ?></dd>
 					</div>
-					<div class="pfw-meta-row">
-						<dt><?php esc_html_e( 'Field Types', 'pure-metafields' ); ?></dt>
-						<dd>13+</dd>
-					</div>
-					<div class="pfw-meta-row">
-						<dt><?php esc_html_e( 'PHP Export', 'pure-metafields' ); ?></dt>
-						<dd class="pfw-meta-yes">
-							<svg width="11" height="11" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-								<path d="M3 8l3.5 3.5L13 4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-							</svg>
-							<?php esc_html_e( 'Supported', 'pure-metafields' ); ?>
+					<?php foreach ( $features as $label => $on ) : ?>
+					<div class="pfw-install-item">
+						<dt><?php echo esc_html( $label ); ?></dt>
+						<dd class="pfw-avail <?php echo $on ? 'is-on' : 'is-off'; ?>">
+							<?php
+							echo TPMeta_Main_Menu::icon( $on ? 'check' : 'lock' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon().
+							echo $on ? esc_html__( 'Available', 'pure-metafields' ) : esc_html( $locked_value );
+							?>
 						</dd>
 					</div>
+					<?php endforeach; ?>
 				</dl>
-			</div>
+			</li>
 
-			<!-- Quick links card -->
-			<div class="pfw-card">
-				<div class="pfw-card-head">
-					<span class="pfw-eyebrow"><?php esc_html_e( 'Quick Links', 'pure-metafields' ); ?></span>
-				</div>
+			<li class="pfw-card pfw-help" style="--i:6">
+				<h2 class="pfw-panel-title"><?php esc_html_e( 'Help', 'pure-metafields' ); ?></h2>
 				<ul class="pfw-links">
 					<li>
-						<a href="https://themepure.net" target="_blank" rel="noopener" class="pfw-link">
-							<span class="dashicons dashicons-book-alt" aria-hidden="true"></span>
-							<?php esc_html_e( 'Documentation', 'pure-metafields' ); ?>
-							<svg class="pfw-link-ext" width="9" height="9" viewBox="0 0 10 10" fill="none" aria-hidden="true">
-								<path d="M1 9L9 1M9 1H3.5M9 1V6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-							</svg>
+						<a class="pfw-link" href="<?php echo esc_url( add_query_arg( 'page', 'pure-fields-help', $admin_url ) ); ?>">
+							<?php echo TPMeta_Main_Menu::icon( 'book' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?>
+							<span><?php esc_html_e( 'Guides and field reference', 'pure-metafields' ); ?></span>
 						</a>
 					</li>
+					<?php if ( ! $is_pro ) : ?>
 					<li>
-						<a href="https://themepure.net" target="_blank" rel="noopener" class="pfw-link">
-							<span class="dashicons dashicons-admin-site-alt3" aria-hidden="true"></span>
-							<?php esc_html_e( 'ThemePure.net', 'pure-metafields' ); ?>
-							<svg class="pfw-link-ext" width="9" height="9" viewBox="0 0 10 10" fill="none" aria-hidden="true">
-								<path d="M1 9L9 1M9 1H3.5M9 1V6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-							</svg>
+						<a class="pfw-link" href="<?php echo esc_url( add_query_arg( 'page', $pro_slug, $admin_url ) ); ?>">
+							<?php echo TPMeta_Main_Menu::icon( $needs_license ? 'key' : 'sparkle' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?>
+							<span><?php echo $needs_license ? esc_html__( 'Activate your license', 'pure-metafields' ) : esc_html__( 'What Pro adds', 'pure-metafields' ); ?></span>
 						</a>
 					</li>
+					<?php endif; ?>
 					<li>
-						<a href="https://themepure.net" target="_blank" rel="noopener" class="pfw-link">
-							<span class="dashicons dashicons-sos" aria-hidden="true"></span>
-							<?php esc_html_e( 'Support', 'pure-metafields' ); ?>
-							<svg class="pfw-link-ext" width="9" height="9" viewBox="0 0 10 10" fill="none" aria-hidden="true">
-								<path d="M1 9L9 1M9 1H3.5M9 1V6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-							</svg>
+						<a class="pfw-link" href="https://themepure.net" target="_blank" rel="noopener">
+							<?php echo TPMeta_Main_Menu::icon( 'globe' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?>
+							<span><?php esc_html_e( 'ThemePure.net', 'pure-metafields' ); ?></span>
+							<span class="screen-reader-text"><?php esc_html_e( '(opens in a new tab)', 'pure-metafields' ); ?></span>
+							<?php echo TPMeta_Main_Menu::icon( 'external', 'pfw-link-ext' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?>
 						</a>
 					</li>
 				</ul>
-			</div>
+			</li>
+		</ul>
 
-		</aside>
 	</div>
-
 </div>

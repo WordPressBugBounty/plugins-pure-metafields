@@ -329,34 +329,47 @@
 			reader.onload = function (e) {
 				try {
 					var data = JSON.parse(e.target.result);
-					// Support single metabox object or array of metaboxes
-					var list = Array.isArray(data) ? data : [data];
-					var imported = 0;
-					list.forEach(function (box) {
-						if (!box.metabox_id) return;
-						box.sections = (box.sections || []).map(migrateSection);
-						var idx = allMetaboxes.findIndex(function (m) { return m.metabox_id === box.metabox_id; });
-						if (idx > -1) allMetaboxes[idx] = box;
-						else          allMetaboxes.push(box);
-						imported++;
-					});
-					if (imported) {
-						// Save all to server
-						var pending = allMetaboxes.slice();
-						var saveNext = function () {
-							if (!pending.length) {
-								loadMetabox(allMetaboxes[0].metabox_id);
-								toast('Imported ' + imported + ' metabox(es)', 'success', 3000);
-								return;
-							}
-							var box = pending.shift();
-							wp.apiFetch({ url: TPMFBuilder.restRoot + 'metafields', method: 'POST', data: box })
-								.then(saveNext).catch(saveNext);
-						};
-						saveNext();
-					} else {
+					// Accept a single metabox (builder Export), an array of metaboxes,
+					// or a full Export/Import package ({ metafields: [...] }).
+					var list = Array.isArray(data) ? data
+						: (data && Array.isArray(data.metafields)) ? data.metafields
+						: [data];
+					var pending = list.filter(function (box) { return box && typeof box === 'object' && box.metabox_id; });
+					if (!pending.length) {
 						toast('No valid metaboxes found in file', 'error', 3000);
+						return;
 					}
+					var imported = 0;
+					var failed   = [];
+					var firstId  = '';
+					// Save only the imported boxes; ?import=1 keeps existing field data.
+					var saveNext = function () {
+						if (!pending.length) {
+							if (imported) {
+								loadMetabox(firstId);
+								if (state && state.metabox.metabox_id !== firstId) renderSidebar();
+								toast('Imported ' + imported + ' metabox(es)', 'success', 3000);
+							}
+							if (failed.length) {
+								toast('Failed to import: ' + failed.join(', '), 'error', 5000);
+							}
+							return;
+						}
+						var box = pending.shift();
+						box.sections = (box.sections || []).map(migrateSection);
+						wp.apiFetch({ url: TPMFBuilder.restRoot + 'metafields?import=1', method: 'POST', data: box })
+							.then(function (saved) {
+								var rec = (saved && saved.metabox_id) ? saved : box;
+								var idx = allMetaboxes.findIndex(function (m) { return m.metabox_id === rec.metabox_id; });
+								if (idx > -1) allMetaboxes[idx] = rec;
+								else          allMetaboxes.push(rec);
+								if (!firstId) firstId = rec.metabox_id;
+								imported++;
+							})
+							.catch(function () { failed.push(box.metabox_id); })
+							.then(saveNext);
+					};
+					saveNext();
 				} catch (err) {
 					toast('Invalid JSON: ' + err.message, 'error', 4000);
 				}
@@ -389,13 +402,29 @@
 		var sc = state.status === 'saved' ? 'is-success' : (state.status === 'error' ? 'is-error' : '');
 		var canUndo = history.past.length > 0;
 		var canRedo = history.future.length > 0;
-		var pts = (m.post_type || []).map(function (p) {
+		// Show a few post types inline; the rest collapse into a "+N" pill so a
+		// metabox attached to many types can't crowd the toolbar.
+		var allPts  = m.post_type || [];
+		var MAX_PTS = 3;
+		var pts = allPts.slice(0, MAX_PTS).map(function (p) {
 			return '<span class="mfb-bar-pt">' + esc(p) + '</span>';
 		}).join('');
+		if (allPts.length > MAX_PTS) {
+			var rest = allPts.slice(MAX_PTS);
+			pts += '<span class="mfb-bar-pt mfb-bar-pt--more" title="' + esc(rest.join(', ')) + '">+' + rest.length + '</span>';
+		}
+		var title = m.title || m.metabox_id;
+		// Narrow toolbars swap the pills for one summary pill (see metafields-builder.css).
+		var summary = allPts.length > 1
+			? '<span class="mfb-bar-pt mfb-bar-pts-summary" title="' + esc(allPts.join(', ')) + '">' + allPts.length + ' post types</span>'
+			: '';
 
 		return '<header class="tpmeta-bar">'
-			+ '<span class="tpmeta-bar-title">' + esc(m.title || m.metabox_id) + '</span>'
-			+ '<span style="display:flex;gap:4px;align-items:center;margin-left:4px;">' + pts + '</span>'
+			+ '<div class="mfb-bar-identity' + (allPts.length > 1 ? ' has-many' : '') + '">'
+			+   '<span class="tpmeta-bar-title" title="' + esc(title) + '">' + esc(title) + '</span>'
+			+   (pts ? '<span class="mfb-bar-pts" title="' + esc(allPts.join(', ')) + '">' + pts + '</span>' : '')
+			+   summary
+			+ '</div>'
 			+ '<button class="button" id="mfb-edit-box" title="Metabox settings">'
 			+   '<span class="dashicons dashicons-admin-generic"></span><span>Settings</span>'
 			+ '</button>'
@@ -409,6 +438,9 @@
 			+ '</div>'
 			+ '<div class="tpmeta-bar-spacer"></div>'
 			+ '<span class="tpmeta-bar-status ' + sc + '">' + esc(state.statusMsg) + '</span>'
+			+ '<button class="button" id="mfb-import" title="Import metaboxes from JSON">'
+			+   '<span class="dashicons dashicons-upload"></span><span>Import</span>'
+			+ '</button>'
 			+ '<button class="button" id="mfb-export" title="Export this metabox as JSON">'
 			+   '<span class="dashicons dashicons-download"></span><span>Export</span>'
 			+ '</button>'
@@ -421,6 +453,7 @@
 	function wireBar() {
 		wire('mfb-edit-box', 'click', editBoxSettings);
 		wire('mfb-save',     'click', saveMetabox);
+		wire('mfb-import',   'click', openImportForWelcome);
 		wire('mfb-export',   'click', exportMetabox);
 		wire('mfb-undo',     'click', undo);
 		wire('mfb-redo',     'click', redo);
@@ -1394,7 +1427,7 @@
 			if (idx > -1) allMetaboxes[idx] = saved;
 			else          allMetaboxes.push(saved);
 			state.dirty = false;
-			setStatus('saved', 'Saved ✓');
+			setStatus('saved', 'Saved');
 			renderSidebar();
 			setTimeout(function () { setStatus('idle', ''); }, 2500);
 		}).catch(function () { setStatus('error', 'Save failed'); });

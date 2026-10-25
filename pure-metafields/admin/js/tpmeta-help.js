@@ -120,10 +120,10 @@
 
 		function flash(btn) {
 			btn.classList.add('ok');
-			btn.innerHTML = '<span class="dashicons dashicons-yes-alt"></span> Copied!';
+			btn.textContent = 'Copied';
 			setTimeout(function () {
 				btn.classList.remove('ok');
-				btn.innerHTML = '<span class="dashicons dashicons-clipboard"></span> Copy';
+				btn.textContent = 'Copy';
 			}, 2000);
 		}
 	}

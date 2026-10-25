@@ -7,9 +7,11 @@
 
 
 .tm-meta-wrapper {
-    /* Design tokens — mirror the options panel for visual consistency */
-    --tp-blue:      #3362FF;
-    --tp-blue-lt:   #eef2ff;
+    /* Design tokens — mirror the options panel for visual consistency.
+       --tp-blue follows the user's WP admin color scheme (Profile →
+       Admin Color Scheme), falling back to the plugin's brand blue. */
+    --tp-blue:      var(--wp-admin-theme-color, #3362FF);
+    --tp-blue-lt:   rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255), .08);
     --tp-purple:    #5F4AFE;
     --tp-text:      #010F1C;
     --tp-muted:     #6b7280;
@@ -873,7 +875,7 @@ input[type=search]:focus::placeholder,
 .tm-mcswatch-input:checked + .tm-mcswatch-color {
     border-color: #3362FF;
     transform: scale(1.12);
-    box-shadow: 0 0 0 3px rgba(51,98,255,.25), inset 0 0 0 1px rgba(0,0,0,.1);
+    box-shadow: 0 0 0 3px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.25), inset 0 0 0 1px rgba(0,0,0,.1);
 }
 
 /* Checkmark inside the swatch when selected */
@@ -1492,8 +1494,8 @@ span.select2-container--default .select2-selection--multiple {
 }
 
 [class*="tm-meta-column-"]:not(#side-sortables *) > .tm-field-row:hover {
-	border-color: rgba(51,98,255,.35) !important;
-	box-shadow: 0 2px 8px rgba(51,98,255,.08);
+	border-color: rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.35) !important;
+	box-shadow: 0 2px 8px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.08);
 }
 
 /* ── Field label ─────────────────────────────────────────── */
@@ -1552,7 +1554,7 @@ span.select2-container--default .select2-selection--multiple {
 [class*="tm-meta-column-"] .tm-field-row input[type=search]:focus,
 [class*="tm-meta-column-"] .tm-field-row textarea:focus {
 	border-color: #3362FF !important;
-	box-shadow: 0 0 0 3px rgba(51,98,255,.1) !important;
+	box-shadow: 0 0 0 3px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.1) !important;
 	background: #fff !important;
 	outline: none !important;
 }
@@ -1582,7 +1584,7 @@ span.select2-container--default .select2-selection--multiple {
 
 [class*="tm-meta-column-"] .tm-field-row .tm-select-field:focus {
 	border-color: #3362FF !important;
-	box-shadow: 0 0 0 3px rgba(51,98,255,.1) !important;
+	box-shadow: 0 0 0 3px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.1) !important;
 	background-color: #fff !important;
 	outline: none !important;
 }
@@ -1622,7 +1624,7 @@ span.select2-container--default .select2-selection--multiple {
 [class*="tm-meta-column-"] .tm-meta-wrapper .select2-container.select2-container--focus .select2-selection--single,
 [class*="tm-meta-column-"] .tm-meta-wrapper .select2-container.select2-container--open .select2-selection--single {
 	border-color: #3362FF !important;
-	box-shadow: 0 0 0 3px rgba(51,98,255,.1) !important;
+	box-shadow: 0 0 0 3px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.1) !important;
 }
 
 /* ── Switch toggle ───────────────────────────────────────── */
@@ -1939,7 +1941,7 @@ span.select2-container--default .select2-selection--multiple {
     background: var(--tp-white);
     border: 3px solid var(--tp-blue);
     cursor: pointer;
-    box-shadow: 0 2px 6px rgba(51,98,255,.35);
+    box-shadow: 0 2px 6px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.35);
     transition: transform .15s ease, box-shadow .15s ease;
 }
 .tm-meta-wrapper .tm-dim-range::-webkit-slider-thumb:hover {
@@ -1958,11 +1960,11 @@ span.select2-container--default .select2-selection--multiple {
     background: var(--tp-white);
     border: 3px solid var(--tp-blue);
     cursor: pointer;
-    box-shadow: 0 2px 6px rgba(51,98,255,.35);
+    box-shadow: 0 2px 6px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.35);
 }
 .tm-meta-wrapper .tm-dim-range:focus { outline: none; }
 .tm-meta-wrapper .tm-dim-range:focus-visible::-webkit-slider-thumb {
-    box-shadow: 0 0 0 4px rgba(51,98,255,.18), 0 2px 6px rgba(51,98,255,.35);
+    box-shadow: 0 0 0 4px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.18), 0 2px 6px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.35);
 }
 
 /* ── Sub-label for gradient controls (Type, Angle) ────────────────────── */
@@ -2342,7 +2344,7 @@ span.select2-container--default .select2-selection--multiple {
 .tpmf-section-heading-line {
 	flex: 1;
 	height: 1px;
-	background: linear-gradient(90deg, rgba(51,98,255,.35) 0%, rgba(51,98,255,.06) 100%);
+	background: linear-gradient(90deg, rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.35) 0%, rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.06) 100%);
 	border-radius: 1px;
 	display: block;
 }

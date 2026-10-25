@@ -1,92 +1,264 @@
-/* Export / Import */
+/* ── Export / Import (minimal) ─────────────────────────────────────────────
+ * Tokens live in admin/css/tpmeta-admin.css. Shared .pf-* components are
+ * restyled here, scoped to .ei-page, until they move plugin-wide.
+ */
 #wpcontent { padding-left: 0 !important; }
 
+.ei-page {
+	min-height: calc(100vh - 32px);
+	font-family: var(--pf-font-sans);
+	font-size: var(--pf-fs-base);
+	line-height: var(--pf-lh-body);
+	color: var(--pf-ink-body);
+	background: var(--pf-canvas);
+	-webkit-font-smoothing: antialiased;
+}
+
+.ei-page ::selection { background: var(--pf-tag-blue-bg); color: var(--pf-ink); }
+
+.ei-page h1,
+.ei-page h2,
+.ei-page p { margin: 0; }
+
+/* ── Header ──────────────────────────────────────────────── */
+.ei-head {
+	max-width: 1180px;
+	margin: 0 auto;
+	padding: 32px 32px 24px;
+}
+
+.ei-title {
+	font-family: var(--pf-font-serif);
+	font-size: var(--pf-fs-xl);
+	font-weight: 500;
+	line-height: 1.1;
+	letter-spacing: -.02em;
+	color: var(--pf-ink);
+}
+
+.ei-page .ei-subtitle {
+	max-width: 74ch;
+	margin-top: 8px;
+	font-size: var(--pf-fs-md);
+	color: var(--pf-ink-muted);
+}
+
+/* ── Panels ──────────────────────────────────────────────── */
 .ei-grid {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: 24px;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 16px;
 	align-items: start;
+	max-width: 1180px;
+	margin: 0 auto;
+	padding: 0 32px 48px;
 }
 
-/* Export cards */
-.ei-export-cards { display: flex; flex-direction: column; gap: 12px; }
+.ei-panel {
+	min-width: 0;
+	padding: 24px;
+	background: var(--pf-surface);
+	border: 1px solid var(--pf-line);
+	border-radius: var(--pf-radius-card);
+}
 
-.ei-export-card {
+.ei-panel-head {
 	display: flex;
-	align-items: center;
-	gap: 14px;
-	background: var(--pf-bg);
-	border: 1.5px solid var(--pf-border);
-	border-radius: var(--pf-radius);
-	padding: 14px 16px;
-	transition: border-color .15s, box-shadow .15s;
+	align-items: flex-start;
+	gap: 12px;
+	margin-bottom: 20px;
 }
 
-.ei-export-card:hover {
-	border-color: #c8d6ff;
-	box-shadow: 0 2px 10px rgba(51,98,255,.08);
-}
-
-/* "Export Everything" highlighted */
-.ei-export-card[data-type="all"] {
-	background: linear-gradient(135deg, var(--pf-blue-lt) 0%, var(--pf-purple-lt) 100%);
-	border-color: rgba(51,98,255,.25);
-}
-
-.ei-export-card-icon {
-	width: 40px;
-	height: 40px;
-	border-radius: 10px;
-	display: flex;
+.ei-panel-icon,
+.ei-row-icon {
+	display: inline-flex;
 	align-items: center;
 	justify-content: center;
 	flex-shrink: 0;
+	color: var(--pf-ink);
+	background: var(--pf-canvas);
+	border: 1px solid var(--pf-line);
 }
 
-.ei-export-card-icon .dashicons { font-size: 20px; width: 20px; height: 20px; }
+.ei-panel-icon { width: 36px; height: 36px; border-radius: var(--pf-radius-card); }
+.ei-panel-icon .pf-ico { width: 20px; height: 20px; }
 
-.ei-export-card-info { flex: 1; min-width: 0; }
-
-.ei-export-card-label {
-	font-size: 13px;
+.ei-panel h2 {
+	font-size: var(--pf-fs-md);
 	font-weight: 600;
-	color: var(--pf-text);
-	margin-bottom: 2px;
+	line-height: var(--pf-lh-tight);
+	color: var(--pf-ink);
 }
 
-.ei-export-card-desc { font-size: 12px; color: var(--pf-muted); }
+.ei-panel-head p {
+	margin-top: 4px;
+	font-size: var(--pf-fs-base);
+	color: var(--pf-ink-muted);
+}
 
-/* Drop zone */
-.ei-dropzone {
-	border: 2px dashed var(--pf-border);
-	border-radius: var(--pf-radius);
-	padding: 36px 24px;
-	text-align: center;
-	transition: border-color .15s, background .15s;
+/* Export rows */
+.ei-rows {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	border-top: 1px solid var(--pf-line);
+}
+
+.ei-row {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin: 0;
+	padding: 12px 0;
+	border-bottom: 1px solid var(--pf-line);
+}
+
+.ei-row-icon { width: 32px; height: 32px; border-radius: var(--pf-radius-control); }
+.ei-row-icon .pf-ico { width: 18px; height: 18px; }
+
+.ei-row-info {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	gap: 2px;
+	min-width: 0;
+}
+
+.ei-row-label {
+	font-size: var(--pf-fs-base);
+	font-weight: 600;
+	color: var(--pf-ink);
+}
+
+.ei-row-desc {
+	font-size: var(--pf-fs-sm);
+	line-height: 1.45;
+	color: var(--pf-ink-muted);
+}
+
+.ei-num {
+	font-family: var(--pf-font-mono);
+	font-variant-numeric: tabular-nums;
+	color: var(--pf-ink);
+}
+
+/* ── Buttons (shared component, page-scoped) ─────────────── */
+.ei-page .pf-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	min-height: 34px;
+	padding: 0 14px;
+	font-family: inherit;
+	font-size: var(--pf-fs-base);
+	font-weight: 500;
+	line-height: 1;
+	color: var(--pf-ink);
+	white-space: nowrap;
+	text-decoration: none;
+	background: var(--pf-surface);
+	border: 1px solid var(--pf-line);
+	border-radius: var(--pf-radius-control);
+	box-shadow: none;
 	cursor: pointer;
+	transition: background-color .15s var(--pf-ease), border-color .15s var(--pf-ease), transform .15s var(--pf-ease);
+}
+
+.ei-page .pf-btn:hover { color: var(--pf-ink); background: var(--pf-canvas); border-color: var(--pf-line-strong); }
+
+.ei-page .pf-btn--primary {
+	color: #fff;
+	background: var(--pf-ink);
+	border-color: var(--pf-ink);
+}
+
+.ei-page .pf-btn--primary:hover { color: #fff; background: #333333; border-color: #333333; box-shadow: none; }
+
+.ei-page .pf-btn:active { transform: scale(.98); }
+.ei-page .pf-btn:focus-visible { outline: 2px solid var(--pf-focus); outline-offset: 2px; }
+.ei-page label.pf-btn:focus-within { outline: 2px solid var(--pf-focus); outline-offset: 2px; }
+.ei-page .pf-btn .dashicons { width: 16px; height: 16px; font-size: 16px; }
+.ei-page .pf-btn:disabled,
+.ei-page .pf-btn[disabled] { opacity: .4; pointer-events: none; }
+
+/* ── Drop zone ───────────────────────────────────────────── */
+.ei-dropzone {
+	padding: 32px 24px;
+	text-align: center;
+	background: var(--pf-surface-alt);
+	border: 1px dashed var(--pf-line-control);
+	border-radius: var(--pf-radius-card);
+	cursor: pointer;
+	transition: background-color .15s var(--pf-ease), border-color .15s var(--pf-ease);
 }
 
 .ei-dropzone.is-over {
-	border-color: var(--pf-blue);
-	background: var(--pf-blue-lt);
+	background: var(--pf-tag-blue-bg);
+	border-color: var(--pf-focus);
 }
 
-.ei-dropzone-icon {
-	font-size: 36px;
-	width: 36px;
-	height: 36px;
-	color: var(--pf-border);
+.ei-dropzone .ei-dropzone-icon {
 	display: block;
-	margin: 0 auto 10px;
+	width: 28px;
+	height: 28px;
+	margin: 0 auto 12px;
+	color: var(--pf-ink-muted);
 }
 
-.ei-dropzone p { font-size: 13px; color: var(--pf-muted); margin: 0 0 4px; }
+.ei-page .ei-drop-title { font-size: var(--pf-fs-base); color: var(--pf-ink-body); }
+.ei-page .ei-drop-or    { margin: 4px 0 12px; font-size: var(--pf-fs-sm); color: var(--pf-ink-muted); }
 
-.ei-file-name {
-	font-size: 12px;
-	color: var(--pf-blue);
-	font-weight: 600;
-	margin-top: 10px;
+.ei-page .ei-file-name {
+	margin-top: 12px;
+	font-family: var(--pf-font-mono);
+	font-size: var(--pf-fs-sm);
+	color: var(--pf-tag-blue-fg);
 }
 
-.ei-import-preview { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
+.ei-import-preview {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-top: 16px;
+}
+
+.ei-page #ei-import-confirm { width: 100%; min-height: 38px; }
+
+/* ── Notices (shared component, page-scoped) ─────────────── */
+.ei-page .pf-notice {
+	display: flex;
+	align-items: flex-start;
+	gap: 8px;
+	margin: 12px 0 0;
+	padding: 12px 14px;
+	font-size: var(--pf-fs-base);
+	line-height: 1.5;
+	border: 1px solid transparent;
+	border-radius: var(--pf-radius-control);
+}
+
+.ei-import-preview .pf-notice { margin-top: 0; }
+
+.ei-page .pf-notice--info    { color: var(--pf-tag-blue-fg);   background: var(--pf-tag-blue-bg);   border-color: rgba(31,108,159,.2); }
+.ei-page .pf-notice--success { color: var(--pf-tag-green-fg);  background: var(--pf-tag-green-bg);  border-color: rgba(52,101,56,.2); }
+.ei-page .pf-notice--warning { color: var(--pf-tag-yellow-fg); background: var(--pf-tag-yellow-bg); border-color: rgba(149,100,0,.2); }
+.ei-page .pf-notice--error   { color: var(--pf-tag-red-fg);    background: var(--pf-tag-red-bg);    border-color: rgba(159,47,45,.2); }
+
+.ei-page .pf-notice .dashicons { flex-shrink: 0; width: 16px; height: 16px; margin-top: 2px; font-size: 16px; }
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 960px) {
+	.ei-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 782px) {
+	.ei-page { min-height: calc(100vh - 46px); }
+	.ei-head { padding: 24px 16px 20px; }
+	.ei-grid { padding: 0 16px 32px; }
+	.ei-panel { padding: 20px 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.ei-page .pf-btn:active { transform: none; }
+}

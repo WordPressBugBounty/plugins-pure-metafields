@@ -3,11 +3,13 @@
  * ThemePure colour palette: Blue #3362FF · Purple #5F4AFE · Pink #E91E8C
  */
 
-/* ── Variables ───────────────────────────────────────────────────────────── */
+/* ── Variables ─────────────────────────────────────────────────────────────
+ * --pf-blue/-dk follow the user's WP admin color scheme (Profile →
+ * Admin Color Scheme), falling back to the plugin's brand blue. */
 :root {
-	--pf-blue:      #3362FF;
-	--pf-blue-lt:   #f0f4ff;
-	--pf-blue-dk:   #1e45d4;
+	--pf-blue:      var(--wp-admin-theme-color, #3362FF);
+	--pf-blue-lt:   rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255), .08);
+	--pf-blue-dk:   var(--wp-admin-theme-color-darker-10, #1e45d4);
 	--pf-purple:    #5F4AFE;
 	--pf-purple-lt: #ede9ff;
 	--pf-pink:      #E91E8C;
@@ -26,96 +28,156 @@
 	--pf-shadow-md: 0 4px 20px rgba(0,0,0,.12);
 	--pf-radius:    8px;
 	--pf-radius-sm: 5px;
+
+	/* Minimal UI system — type scale and colour roles for every Pure Fields screen. */
+	--pf-font-sans:  "SF Pro Text", "SF Pro Display", "Helvetica Neue", -apple-system, BlinkMacSystemFont, "Segoe UI", Ubuntu, Cantarell, sans-serif;
+	--pf-font-serif: "Iowan Old Style", Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
+	--pf-font-mono:  "SF Mono", ui-monospace, "JetBrains Mono", Menlo, Consolas, "Liberation Mono", monospace;
+	--pf-fs-xs:      11px;
+	--pf-fs-sm:      12px;
+	--pf-fs-base:    13px;
+	--pf-fs-md:      15px;
+	--pf-fs-lg:      18px;
+	--pf-fs-xl:      28px;
+	--pf-lh-tight:   1.25;
+	--pf-lh-body:    1.6;
+
+	--pf-canvas:      #F7F6F3;
+	--pf-surface:     #FFFFFF;
+	--pf-surface-alt: #FBFBFA;
+	--pf-line:        #EAEAEA;
+	--pf-line-strong: #DAD9D5;
+	--pf-line-control: #8F8E89; /* form-control borders: ≥3:1 against white */
+	--pf-ink:         #111111;
+	--pf-ink-body:    #2F3437;
+	--pf-ink-muted:   #6F6E69;
+
+	--pf-tag-neutral-bg: #F1F1EF;  --pf-tag-neutral-fg: #5F5E5A;
+	--pf-tag-blue-bg:    #E1F3FE;  --pf-tag-blue-fg:    #1F6C9F;
+	--pf-tag-green-bg:   #EDF3EC;  --pf-tag-green-fg:   #346538;
+	--pf-tag-yellow-bg:  #FBF3DB;  --pf-tag-yellow-fg:  #956400;
+	--pf-tag-red-bg:     #FDEBEC;  --pf-tag-red-fg:     #9F2F2D;
+
+	--pf-radius-card:    8px;
+	--pf-radius-control: 6px;
+	--pf-shadow-hover:   0 2px 8px rgba(0,0,0,.04);
+	--pf-ease:           cubic-bezier(.16,1,.3,1);
+	--pf-focus:          var(--wp-admin-theme-color, #1F6C9F);
+}
+
+/* ── SVG icon set (TPMeta_Main_Menu::icon) ──────────────────────────────── */
+.pf-ico {
+	display: inline-flex;
+	width: 1em;
+	height: 1em;
+	flex-shrink: 0;
+	line-height: 0;
+}
+
+.pf-ico svg {
+	display: block;
+	width: 100%;
+	height: 100%;
 }
 
 /* ── Page wrapper (all Pure Fields pages) ───────────────────────────────── */
 .pf-page {
-	min-height: calc(100vh - 50px);
-	background: var(--pf-bg);
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-	color: var(--pf-text);
+	min-height: calc(100vh - 32px);
 	padding: 0;
+	font-family: var(--pf-font-sans);
+	font-size: var(--pf-fs-base);
+	line-height: var(--pf-lh-body);
+	color: var(--pf-ink-body);
+	background: var(--pf-canvas);
+	-webkit-font-smoothing: antialiased;
 }
+
+.pf-page ::selection { background: var(--pf-tag-blue-bg); color: var(--pf-ink); }
 
 /* ── Page header bar ────────────────────────────────────────────────────── */
 .pf-page-header {
-	background: var(--pf-white);
-	border-bottom: 1px solid var(--pf-border);
-	padding: 20px 28px;
 	display: flex;
-	align-items: center;
+	align-items: flex-end;
 	gap: 16px;
+	padding: 32px 32px 24px;
+	background: transparent;
+	border-bottom: 1px solid var(--pf-line);
 }
 
 .pf-page-header-icon {
-	width: 40px;
-	height: 40px;
-	border-radius: 10px;
 	display: flex;
+	flex-shrink: 0;
 	align-items: center;
 	justify-content: center;
-	flex-shrink: 0;
+	width: 36px;
+	height: 36px;
+	color: var(--pf-ink);
+	background: var(--pf-surface);
+	border: 1px solid var(--pf-line);
+	border-radius: var(--pf-radius-card);
 }
 
-.pf-page-header-icon .dashicons {
-	font-size: 20px;
-	width: 20px;
-	height: 20px;
-}
+.pf-page-header-icon .dashicons { width: 18px; height: 18px; font-size: 18px; }
 
-/* Brand logo replaces the gradient dashicon badge in the page header. */
+/* Brand logo variant. */
 .pf-page-header-icon.has-logo {
 	background: none;
+	border: 0;
 	border-radius: 0;
 }
+
 .pf-page-header-logo {
 	display: block;
-	width: 40px;
-	height: 40px;
+	width: 36px;
+	height: 36px;
 	object-fit: contain;
 }
 
-.pf-page-header-title { flex: 1; }
+.pf-page-header-title { flex: 1; min-width: 0; }
 
 .pf-page-header-title h1 {
-	font-size: 18px;
-	font-weight: 700;
-	margin: 0 0 2px;
-	color: var(--pf-text);
+	margin: 0;
+	font-family: var(--pf-font-serif);
+	font-size: var(--pf-fs-xl);
+	font-weight: 500;
+	line-height: 1.1;
+	letter-spacing: -.02em;
+	color: var(--pf-ink);
 }
 
 .pf-page-header-title p {
-	font-size: 13px;
-	color: var(--pf-muted);
-	margin: 0;
+	max-width: 74ch;
+	margin: 8px 0 0;
+	font-size: var(--pf-fs-md);
+	color: var(--pf-ink-muted);
 }
 
 /* ── Page body ──────────────────────────────────────────────────────────── */
 .pf-page-body {
-	padding: 28px;
+	padding: 32px;
 }
 
 /* ── Cards grid ─────────────────────────────────────────────────────────── */
 .pf-cards-grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-	gap: 18px;
+	gap: 16px;
 }
 
 .pf-card {
-	background: var(--pf-white);
-	border: 1px solid var(--pf-border);
-	border-radius: var(--pf-radius);
-	padding: 22px;
-	box-shadow: var(--pf-shadow);
-	transition: border-color .18s, box-shadow .18s, transform .18s;
 	position: relative;
+	padding: 24px;
+	background: var(--pf-surface);
+	border: 1px solid var(--pf-line);
+	border-radius: var(--pf-radius-card);
+	box-shadow: none;
+	transition: border-color .2s var(--pf-ease), box-shadow .2s var(--pf-ease);
 }
 
 .pf-card:hover {
-	border-color: #c8d6ff;
-	box-shadow: var(--pf-shadow-md);
-	transform: translateY(-2px);
+	border-color: var(--pf-line-strong);
+	box-shadow: var(--pf-shadow-hover);
+	transform: none;
 }
 
 .pf-card-header {
@@ -126,147 +188,153 @@
 }
 
 .pf-card-icon {
-	width: 40px;
-	height: 40px;
-	border-radius: 10px;
 	display: flex;
+	flex-shrink: 0;
 	align-items: center;
 	justify-content: center;
-	flex-shrink: 0;
+	width: 36px;
+	height: 36px;
+	color: var(--pf-ink);
+	background: var(--pf-canvas);
+	border: 1px solid var(--pf-line);
+	border-radius: var(--pf-radius-card);
 }
 
-.pf-card-icon .dashicons {
-	font-size: 20px;
-	width: 20px;
-	height: 20px;
-}
+.pf-card-icon .dashicons { width: 18px; height: 18px; font-size: 18px; }
 
 .pf-card-title {
-	font-size: 14px;
-	font-weight: 700;
-	color: var(--pf-text);
 	margin: 0 0 4px;
-	line-height: 1.3;
+	font-size: var(--pf-fs-md);
+	font-weight: 600;
+	line-height: var(--pf-lh-tight);
+	color: var(--pf-ink);
 }
 
 .pf-card-meta {
-	font-size: 11px;
-	color: var(--pf-muted);
-	margin: 0;
 	display: flex;
 	align-items: center;
 	gap: 6px;
+	margin: 0;
+	font-size: var(--pf-fs-xs);
+	color: var(--pf-ink-muted);
 }
 
-.pf-card-meta .dashicons {
-	font-size: 12px;
-	width: 12px;
-	height: 12px;
-}
+.pf-card-meta .dashicons { width: 12px; height: 12px; font-size: 12px; }
 
 .pf-card-desc {
-	font-size: 12px;
-	color: var(--pf-muted);
-	line-height: 1.55;
 	margin: 0 0 14px;
+	font-size: var(--pf-fs-base);
+	line-height: 1.55;
+	color: var(--pf-ink-muted);
 }
 
 .pf-card-footer {
 	display: flex;
-	gap: 6px;
 	align-items: center;
-	border-top: 1px solid var(--pf-border);
-	padding-top: 12px;
+	gap: 6px;
 	margin-top: 12px;
+	padding-top: 12px;
+	border-top: 1px solid var(--pf-line);
 }
 
 /* ── Badge ──────────────────────────────────────────────────────────────── */
 .pf-badge {
 	display: inline-flex;
 	align-items: center;
-	font-size: 10px;
-	font-weight: 700;
-	letter-spacing: .04em;
+	height: 20px;
+	padding: 0 8px;
+	font-size: var(--pf-fs-xs);
+	font-weight: 600;
+	letter-spacing: .05em;
 	text-transform: uppercase;
-	padding: 2px 7px;
-	border-radius: 50px;
+	color: var(--pf-tag-neutral-fg);
+	background: var(--pf-tag-neutral-bg);
+	border-radius: 9999px;
 }
 
-.pf-badge--blue   { background: var(--pf-blue-lt);   color: var(--pf-blue); }
-.pf-badge--purple { background: var(--pf-purple-lt); color: var(--pf-purple); }
-.pf-badge--pink   { background: var(--pf-pink-lt);   color: var(--pf-pink); }
-.pf-badge--green  { background: var(--pf-green-lt);  color: var(--pf-green); }
+.pf-badge--blue   { background: var(--pf-tag-blue-bg);    color: var(--pf-tag-blue-fg); }
+.pf-badge--purple { background: var(--pf-tag-neutral-bg); color: var(--pf-tag-neutral-fg); }
+.pf-badge--pink   { background: var(--pf-tag-red-bg);     color: var(--pf-tag-red-fg); }
+.pf-badge--green  { background: var(--pf-tag-green-bg);   color: var(--pf-tag-green-fg); }
 
-/* ── Icon colour variants ───────────────────────────────────────────────── */
-.pf-icon-blue   { background: var(--pf-blue-lt);   color: var(--pf-blue); }
-.pf-icon-purple { background: var(--pf-purple-lt); color: var(--pf-purple); }
-.pf-icon-pink   { background: var(--pf-pink-lt);   color: var(--pf-pink); }
-.pf-icon-green  { background: var(--pf-green-lt);  color: var(--pf-green); }
-.pf-icon-orange { background: var(--pf-orange-lt); color: var(--pf-orange); }
+/* ── Icon colour variants (neutral tiles) ───────────────────────────────── */
+.pf-icon-blue,
+.pf-icon-purple,
+.pf-icon-pink,
+.pf-icon-green,
+.pf-icon-orange { color: var(--pf-ink); background: var(--pf-canvas); }
 
 /* ── Unified button system ──────────────────────────────────────────────── */
 .pf-btn {
+	box-sizing: border-box;
 	display: inline-flex;
 	align-items: center;
+	justify-content: center;
 	gap: 6px;
-	font-size: 13px;
-	font-weight: 600;
+	min-height: 34px;
+	padding: 0 14px;
+	font-family: inherit;
+	font-size: var(--pf-fs-base);
+	font-weight: 500;
 	line-height: 1;
-	padding: 8px 16px;
-	border-radius: var(--pf-radius-sm);
-	border: 1.5px solid var(--pf-border);
-	background: var(--pf-white);
-	color: var(--pf-muted);
-	cursor: pointer;
-	text-decoration: none;
-	box-shadow: none;
-	text-shadow: none;
-	transition: background .15s, border-color .15s, color .15s;
+	color: var(--pf-ink);
 	white-space: nowrap;
-	box-sizing: border-box;
+	text-decoration: none;
+	text-shadow: none;
+	background: var(--pf-surface);
+	border: 1px solid var(--pf-line);
+	border-radius: var(--pf-radius-control);
+	box-shadow: none;
+	cursor: pointer;
+	transition: background-color .15s var(--pf-ease), border-color .15s var(--pf-ease), transform .15s var(--pf-ease);
 }
 
 .pf-btn:hover {
-	background: var(--pf-blue-lt);
-	border-color: var(--pf-blue);
-	color: var(--pf-blue);
+	color: var(--pf-ink);
 	text-decoration: none;
+	background: var(--pf-canvas);
+	border-color: var(--pf-line-strong);
 }
 
 .pf-btn--primary {
-	background: linear-gradient(135deg, var(--pf-blue) 0%, var(--pf-purple) 100%);
-	border-color: transparent;
 	color: #fff;
-	box-shadow: 0 2px 10px rgba(51,98,255,.28);
+	background: var(--pf-ink);
+	border-color: var(--pf-ink);
+	box-shadow: none;
 }
 
 .pf-btn--primary:hover {
-	background: linear-gradient(135deg, var(--pf-blue-dk) 0%, var(--pf-purple) 100%);
-	border-color: transparent;
 	color: #fff;
-	box-shadow: 0 4px 18px rgba(51,98,255,.38);
+	background: #333333;
+	border-color: #333333;
+	box-shadow: none;
 }
 
 .pf-btn--danger {
-	border-color: rgba(214,54,56,.25);
-	color: var(--pf-danger);
-	background: rgba(214,54,56,.04);
+	color: var(--pf-tag-red-fg);
+	background: var(--pf-surface);
+	border-color: rgba(159,47,45,.3);
 }
 
 .pf-btn--danger:hover {
-	background: rgba(214,54,56,.09);
-	border-color: var(--pf-danger);
-	color: var(--pf-danger);
+	color: var(--pf-tag-red-fg);
+	background: var(--pf-tag-red-bg);
+	border-color: var(--pf-tag-red-fg);
 }
 
-.pf-btn--sm { padding: 5px 11px; font-size: 12px; }
+.pf-btn--sm { min-height: 28px; padding: 0 10px; font-size: var(--pf-fs-sm); }
+
+.pf-btn:active { transform: scale(.98); }
+.pf-btn:focus-visible { outline: 2px solid var(--pf-focus); outline-offset: 2px; }
 
 .pf-btn .dashicons {
-	font-size: 14px;
-	width: 14px;
-	height: 14px;
+	width: 16px;
+	height: 16px;
+	font-size: 16px;
 	color: inherit;
 }
+
+.pf-btn .pf-ico { width: 14px; height: 14px; }
 
 .pf-btn:disabled, .pf-btn[disabled] { opacity: .4; pointer-events: none; }
 
@@ -278,12 +346,12 @@
 .pf-form-row label,
 .pf-label {
 	display: block;
-	font-size: 12px;
-	font-weight: 600;
-	color: var(--pf-muted);
-	text-transform: uppercase;
-	letter-spacing: .04em;
 	margin-bottom: 6px;
+	font-size: var(--pf-fs-sm);
+	font-weight: 500;
+	letter-spacing: 0;
+	text-transform: none;
+	color: var(--pf-ink-body);
 }
 
 .pf-form-row input[type="text"],
@@ -292,18 +360,19 @@
 .pf-form-row textarea,
 .pf-input,
 .pf-select {
+	box-sizing: border-box;
 	width: 100%;
-	padding: 8px 11px;
-	border: 1.5px solid var(--pf-border);
-	border-radius: var(--pf-radius-sm);
-	font-size: 13px;
+	min-height: 38px;
+	padding: 8px 12px;
 	font-family: inherit;
-	color: var(--pf-text);
-	background: var(--pf-white);
+	font-size: var(--pf-fs-base);
+	color: var(--pf-ink);
+	background: var(--pf-surface);
+	border: 1px solid var(--pf-line-control);
+	border-radius: var(--pf-radius-control);
 	box-shadow: none;
 	outline: none;
-	box-sizing: border-box;
-	transition: border-color .15s, box-shadow .15s;
+	transition: border-color .15s var(--pf-ease), box-shadow .15s var(--pf-ease);
 }
 
 .pf-form-row input:focus,
@@ -311,17 +380,17 @@
 .pf-form-row textarea:focus,
 .pf-input:focus,
 .pf-select:focus {
-	border-color: var(--pf-blue);
-	box-shadow: 0 0 0 3px rgba(51,98,255,.12);
+	border-color: var(--pf-focus);
+	box-shadow: 0 0 0 3px rgba(31,108,159,.15);
 }
 
-.pf-form-row textarea { resize: vertical; min-height: 80px; }
+.pf-form-row textarea { min-height: 88px; resize: vertical; }
 
 .pf-form-hint {
-	font-size: 11px;
-	color: var(--pf-muted);
-	margin-top: 4px;
+	margin-top: 6px;
+	font-size: var(--pf-fs-sm);
 	line-height: 1.5;
+	color: var(--pf-ink-muted);
 }
 
 /* Checkboxes grid */
@@ -335,55 +404,56 @@
 	display: flex;
 	align-items: center;
 	gap: 8px;
-	background: var(--pf-bg);
-	border: 1.5px solid var(--pf-border);
-	border-radius: var(--pf-radius-sm);
 	padding: 8px 10px;
-	cursor: pointer;
-	transition: border-color .15s, background .15s;
-	font-size: 12px;
+	font-size: var(--pf-fs-sm);
 	font-weight: 500;
-	color: var(--pf-text);
+	color: var(--pf-ink-body);
+	background: var(--pf-surface);
+	border: 1px solid var(--pf-line);
+	border-radius: var(--pf-radius-control);
+	cursor: pointer;
+	transition: background-color .15s var(--pf-ease), border-color .15s var(--pf-ease);
 }
 
 .pf-checkbox-item:hover {
-	border-color: var(--pf-blue);
-	background: var(--pf-blue-lt);
+	color: var(--pf-ink);
+	background: var(--pf-canvas);
+	border-color: var(--pf-line-strong);
 }
 
-.pf-checkbox-item input[type="checkbox"] { margin: 0; accent-color: var(--pf-blue); }
+.pf-checkbox-item input[type="checkbox"] { margin: 0; accent-color: var(--pf-ink); }
 
 /* ── Two-column layout ──────────────────────────────────────────────────── */
 .pf-layout {
 	display: grid;
-	grid-template-columns: 320px 1fr;
+	grid-template-columns: 320px minmax(0, 1fr);
 	gap: 24px;
 	align-items: start;
 }
 
 /* ── Sidebar list ───────────────────────────────────────────────────────── */
 .pf-sidebar {
-	background: var(--pf-white);
-	border: 1px solid var(--pf-border);
-	border-radius: var(--pf-radius);
-	box-shadow: var(--pf-shadow);
 	overflow: hidden;
+	background: var(--pf-surface);
+	border: 1px solid var(--pf-line);
+	border-radius: var(--pf-radius-card);
+	box-shadow: none;
 }
 
 .pf-sidebar-header {
-	padding: 14px 16px;
-	border-bottom: 1px solid var(--pf-border);
 	display: flex;
 	align-items: center;
 	gap: 10px;
+	padding: 14px 16px;
+	border-bottom: 1px solid var(--pf-line);
 }
 
 .pf-sidebar-header h3 {
-	font-size: 13px;
-	font-weight: 700;
-	color: var(--pf-text);
-	margin: 0;
 	flex: 1;
+	margin: 0;
+	font-size: var(--pf-fs-base);
+	font-weight: 600;
+	color: var(--pf-ink);
 }
 
 .pf-sidebar-list { padding: 8px; }
@@ -392,144 +462,152 @@
 	display: flex;
 	align-items: center;
 	gap: 10px;
-	padding: 10px 12px;
-	border-radius: var(--pf-radius-sm);
+	padding: 8px 10px;
+	border-radius: var(--pf-radius-control);
 	cursor: pointer;
-	transition: background .15s, color .15s;
+	transition: background-color .15s var(--pf-ease);
 }
 
-.pf-sidebar-item:hover { background: var(--pf-bg); }
+.pf-sidebar-item:hover { background: var(--pf-canvas); }
 
 .pf-sidebar-item.is-active {
-	background: var(--pf-blue-lt);
-	color: var(--pf-blue);
+	color: var(--pf-ink);
+	background: var(--pf-canvas);
+	box-shadow: inset 0 0 0 1px var(--pf-line);
 }
 
 .pf-sidebar-item-icon .dashicons {
-	font-size: 16px;
 	width: 16px;
 	height: 16px;
-	color: var(--pf-muted);
+	font-size: 16px;
+	color: var(--pf-ink-muted);
 }
 
-.pf-sidebar-item.is-active .pf-sidebar-item-icon .dashicons { color: var(--pf-blue); }
+.pf-sidebar-item.is-active .pf-sidebar-item-icon .dashicons { color: var(--pf-ink); }
 
 .pf-sidebar-item-label {
-	font-size: 13px;
-	font-weight: 500;
 	flex: 1;
+	font-size: var(--pf-fs-base);
+	font-weight: 500;
 }
 
 .pf-sidebar-item-actions {
 	display: flex;
-	gap: 3px;
+	gap: 2px;
 	opacity: 0;
-	transition: opacity .15s;
+	transition: opacity .15s var(--pf-ease);
 }
 
-.pf-sidebar-item:hover .pf-sidebar-item-actions { opacity: 1; }
+.pf-sidebar-item:hover .pf-sidebar-item-actions,
+.pf-sidebar-item:focus-within .pf-sidebar-item-actions,
+.pf-sidebar-item.is-active .pf-sidebar-item-actions { opacity: 1; }
 
 .pf-sidebar-item-actions button {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	width: 24px;
-	height: 24px;
-	border: 0;
+	width: 28px;
+	height: 28px;
+	color: var(--pf-ink-muted);
 	background: none;
-	border-radius: 4px;
+	border: 0;
+	border-radius: var(--pf-radius-control);
 	cursor: pointer;
-	color: var(--pf-muted);
-	transition: background .15s, color .15s;
+	transition: background-color .15s var(--pf-ease), color .15s var(--pf-ease);
 }
 
-.pf-sidebar-item-actions button:hover { background: rgba(0,0,0,.06); color: var(--pf-text); }
-.pf-sidebar-item-actions button.is-danger:hover { background: #fbeaea; color: var(--pf-danger); }
-.pf-sidebar-item-actions button .dashicons { font-size: 14px; width: 14px; height: 14px; }
+.pf-sidebar-item-actions button:hover { color: var(--pf-ink); background: rgba(0,0,0,.05); }
+.pf-sidebar-item-actions button.is-danger:hover { color: var(--pf-tag-red-fg); background: var(--pf-tag-red-bg); }
+.pf-sidebar-item-actions button .dashicons { width: 16px; height: 16px; font-size: 16px; }
 
 /* ── Content panel ──────────────────────────────────────────────────────── */
 .pf-content-panel {
-	background: var(--pf-white);
-	border: 1px solid var(--pf-border);
-	border-radius: var(--pf-radius);
-	box-shadow: var(--pf-shadow);
 	overflow: hidden;
+	background: var(--pf-surface);
+	border: 1px solid var(--pf-line);
+	border-radius: var(--pf-radius-card);
+	box-shadow: none;
 }
 
 .pf-content-panel-header {
-	padding: 16px 22px;
-	border-bottom: 1px solid var(--pf-border);
 	display: flex;
 	align-items: center;
 	gap: 12px;
-	background: #fafbfd;
+	padding: 16px 24px;
+	background: var(--pf-surface-alt);
+	border-bottom: 1px solid var(--pf-line);
 }
 
 .pf-content-panel-header h2 {
-	font-size: 15px;
-	font-weight: 700;
-	color: var(--pf-text);
-	margin: 0;
 	flex: 1;
+	margin: 0;
+	font-size: var(--pf-fs-md);
+	font-weight: 600;
+	color: var(--pf-ink);
 }
 
 .pf-content-panel-body { padding: 24px; }
 
 .pf-section-title {
-	font-size: 11px;
-	font-weight: 700;
-	letter-spacing: .06em;
-	text-transform: uppercase;
-	color: var(--pf-muted);
 	margin: 0 0 12px;
+	font-size: var(--pf-fs-xs);
+	font-weight: 600;
+	letter-spacing: .05em;
+	text-transform: uppercase;
+	color: var(--pf-ink-muted);
 }
 
 /* ── Empty state ────────────────────────────────────────────────────────── */
 .pf-empty-state {
-	text-align: center;
-	padding: 56px 32px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	gap: 12px;
+	padding: 56px 32px;
+	text-align: center;
 }
 
 .pf-empty-state-icon .dashicons {
-	font-size: 48px;
-	width: 48px;
-	height: 48px;
-	color: var(--pf-border);
+	width: 40px;
+	height: 40px;
+	font-size: 40px;
+	color: var(--pf-line-control);
 }
 
 .pf-empty-state h3 {
-	font-size: 18px;
-	font-weight: 700;
-	color: var(--pf-text);
 	margin: 0;
+	font-size: var(--pf-fs-lg);
+	font-weight: 600;
+	color: var(--pf-ink);
 }
 
 .pf-empty-state p {
-	font-size: 13px;
-	color: var(--pf-muted);
-	margin: 0;
 	max-width: 320px;
-	line-height: 1.6;
+	margin: 0;
+	font-size: var(--pf-fs-base);
+	line-height: var(--pf-lh-body);
+	color: var(--pf-ink-muted);
 }
 
 /* ── Notices / Toast ────────────────────────────────────────────────────── */
 .pf-notice {
 	display: flex;
 	align-items: flex-start;
-	gap: 10px;
-	padding: 12px 16px;
-	border-radius: var(--pf-radius-sm);
-	font-size: 13px;
+	gap: 8px;
 	margin-bottom: 16px;
+	padding: 12px 14px;
+	font-size: var(--pf-fs-base);
+	line-height: 1.5;
+	border: 1px solid transparent;
+	border-radius: var(--pf-radius-control);
 }
 
-.pf-notice--success { background: var(--pf-green-lt); color: var(--pf-green); border: 1px solid rgba(26,132,85,.2); }
-.pf-notice--error   { background: #fbeaea; color: var(--pf-danger); border: 1px solid rgba(214,54,56,.2); }
-.pf-notice--info    { background: var(--pf-blue-lt); color: var(--pf-blue); border: 1px solid rgba(51,98,255,.2); }
+.pf-notice .dashicons { flex-shrink: 0; width: 16px; height: 16px; margin-top: 2px; font-size: 16px; }
+
+.pf-notice--success { color: var(--pf-tag-green-fg);  background: var(--pf-tag-green-bg);  border-color: rgba(52,101,56,.2); }
+.pf-notice--error   { color: var(--pf-tag-red-fg);    background: var(--pf-tag-red-bg);    border-color: rgba(159,47,45,.2); }
+.pf-notice--warning { color: var(--pf-tag-yellow-fg); background: var(--pf-tag-yellow-bg); border-color: rgba(149,100,0,.2); }
+.pf-notice--info    { color: var(--pf-tag-blue-fg);   background: var(--pf-tag-blue-bg);   border-color: rgba(31,108,159,.2); }
 
 /* ── Suppress ALL third-party notices on every Pure Fields page ─────────────
    PHP removes the action hooks (primary defence).
@@ -592,9 +670,9 @@
 
 /* ── Divider ────────────────────────────────────────────────────────────── */
 .pf-divider {
-	border: none;
-	border-top: 1px solid var(--pf-border);
 	margin: 20px 0;
+	border: none;
+	border-top: 1px solid var(--pf-line);
 }
 
 /* ── Supports / checkbox pills ──────────────────────────────────────────── */
@@ -607,25 +685,26 @@
 .pf-pill {
 	display: inline-flex;
 	align-items: center;
-	gap: 5px;
-	padding: 4px 10px;
-	border-radius: 50px;
-	border: 1.5px solid var(--pf-border);
-	background: var(--pf-white);
-	font-size: 12px;
+	gap: 4px;
+	height: 28px;
+	padding: 0 12px;
+	font-size: var(--pf-fs-sm);
 	font-weight: 500;
-	color: var(--pf-muted);
+	color: var(--pf-ink-body);
+	background: var(--pf-surface);
+	border: 1px solid var(--pf-line-control);
+	border-radius: 9999px;
 	cursor: pointer;
-	transition: all .15s;
 	user-select: none;
+	transition: background-color .15s var(--pf-ease), border-color .15s var(--pf-ease), color .15s var(--pf-ease);
 }
 
-.pf-pill:hover { border-color: var(--pf-blue); color: var(--pf-blue); background: var(--pf-blue-lt); }
+.pf-pill:hover { color: var(--pf-ink); background: var(--pf-canvas); border-color: var(--pf-ink-muted); }
 
 .pf-pill.is-active {
-	background: var(--pf-blue-lt);
-	border-color: var(--pf-blue);
-	color: var(--pf-blue);
+	color: var(--pf-tag-blue-fg);
+	background: var(--pf-tag-blue-bg);
+	border-color: var(--pf-tag-blue-fg);
 }
 
 .pf-pill input { display: none; }
@@ -634,29 +713,42 @@
 .pf-tab-nav {
 	display: flex;
 	gap: 2px;
-	border-bottom: 2px solid var(--pf-border);
 	margin-bottom: 24px;
+	border-bottom: 1px solid var(--pf-line);
 }
 
 .pf-tab-btn {
-	padding: 9px 16px;
-	font-size: 13px;
-	font-weight: 600;
-	color: var(--pf-muted);
+	margin-bottom: -1px;
+	padding: 9px 14px;
+	font-family: inherit;
+	font-size: var(--pf-fs-base);
+	font-weight: 500;
+	color: var(--pf-ink-muted);
 	background: none;
 	border: none;
 	border-bottom: 2px solid transparent;
-	margin-bottom: -2px;
 	cursor: pointer;
-	transition: color .15s, border-color .15s;
+	transition: color .15s var(--pf-ease), border-color .15s var(--pf-ease);
 }
 
-.pf-tab-btn:hover { color: var(--pf-blue); }
-.pf-tab-btn.is-active { color: var(--pf-blue); border-bottom-color: var(--pf-blue); }
+.pf-tab-btn:hover { color: var(--pf-ink); }
+.pf-tab-btn.is-active { color: var(--pf-ink); border-bottom-color: var(--pf-ink); }
+.pf-tab-btn:focus-visible { outline: 2px solid var(--pf-focus); outline-offset: 2px; }
 
-/* ── Gradient header icons ──────────────────────────────────────────────── */
-.pf-page-header-icon.grad-blue   { background: linear-gradient(135deg, var(--pf-blue) 0%, var(--pf-purple) 100%); color: #fff; }
-.pf-page-header-icon.grad-purple { background: linear-gradient(135deg, var(--pf-purple) 0%, var(--pf-pink) 100%); color: #fff; }
-.pf-page-header-icon.grad-pink   { background: linear-gradient(135deg, var(--pf-pink) 0%, #ff6b6b 100%); color: #fff; }
-.pf-page-header-icon.grad-green  { background: linear-gradient(135deg, var(--pf-green) 0%, #38bdf8 100%); color: #fff; }
-.pf-page-header-icon.grad-orange { background: linear-gradient(135deg, var(--pf-orange) 0%, #f59e0b 100%); color: #fff; }
+/* ── Header icon variants (neutral) ─────────────────────────────────────── */
+.pf-page-header-icon.grad-blue,
+.pf-page-header-icon.grad-purple,
+.pf-page-header-icon.grad-pink,
+.pf-page-header-icon.grad-green,
+.pf-page-header-icon.grad-orange { color: var(--pf-ink); background: var(--pf-surface); }
+
+@media (max-width: 782px) {
+	.pf-page { min-height: calc(100vh - 46px); }
+	.pf-page-header { padding: 24px 16px 20px; }
+	.pf-page-body { padding: 20px 16px; }
+	.pf-layout { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.pf-btn:active { transform: none; }
+}

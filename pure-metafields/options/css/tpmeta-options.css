@@ -7,8 +7,10 @@
    CSS Variables (mirrors builder tokens for visual consistency)
    ============================================================ */
 .tpmeta-options-wrap {
-	--tp-blue:      #3362FF;
-	--tp-blue-lt:   #eef2ff;
+	/* --tp-blue follows the user's WP admin color scheme (Profile →
+	   Admin Color Scheme), falling back to the plugin's brand blue. */
+	--tp-blue:      var(--wp-admin-theme-color, #3362FF);
+	--tp-blue-lt:   rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255), .08);
 	--tp-purple:    #5F4AFE;
 	--tp-text:      #010F1C;
 	--tp-muted:     #6b7280;
@@ -393,7 +395,7 @@ body.admin-color-light     .tpmeta-options-nav-item.is-active { background: rgba
 	transition: box-shadow .2s;
 }
 .tpmeta-panel-row:hover {
-	box-shadow: 0 2px 8px rgba(51,98,255,.06), 0 8px 30px rgba(0,0,0,.06);
+	box-shadow: 0 2px 8px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.06), 0 8px 30px rgba(0,0,0,.06);
 }
 
 /* ============================================================
@@ -541,7 +543,7 @@ body.admin-color-light     .tpmeta-options-nav-item.is-active { background: rgba
 .tpmeta-panel-field .tm-input:focus,
 .tpmeta-panel-field input.tm-input-sm:focus {
 	border-color: var(--tp-blue);
-	box-shadow: 0 0 0 3px rgba(51,98,255,.12);
+	box-shadow: 0 0 0 3px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.12);
 	outline: none;
 }
 
@@ -562,7 +564,7 @@ body.admin-color-light     .tpmeta-options-nav-item.is-active { background: rgba
 }
 .tpmeta-panel-field .tm-textarea:focus {
 	border-color: var(--tp-blue);
-	box-shadow: 0 0 0 3px rgba(51,98,255,.12);
+	box-shadow: 0 0 0 3px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.12);
 	outline: none;
 }
 
@@ -591,7 +593,7 @@ body.admin-color-light     .tpmeta-options-nav-item.is-active { background: rgba
 .tpmeta-panel-field .tm-select-field:focus,
 .tpmeta-panel-field select:focus {
 	border-color: var(--tp-blue);
-	box-shadow: 0 0 0 3px rgba(51,98,255,.12);
+	box-shadow: 0 0 0 3px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.12);
 	outline: none;
 }
 
@@ -701,11 +703,11 @@ body.admin-color-light     .tpmeta-options-nav-item.is-active { background: rgba
 }
 .tpmeta-panel-field .wp-picker-container .wp-color-result:hover {
 	border-color: var(--tp-blue) !important;
-	box-shadow: 0 0 0 3px rgba(51,98,255,.10) !important;
+	box-shadow: 0 0 0 3px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.10) !important;
 }
 .tpmeta-panel-field .wp-picker-container .wp-color-result[aria-expanded="true"] {
 	border-color: var(--tp-blue) !important;
-	box-shadow: 0 0 0 3px rgba(51,98,255,.12) !important;
+	box-shadow: 0 0 0 3px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.12) !important;
 	/* popup floats as a separate card — keep full border-radius */
 }
 
@@ -747,7 +749,7 @@ body.admin-color-light     .tpmeta-options-nav-item.is-active { background: rgba
 	z-index: 999999 !important; */
 	/* top / left set by JS via getBoundingClientRect() */
 	background: var(--tp-white) !important;
-	/* border: 1.5px solid rgba(51,98,255,.25) !important; */
+	/* border: 1.5px solid rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.25) !important; */
 	border-radius: var(--tp-radius-sm) !important;
 	box-shadow: 0 4px 6px rgba(0,0,0,.06), 0 16px 48px rgba(0,0,0,.14) !important;
 	overflow: hidden;
@@ -836,10 +838,10 @@ body.admin-color-light     .tpmeta-options-nav-item.is-active { background: rgba
 	align-items: center;
 	gap: 3px;
 	padding: 4px;
-	background: linear-gradient(135deg, rgba(51,98,255,.06) 0%, rgba(95,74,254,.04) 100%);
+	background: linear-gradient(135deg, rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.06) 0%, rgba(95,74,254,.04) 100%);
 	border-radius: calc(var(--tp-radius-sm) + 3px);
-	border: 1.5px solid rgba(51,98,255,.18);
-	box-shadow: inset 0 1px 3px rgba(0,0,0,.05), 0 1px 4px rgba(51,98,255,.07);
+	border: 1.5px solid rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.18);
+	box-shadow: inset 0 1px 3px rgba(0,0,0,.05), 0 1px 4px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.07);
 }
 
 /* Each label wrapper — this is the animated pill */
@@ -884,7 +886,7 @@ body.admin-color-light     .tpmeta-options-nav-item.is-active { background: rgba
 
 /* Hover — subtle blue tint + lift on the label */
 .tpmeta-panel-field .tm-button-groups .tm-button-radio:hover {
-	background: rgba(51,98,255,.10);
+	background: rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.10);
 	transform: translateY(-1px);
 }
 .tpmeta-panel-field .tm-button-groups .tm-button-radio:hover span {
@@ -894,7 +896,7 @@ body.admin-color-light     .tpmeta-options-nav-item.is-active { background: rgba
 /* Active label — gradient pill with branded glow */
 .tpmeta-panel-field .tm-button-groups .tm-button-radio:has(input:checked) {
 	background: linear-gradient(135deg, var(--tp-blue) 0%, var(--tp-purple) 100%);
-	box-shadow: 0 4px 16px rgba(51,98,255,.42), 0 1px 4px rgba(0,0,0,.14);
+	box-shadow: 0 4px 16px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.42), 0 1px 4px rgba(0,0,0,.14);
 	transform: translateY(-1.5px) scale(1.03);
 }
 .tpmeta-panel-field .tm-button-groups .tm-button-radio:has(input:checked) span {
@@ -1085,8 +1087,8 @@ body.admin-color-light     .tpmeta-options-nav-item.is-active { background: rgba
    ============================================================ */
 .tpmeta-options-header {
 	background: linear-gradient(135deg, #ffffff 0%, #fafbff 100%) !important;
-	border-bottom: 1px solid rgba(51,98,255,.08) !important;
-	box-shadow: 0 1px 0 rgba(51,98,255,.05), 0 2px 20px rgba(0,0,0,.04) !important;
+	border-bottom: 1px solid rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.08) !important;
+	box-shadow: 0 1px 0 rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.05), 0 2px 20px rgba(0,0,0,.04) !important;
 }
 
 .tpmeta-options-title {
@@ -1153,12 +1155,12 @@ body.admin-color-light .tpmeta-options-nav-item.is-active { border-left-color: v
    Enhanced section header
    ============================================================ */
 .tpmeta-options-section-header {
-	background: linear-gradient(135deg, rgba(51,98,255,.04) 0%, rgba(95,74,254,.02) 100%);
+	background: linear-gradient(135deg, rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.04) 0%, rgba(95,74,254,.02) 100%);
 	border-radius: var(--tp-radius);
 	padding: 14px 16px;
 	border-bottom: 0;
 	margin-bottom: 18px;
-	border: 1px solid rgba(51,98,255,.08);
+	border: 1px solid rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.08);
 }
 
 /* ============================================================
@@ -1175,7 +1177,7 @@ body.admin-color-light .tpmeta-options-nav-item.is-active { border-left-color: v
 	transition: box-shadow .22s ease, transform .22s ease !important;
 }
 .tpmeta-panel-row:hover {
-	box-shadow: 0 4px 20px rgba(51,98,255,.09), 0 1px 4px rgba(0,0,0,.04) !important;
+	box-shadow: 0 4px 20px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.09), 0 1px 4px rgba(0,0,0,.04) !important;
 	transform: translateY(-1px);
 }
 
@@ -1186,7 +1188,7 @@ body.admin-color-light .tpmeta-options-nav-item.is-active { border-left-color: v
 	transition: background .18s;
 }
 .tpmeta-panel-field:focus-within {
-	background: rgba(51,98,255,.018);
+	background: rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.018);
 }
 
 /* ============================================================
@@ -1305,8 +1307,8 @@ body.admin-color-light .tpmeta-options-nav-item.is-active { border-left-color: v
 
 /* Hover ring */
 .tpmeta-panel-field .tm-ri-card:hover .tm-ri-thumb {
-	border-color: rgba(51,98,255,.5);
-	box-shadow: 0 0 0 3px rgba(51,98,255,.10);
+	border-color: rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.5);
+	box-shadow: 0 0 0 3px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.10);
 }
 
 /* Active / selected */
@@ -1314,8 +1316,8 @@ body.admin-color-light .tpmeta-options-nav-item.is-active { border-left-color: v
 .tpmeta-panel-field .tm-ri-card:has(input:checked) .tm-ri-thumb {
 	border-color: var(--tp-blue);
 	box-shadow:
-		0 0 0 3.5px rgba(51,98,255,.25),
-		0 6px 20px rgba(51,98,255,.18);
+		0 0 0 3.5px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.25),
+		0 6px 20px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.18);
 }
 .tpmeta-panel-field .tm-ri-card.is-active .tm-ri-badge,
 .tpmeta-panel-field .tm-ri-card:has(input:checked) .tm-ri-badge {
@@ -1368,7 +1370,7 @@ body.admin-color-light .tpmeta-options-nav-item.is-active { border-left-color: v
 .tpmeta-panel-field .tm-dim-num:focus {
 	border-color: var(--tp-blue) !important;
 	outline: none !important;
-	box-shadow: -3px 0 0 rgba(51,98,255,.12), 0 -3px 0 rgba(51,98,255,.12), 0 3px 0 rgba(51,98,255,.12) !important;
+	box-shadow: -3px 0 0 rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.12), 0 -3px 0 rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.12), 0 3px 0 rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.12) !important;
 }
 .tpmeta-panel-field .tm-dim-unit {
 	flex: 0 0 62px;
@@ -1441,12 +1443,12 @@ body.admin-color-light .tpmeta-options-nav-item.is-active { border-left-color: v
 	background: var(--tp-white);
 	border: 3px solid var(--tp-blue);
 	cursor: pointer;
-	box-shadow: 0 2px 6px rgba(51,98,255,.35);
+	box-shadow: 0 2px 6px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.35);
 	transition: transform .15s ease, box-shadow .15s ease;
 }
 .tpmeta-panel-field .tm-dim-range::-webkit-slider-thumb:hover {
 	transform: scale(1.12);
-	box-shadow: 0 3px 10px rgba(51,98,255,.5);
+	box-shadow: 0 3px 10px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.5);
 }
 .tpmeta-panel-field .tm-dim-range::-moz-range-track {
 	height: 6px;
@@ -1461,16 +1463,16 @@ body.admin-color-light .tpmeta-options-nav-item.is-active { border-left-color: v
 	background: var(--tp-white);
 	border: 3px solid var(--tp-blue);
 	cursor: pointer;
-	box-shadow: 0 2px 6px rgba(51,98,255,.35);
+	box-shadow: 0 2px 6px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.35);
 	transition: transform .15s ease, box-shadow .15s ease;
 }
 .tpmeta-panel-field .tm-dim-range::-moz-range-thumb:hover {
 	transform: scale(1.12);
-	box-shadow: 0 3px 10px rgba(51,98,255,.5);
+	box-shadow: 0 3px 10px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.5);
 }
 .tpmeta-panel-field .tm-dim-range:focus { outline: none; }
 .tpmeta-panel-field .tm-dim-range:focus-visible::-webkit-slider-thumb {
-	box-shadow: 0 0 0 4px rgba(51,98,255,.18), 0 2px 6px rgba(51,98,255,.35);
+	box-shadow: 0 0 0 4px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.18), 0 2px 6px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.35);
 }
 
 /* ============================================================
@@ -1629,7 +1631,7 @@ body.admin-color-light .tpmeta-options-nav-item.is-active { border-left-color: v
 .tpmeta-panel-field .tptypo-combo-trigger:focus-visible,
 .tpmeta-panel-field .tptypo-combo-trigger.is-open {
 	border-color: var(--tp-blue);
-	box-shadow: 0 0 0 3px rgba(51,98,255,.12);
+	box-shadow: 0 0 0 3px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.12);
 	outline: none;
 }
 .tpmeta-panel-field .tptypo-combo-current {
@@ -1695,7 +1697,7 @@ body.admin-color-light .tpmeta-options-nav-item.is-active { border-left-color: v
 }
 .tpmeta-panel-field .tptypo-gf-search:focus {
 	border-color: var(--tp-blue);
-	box-shadow: 0 0 0 3px rgba(51,98,255,.12);
+	box-shadow: 0 0 0 3px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.12);
 	outline: none;
 }
 
@@ -1836,7 +1838,7 @@ body.admin-color-light .tpmeta-options-nav-item.is-active { border-left-color: v
 }
 .tpmeta-panel-field .tptypo-input:focus {
 	border-color: var(--tp-blue);
-	box-shadow: 0 0 0 3px rgba(51,98,255,.12);
+	box-shadow: 0 0 0 3px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.12);
 	outline: none;
 }
 .tpmeta-panel-field .tptypo-num { text-align: center; }
@@ -1854,7 +1856,7 @@ body.admin-color-light .tpmeta-options-nav-item.is-active { border-left-color: v
 }
 .tpmeta-panel-field .tptypo-size-wrap:focus-within {
 	border-color: var(--tp-blue);
-	box-shadow: 0 0 0 3px rgba(51,98,255,.12);
+	box-shadow: 0 0 0 3px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.12);
 }
 .tpmeta-panel-field .tptypo-size-wrap .tptypo-input {
 	flex: 1 1 auto;
@@ -1907,7 +1909,7 @@ body.admin-color-light .tpmeta-options-nav-item.is-active { border-left-color: v
 }
 .tpmeta-panel-field .tptypo-select:focus {
 	border-color: var(--tp-blue);
-	box-shadow: 0 0 0 3px rgba(51,98,255,.12);
+	box-shadow: 0 0 0 3px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.12);
 	outline: none;
 }
 
@@ -1950,7 +1952,7 @@ body.admin-color-light .tpmeta-options-nav-item.is-active { border-left-color: v
 	color: #fff;
 }
 .tpmeta-panel-field .tptypo-toggle:focus-within {
-	box-shadow: inset 0 0 0 2px rgba(51,98,255,.45);
+	box-shadow: inset 0 0 0 2px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.45);
 }
 
 /* ── Color row ──────────────────────────────────────────── */
@@ -1974,7 +1976,7 @@ body.admin-color-light .tpmeta-options-nav-item.is-active { border-left-color: v
 	transition: box-shadow .15s, transform .12s;
 }
 .tpmeta-panel-field .tptypo-color-swatch:hover {
-	box-shadow: 0 0 0 3px rgba(51,98,255,.15);
+	box-shadow: 0 0 0 3px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.15);
 	transform: scale(1.03);
 }
 .tpmeta-panel-field .tptypo-color-text {
@@ -2017,11 +2019,11 @@ body.admin-color-light .tpmeta-options-nav-item.is-active { border-left-color: v
 	background: linear-gradient(135deg, var(--tp-blue) 0%, var(--tp-purple) 100%);
 	color: #fff;
 	transform: translateY(-1px);
-	box-shadow: 0 2px 8px rgba(51,98,255,.28);
+	box-shadow: 0 2px 8px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.28);
 }
 .tpmeta-panel-field .tptypo-tag-btn:focus-visible {
 	outline: none;
-	box-shadow: 0 0 0 3px rgba(51,98,255,.25);
+	box-shadow: 0 0 0 3px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.25);
 }
 
 /* Selector input row */
@@ -2037,7 +2039,7 @@ body.admin-color-light .tpmeta-options-nav-item.is-active { border-left-color: v
 }
 .tpmeta-panel-field .tptypo-selector-row:focus-within {
 	border-color: var(--tp-blue);
-	box-shadow: 0 0 0 3px rgba(51,98,255,.12);
+	box-shadow: 0 0 0 3px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.12);
 }
 .tpmeta-panel-field .tptypo-selector-icon {
 	display: flex;
@@ -2092,7 +2094,7 @@ body.admin-color-light .tpmeta-options-nav-item.is-active { border-left-color: v
 	gap: 6px;
 	padding: 3px 4px 3px 10px;
 	background: var(--tp-blue-lt);
-	border: 1px solid rgba(51,98,255,.2);
+	border: 1px solid rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.2);
 	border-radius: 20px;
 	font-size: 12px;
 	color: var(--tp-blue);
@@ -2110,7 +2112,7 @@ body.admin-color-light .tpmeta-options-nav-item.is-active { border-left-color: v
 	justify-content: center;
 	width: 18px;
 	height: 18px;
-	background: rgba(51,98,255,.15);
+	background: rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.15);
 	border: 0;
 	border-radius: 50%;
 	cursor: pointer;
@@ -2127,7 +2129,7 @@ body.admin-color-light .tpmeta-options-nav-item.is-active { border-left-color: v
 
 /* ── Preview card ───────────────────────────────────────── */
 .tpmeta-panel-field .tptypo-preview-wrap {
-	background: linear-gradient(135deg, rgba(51,98,255,.04) 0%, rgba(95,74,254,.03) 100%);
+	background: linear-gradient(135deg, rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.04) 0%, rgba(95,74,254,.03) 100%);
 }
 .tpmeta-panel-field .tptypo-preview-card {
 	margin: 12px 16px 16px;
@@ -2214,7 +2216,7 @@ body.admin-color-light .tpmeta-options-nav-item.is-active { border-left-color: v
 .tpmeta-panel-field .tm-mcswatch-input:checked + .tm-mcswatch-color {
 	border-color: var(--tp-primary, #3362FF);
 	transform: scale(1.12);
-	box-shadow: 0 0 0 3px rgba(51,98,255,.25), inset 0 0 0 1px rgba(0,0,0,.1);
+	box-shadow: 0 0 0 3px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.25), inset 0 0 0 1px rgba(0,0,0,.1);
 }
 .tpmeta-panel-field .tm-mcswatch-input:checked + .tm-mcswatch-color::after {
 	content: '';
@@ -2743,7 +2745,7 @@ body.admin-color-light .tpmeta-options-nav-item.is-active { border-left-color: v
 .tpmeta-panel-field .tm-spacing-grid input[type="number"].tm-spc-num:focus {
 	border-color: var(--tp-blue) !important;
 	outline: none !important;
-	box-shadow: 0 0 0 3px rgba(51,98,255,.12) !important;
+	box-shadow: 0 0 0 3px rgba(var(--wp-admin-theme-color--rgb, 51, 98, 255),.12) !important;
 }
 .tpmeta-panel-field .tm-spc-lbl {
 	font-size: 9px;

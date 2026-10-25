@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 $logo_url    = TPMETA_URL . 'assets/img/logo.png';
 $first_visit = isset( $first_visit ) ? (bool) $first_visit : false;
-$builder_url = add_query_arg( 'start', '1' );
+$builder_url = add_query_arg( 'start', '1', menu_page_url( 'pure-fields-options-builder', false ) );
 
 // Load panels + compute stats
 $panels       = class_exists( 'TPMeta_Builder_Store' ) ? TPMeta_Builder_Store::all() : array();
@@ -53,26 +53,26 @@ foreach ( $panels as $idx => $panel ) {
 		<!-- LEFT SIDEBAR -->
 		<aside class="tpmeta-wlc-sidebar">
 
-			<button class="tpmeta-wlc-open-btn" id="tpmeta-get-started" type="button">
-				<span class="dashicons dashicons-layout"></span>
-				<?php esc_html_e( 'Open Builder', 'pure-metafields' ); ?>
-				<span class="tpmeta-wlc-open-arrow">→</span>
-			</button>
+<a href="<?php echo esc_url( $builder_url ); ?>" id="tpmeta-get-started" class="tpmeta-wlc-open-btn" role="button">
+		<span class="dashicons dashicons-layout"></span>
+		<?php esc_html_e( 'Open Builder', 'pure-metafields' ); ?>
+		<span class="tpmeta-wlc-open-arrow">→</span>
+	</a>
 
-			<div class="tpmeta-wlc-sb-group">
-				<div class="tpmeta-wlc-sb-label"><?php esc_html_e( 'Create', 'pure-metafields' ); ?></div>
-				<button type="button" class="tpmeta-wlc-sb-action tpmeta-wlc-goto">
-					<span class="dashicons dashicons-plus-alt2"></span>
-					<?php esc_html_e( 'New Panel', 'pure-metafields' ); ?>
-				</button>
-				<button type="button" class="tpmeta-wlc-sb-action tpmeta-wlc-goto">
-					<span class="dashicons dashicons-upload"></span>
-					<?php esc_html_e( 'Import JSON', 'pure-metafields' ); ?>
-				</button>
-				<button type="button" class="tpmeta-wlc-sb-action tpmeta-wlc-goto">
-					<span class="dashicons dashicons-images-alt2"></span>
-					<?php esc_html_e( 'Starter Templates', 'pure-metafields' ); ?>
-				</button>
+		<div class="tpmeta-wlc-sb-group">
+			<div class="tpmeta-wlc-sb-label"><?php esc_html_e( 'Create', 'pure-metafields' ); ?></div>
+			<a href="<?php echo esc_url( $builder_url ); ?>" class="tpmeta-wlc-sb-action tpmeta-wlc-goto" role="button">
+				<span class="dashicons dashicons-plus-alt2"></span>
+				<?php esc_html_e( 'New Panel', 'pure-metafields' ); ?>
+			</a>
+			<a href="<?php echo esc_url( $builder_url ); ?>" class="tpmeta-wlc-sb-action tpmeta-wlc-goto" role="button">
+				<span class="dashicons dashicons-upload"></span>
+				<?php esc_html_e( 'Import JSON', 'pure-metafields' ); ?>
+			</a>
+			<a href="<?php echo esc_url( $builder_url ); ?>" class="tpmeta-wlc-sb-action tpmeta-wlc-goto" role="button">
+				<span class="dashicons dashicons-images-alt2"></span>
+				<?php esc_html_e( 'Starter Templates', 'pure-metafields' ); ?>
+			</a>
 			</div>
 
 			<div class="tpmeta-wlc-sb-divider"></div>
@@ -137,23 +137,23 @@ foreach ( $panels as $idx => $panel ) {
 					</a>
 					<?php endforeach; ?>
 
-					<button type="button" class="tpmeta-wlc-panel-card tpmeta-wlc-panel-new tpmeta-wlc-goto">
+					<a href="<?php echo esc_url( $builder_url ); ?>" class="tpmeta-wlc-panel-card tpmeta-wlc-panel-new tpmeta-wlc-goto" role="button">
 						<span class="dashicons dashicons-plus-alt2 tpmeta-wlc-panel-icon"></span>
 						<div class="tpmeta-wlc-panel-info">
 							<div class="tpmeta-wlc-panel-name"><?php esc_html_e( 'New Panel', 'pure-metafields' ); ?></div>
 							<div class="tpmeta-wlc-panel-meta"><?php esc_html_e( 'Create from scratch', 'pure-metafields' ); ?></div>
 						</div>
-					</button>
+					</a>
 				</div>
 
 				<?php else : ?>
 				<div class="tpmeta-wlc-empty-panels">
 					<span class="dashicons dashicons-layout tpmeta-wlc-empty-icon"></span>
 					<p><?php esc_html_e( 'No panels yet. Create your first options panel to get started.', 'pure-metafields' ); ?></p>
-					<button type="button" class="tpmeta-wlc-create-btn tpmeta-wlc-goto">
-						<span class="dashicons dashicons-plus-alt2"></span>
-						<?php esc_html_e( 'Create First Panel', 'pure-metafields' ); ?>
-					</button>
+<a href="<?php echo esc_url( $builder_url ); ?>" class="tpmeta-wlc-create-btn tpmeta-wlc-goto" role="button">
+					<span class="dashicons dashicons-plus-alt2"></span>
+					<?php esc_html_e( 'Create First Panel', 'pure-metafields' ); ?>
+				</a>
 				</div>
 				<?php endif; ?>
 			</section>
@@ -178,7 +178,7 @@ foreach ( $panels as $idx => $panel ) {
 							<span class="tpmeta-wlc-check-dot"></span>
 							<span><?php esc_html_e( 'Create an options panel', 'pure-metafields' ); ?></span>
 							<?php if ( empty( $panels ) ) : ?>
-							<button type="button" class="tpmeta-wlc-check-cta tpmeta-wlc-goto"><?php esc_html_e( 'Create →', 'pure-metafields' ); ?></button>
+						<a href="<?php echo esc_url( $builder_url ); ?>" class="tpmeta-wlc-check-cta tpmeta-wlc-goto" role="button"><?php esc_html_e( 'Create →', 'pure-metafields' ); ?></a>
 							<?php endif; ?>
 						</li>
 						<li class="tpmeta-wlc-check <?php echo ! empty( $panels ) ? 'is-next' : ''; ?>">
@@ -369,7 +369,8 @@ foreach ( $panels as $idx => $panel ) {
 	// ── Primary "Open Builder" button ──
 	var mainBtn = document.getElementById('tpmeta-get-started');
 	if (mainBtn) {
-		mainBtn.addEventListener('click', function () {
+		mainBtn.addEventListener('click', function (event) {
+			event.preventDefault();
 			mainBtn.disabled = true;
 			launchTransition();
 		});
@@ -377,7 +378,10 @@ foreach ( $panels as $idx => $panel ) {
 
 	// ── All sidebar/checklist/empty-state action buttons ──
 	document.querySelectorAll('.tpmeta-wlc-goto').forEach(function (btn) {
-		btn.addEventListener('click', launchTransition);
+		btn.addEventListener('click', function (event) {
+			event.preventDefault();
+			launchTransition();
+		});
 	});
 
 	// ── Copy buttons ──

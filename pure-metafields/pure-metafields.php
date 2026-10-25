@@ -12,10 +12,10 @@
  * @package           tpmeta
  *
  * @wordpress-plugin
- * Plugin Name:       PureFields – Meta Fields & Custom Post Type Builder
- * Plugin URI:        https://themepure.net/plugins/pure-metafields/
- * Description:       Create custom metaboxes, post types, and taxonomies visually. Upgrade to Pro for theme options, Customizer integration, and advanced field types.
- * Version:           1.7.3
+ * Plugin Name:       PureFields Pro – Meta Fields, Theme Options & Custom Post Type Builder
+ * Plugin URI:        https://themepure.net/plugins/pure-metafields-pro/
+ * Description:       The complete theme development framework — custom metaboxes, option panels, Customizer integration, CSS auto-output, advanced field types, Bake to PHP, and more.
+ * Version:           1.7.4
  * Author:            ThemePure
  * Author URI:        https://themepure.net
  * License:           GPL-2.0+
@@ -29,22 +29,21 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'TPMETA_VERSION', '1.7.3' );
+define( 'TPMETA_VERSION', '1.7.4' );
 define( 'TPMETA_PATH', plugin_dir_path(__FILE__) );
 define( 'TPMETA_URL', plugin_dir_url(__FILE__) );
 
 /**
  * Check whether Pro features are unlocked.
  *
- * Free version: always returns false.
- * Pro version:  overridden by the license system — returns true when
- *               a valid license is active.
+ * The Pro plugin currently ships without license gating, so all Pro
+ * features are always available.
  *
  * @return bool
  */
 if ( ! function_exists( 'tpmeta_is_pro' ) ) {
 	function tpmeta_is_pro() {
-		return false;
+		return true;
 	}
 }
 
@@ -206,16 +205,13 @@ require_once TPMETA_PATH . 'metaboxes/functions.php';
 require_once TPMETA_PATH . 'metaboxes/class-metabox.php';
 
 /**
- * Theme-options framework (theme_mod storage).  PRO FEATURE.
- *
- * Available API (when pro is active):
- *   - TPMeta_Options::set_args( $opt_name, $args )
- *   - TPMeta_Options::set_section( $opt_name, $section )
- *   - tpmeta_get_option( $key, $default ) — wraps get_theme_mod()
- *
- * @since 1.5.0
+ * The Pro feature bootstrap is deferred until after the theme has loaded.
  */
-if ( tpmeta_is_pro() ) {
+function tpmeta_load_pro_features() {
+	if ( ! tpmeta_is_pro() ) {
+		return;
+	}
+
 	require_once TPMETA_PATH . 'options/class-tpmeta-options.php';
 	require_once TPMETA_PATH . 'options/class-tpmeta-options-store.php';
 	require_once TPMETA_PATH . 'options/class-tpmeta-options-field.php';
@@ -233,17 +229,9 @@ if ( tpmeta_is_pro() ) {
 			new TPMeta_Metabox_CSS_Output();
 			new TPMeta_Metabox_Generic_Output();
 		}
-		add_action( 'plugins_loaded', 'tpmeta_options_boot', 20 );
 	}
-}
+	tpmeta_options_boot();
 
-/**
- * Visual Options Builder (drag & drop UI that emits JSON, optionally bakes to PHP).
- * PRO FEATURE.
- *
- * @since 1.6.0
- */
-if ( tpmeta_is_pro() ) {
 	require_once TPMETA_PATH . 'options/builder/class-tpmeta-builder-store.php';
 	require_once TPMETA_PATH . 'options/builder/class-tpmeta-builder-codegen.php';
 	require_once TPMETA_PATH . 'options/builder/class-tpmeta-builder-loader.php';
@@ -261,9 +249,10 @@ if ( tpmeta_is_pro() ) {
 			new TPMeta_Builder_Loader();
 			new TPMeta_Customizer();
 		}
-		add_action( 'plugins_loaded', 'tpmeta_builder_boot', 25 );
 	}
+	tpmeta_builder_boot();
 }
+add_action( 'after_setup_theme', 'tpmeta_load_pro_features', 15 );
 
 /**
  * Pure Fields — extended feature suite.

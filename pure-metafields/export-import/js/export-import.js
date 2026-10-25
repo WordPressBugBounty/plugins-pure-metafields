@@ -21,8 +21,7 @@
 	/* ── Export ────────────────────────────────────────────────────────── */
 	function resetExportBtn( $btn, type ) {
 		$btn.prop('disabled', false).html(
-			'<span class="dashicons dashicons-download"></span> '
-			+ (type === 'all' ? 'Export All' : 'Export')
+			type === 'all' ? 'Export All' : 'Export'
 		);
 	}
 
@@ -30,7 +29,7 @@
 		$(document).on('click', '.ei-export-btn', function () {
 			var type = $(this).data('type');
 			var $btn = $(this).prop('disabled', true).html(
-				'<span class="dashicons dashicons-update"></span> Exporting…'
+				'Exporting…'
 			);
 
 			$.post(PFExportImport.ajaxUrl, {
@@ -76,7 +75,7 @@
 		$(document).on('click', '#ei-import-confirm', function () {
 			if (!pending) return;
 			var $btn = $(this).prop('disabled', true).html(
-				'<span class="dashicons dashicons-update"></span> Importing…'
+				'Importing…'
 			);
 			$.post(PFExportImport.ajaxUrl, {
 				action: 'pf_import',
@@ -84,16 +83,16 @@
 				data:   JSON.stringify(pending),
 			})
 			.done(function (res) {
-				$btn.prop('disabled', false).html('<span class="dashicons dashicons-yes-alt"></span> Confirm Import');
+				$btn.prop('disabled', false).html('Confirm Import');
 				if (res.success) {
-					showImportResult(res.data.imported, res.data.failed, res.data.values);
+					showImportResult(res.data.imported, res.data.failed, res.data.values, res.data.skipped);
 				} else {
 					showNotice('#ei-import-result', 'warning', 'Import failed: ' + (res.data || 'unknown error'));
 					$('#ei-import-result').show();
 				}
 			})
 			.fail(function (xhr) {
-				$btn.prop('disabled', false).html('<span class="dashicons dashicons-yes-alt"></span> Confirm Import');
+				$btn.prop('disabled', false).html('Confirm Import');
 				showNotice('#ei-import-result', 'warning', 'Import request failed (HTTP ' + xhr.status + '). Please try again.');
 				$('#ei-import-result').show();
 			});
@@ -105,7 +104,7 @@
 		var reader = new FileReader();
 		reader.onload = function (e) {
 			try {
-				var data = JSON.parse(e.target.result);
+				var data = normalizePackage(JSON.parse(e.target.result));
 				pending = data;
 				showPreview(data);
 			} catch (err) {
@@ -115,12 +114,28 @@
 		reader.readAsText(file);
 	}
 
+	// Accept a bare metabox (Metafield Builder "Export" file) or a list of
+	// metaboxes, in addition to the full export package.
+	function normalizePackage(data) {
+		if (Array.isArray(data)) {
+			var boxes = data.filter(function (b) { return b && typeof b === 'object' && b.metabox_id; });
+			return boxes.length ? { metafields: boxes } : {};
+		}
+		if (data && typeof data === 'object' && data.metabox_id) {
+			return { metafields: [data] };
+		}
+		return data || {};
+	}
+
 	function showPreview(data) {
-		var parts = [];
+		var parts  = [];
+		var locked = '';
 		if (data.metafields  && data.metafields.length)  parts.push(data.metafields.length  + ' metabox(es)');
 		if (data.post_types  && data.post_types.length)  parts.push(data.post_types.length  + ' post type(s)');
 		if (data.taxonomies  && data.taxonomies.length)  parts.push(data.taxonomies.length  + ' taxonomy/ies');
-		if (data.options     && data.options.length) {
+		if (data.options     && data.options.length && !PFExportImport.optionsAvailable) {
+			locked = ' ' + data.options.length + ' option panel(s) will be skipped — Option Panels require PureFields Pro.';
+		} else if (data.options && data.options.length) {
 			var totalValues = 0;
 			data.options.forEach(function (p) {
 				if (p && p._values && typeof p._values === 'object') {
@@ -131,7 +146,8 @@
 		}
 
 		if (!parts.length) {
-			$('#ei-preview-notice').html('<span class="dashicons dashicons-warning"></span> No recognizable data found in this file.');
+			$('#ei-preview-notice').html('<span class="dashicons dashicons-warning"></span> '
+				+ (locked ? 'Nothing to import.' + locked : 'No recognizable data found in this file.'));
 			$('#ei-import-preview').show();
 			$('#ei-import-confirm').hide();
 			return;
@@ -141,16 +157,18 @@
 			'<span class="dashicons dashicons-info-outline"></span> '
 			+ 'Ready to import: <strong>' + parts.join(', ') + '</strong>. '
 			+ (data._exported ? 'Exported: ' + data._exported + '.' : '')
+			+ locked
 		);
 		$('#ei-import-confirm').show();
 		$('#ei-import-preview').show();
 		$('#ei-import-result').hide();
 	}
 
-	function showImportResult(imported, failed, values) {
+	function showImportResult(imported, failed, values, skipped) {
 		imported = imported || {};
 		failed   = failed   || {};
 		values   = values   || {};
+		skipped  = skipped  || {};
 
 		// Show every section the file contained (even when count is 0), so the
 		// user can see at a glance if any section silently dropped to zero.
@@ -162,7 +180,7 @@
 		};
 		var parts = [];
 		Object.keys(labels).forEach(function (key) {
-			if (pending && pending[key] && pending[key].length) {
+			if (pending && pending[key] && pending[key].length && !skipped[key]) {
 				parts.push((imported[key] || 0) + ' ' + labels[key]);
 			}
 		});
@@ -174,14 +192,19 @@
 			if (failed[key]) failParts.push(failed[key] + ' ' + labels[key]);
 		});
 
-		var noticeClass = failTotal ? 'pf-notice--warning' : 'pf-notice--success';
-		var icon        = failTotal ? 'dashicons-warning' : 'dashicons-yes-alt';
-		var headline    = failTotal ? 'Import finished with issues.' : 'Import successful!';
+		var skippedOptions = skipped.options || 0;
+		var hasIssues   = failTotal || skippedOptions;
+		var noticeClass = hasIssues ? 'pf-notice--warning' : 'pf-notice--success';
+		var icon        = hasIssues ? 'dashicons-warning' : 'dashicons-yes-alt';
+		var headline    = hasIssues ? 'Import finished with issues.' : 'Import successful!';
 		var html = '<div class="pf-notice ' + noticeClass + '">'
 			+ '<span class="dashicons ' + icon + '"></span>'
 			+ '<strong>' + headline + '</strong> Imported: ' + (parts.join(', ') || 'nothing') + '.';
 		if (failTotal) {
 			html += ' Failed: ' + failParts.join(', ') + '.';
+		}
+		if (skippedOptions) {
+			html += ' Skipped: ' + skippedOptions + ' option panel(s) — Option Panels require PureFields Pro.';
 		}
 		// Surface the value-restore counts on the same notice. "Restored"
 		// means a theme_mod was written; "remapped" means a post_select ID

@@ -34,6 +34,8 @@ class TPMeta_Export_Import {
 		wp_localize_script( 'tpmeta-export-import', 'PFExportImport', array(
 			'nonce'   => wp_create_nonce( 'pf_nonce' ),
 			'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+			// Option panels need the (Pro) Options Builder store to import.
+			'optionsAvailable' => class_exists( 'TPMeta_Builder_Store' ),
 			'counts'  => array(
 				'metafields' => count( TPMeta_Metafields_Store::all() ),
 				'postTypes'  => count( TPMeta_Post_Types_Store::all() ),
@@ -99,14 +101,23 @@ class TPMeta_Export_Import {
 			wp_send_json_error( 'Invalid JSON' );
 		}
 
+		// Accept a bare metabox (Metafield Builder "Export" file) or a list of
+		// metaboxes, in addition to the full export package.
+		if ( isset( $pkg['metabox_id'] ) ) {
+			$pkg = array( 'metafields' => array( $pkg ) );
+		} elseif ( isset( $pkg[0] ) && is_array( $pkg[0] ) && isset( $pkg[0]['metabox_id'] ) ) {
+			$pkg = array( 'metafields' => $pkg );
+		}
+
 		$results   = array( 'metafields' => 0, 'post_types' => 0, 'taxonomies' => 0, 'options' => 0 );
 		$failed    = array( 'metafields' => 0, 'post_types' => 0, 'taxonomies' => 0, 'options' => 0 );
+		$skipped   = array( 'options' => 0 );
 		$max_items = 500;
 
 		if ( ! empty( $pkg['metafields'] ) && is_array( $pkg['metafields'] ) ) {
 			foreach ( array_slice( $pkg['metafields'], 0, $max_items ) as $box ) {
 				if ( ! is_array( $box ) || empty( $box['metabox_id'] ) ) { $failed['metafields']++; continue; }
-				TPMeta_Metafields_Store::save( $box );
+				TPMeta_Metafields_Store::save( $box, false );
 				if ( TPMeta_Metafields_Store::get( sanitize_key( $box['metabox_id'] ) ) ) {
 					$results['metafields']++;
 				} else {
@@ -141,6 +152,10 @@ class TPMeta_Export_Import {
 		$values_applied  = 0;
 		$values_remapped = 0;
 		$values_skipped  = 0;
+
+		if ( ! empty( $pkg['options'] ) && is_array( $pkg['options'] ) && ! class_exists( 'TPMeta_Builder_Store' ) ) {
+			$skipped['options'] = count( array_slice( $pkg['options'], 0, $max_items ) );
+		}
 
 		if ( ! empty( $pkg['options'] ) && is_array( $pkg['options'] ) && class_exists( 'TPMeta_Builder_Store' ) ) {
 			foreach ( array_slice( $pkg['options'], 0, $max_items ) as $panel ) {
@@ -178,6 +193,7 @@ class TPMeta_Export_Import {
 		wp_send_json_success( array(
 			'imported' => $results,
 			'failed'   => $failed,
+			'skipped'  => $skipped,
 			'values'   => array(
 				'applied'  => $values_applied,
 				'remapped' => $values_remapped,

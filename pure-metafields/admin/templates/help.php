@@ -111,22 +111,22 @@ $snip['mf_editor'] = <<<'PHP'
 // at save time, so the value is safe to echo. Best rendered with
 // the_content filter so paragraphs and shortcodes work.
 
-// ✅ Inside a template (single.php, page.php, content-*.php) — works because
+// OK: Inside a template (single.php, page.php, content-*.php) — works because
 //    The Loop has already set up the global $post.
 $content = tpmeta_field( '_about_description' );
 echo apply_filters( 'the_content', $content );
 
-// ✅ Anywhere else (functions.php, hooks before the_post(), AJAX, REST) —
+// OK: Anywhere else (functions.php, hooks before the_post(), AJAX, REST) —
 //    pass an explicit post ID. tpmeta_field() with no 2nd arg reads
 //    $post->ID from the global $post which is not set yet outside the Loop.
 $post_id = get_queried_object_id();              // current page/post
 $content = tpmeta_field( '_about_description', $post_id );
 echo apply_filters( 'the_content', $content );
 
-// ✅ Render the raw sanitized HTML without paragraph/shortcode processing
+// OK: Render the raw sanitized HTML without paragraph/shortcode processing
 echo wp_kses_post( tpmeta_field( '_about_description' ) );
 
-// ❌ This will not work — $post is not set at top level of functions.php
+// Wrong: This will not work — $post is not set at top level of functions.php
 echo tpmeta_field( '_about_description' );        // returns false here
 PHP;
 
@@ -392,16 +392,16 @@ PHP;
 		<div class="pf-hero-grid" aria-hidden="true"></div>
 
 		<div class="pf-hero-inner">
-			<div class="pf-badge"><span>⚡</span> PureFields v<?php echo esc_html( TPMETA_VERSION ); ?></div>
+			<div class="pf-badge">PureFields v<?php echo esc_html( TPMETA_VERSION ); ?></div>
 			<h1>Developer <em>Quick Reference</em></h1>
 			<p class="pf-hero-desc">Everything you need to integrate metafields, option panels, the visual builder, and Customizer into your WordPress theme.</p>
 
 			<div class="pf-hero-tabs">
-				<button class="pf-tab-pill active" data-tab="metafields">📋 Metafields</button>
-				<button class="pf-tab-pill" data-tab="options">⚙️ Options Panel</button>
-				<button class="pf-tab-pill" data-tab="builder">🎨 Visual Builder</button>
-				<button class="pf-tab-pill" data-tab="customizer">🖌️ Customizer</button>
-				<button class="pf-tab-pill" data-tab="usermeta">👤 User Meta</button>
+				<button class="pf-tab-pill active" data-tab="metafields">Metafields</button>
+				<button class="pf-tab-pill" data-tab="options">Options Panel</button>
+				<button class="pf-tab-pill" data-tab="builder">Visual Builder</button>
+				<button class="pf-tab-pill" data-tab="customizer">Customizer</button>
+				<button class="pf-tab-pill" data-tab="usermeta">User Meta</button>
 			</div>
 		</div>
 
@@ -496,25 +496,25 @@ PHP;
 				<!-- Flow diagram -->
 				<div class="pf-flow" id="flow-metafields">
 					<div class="pf-flow-step">
-						<div class="pf-flow-icon pf-fi-indigo">⚙️</div>
+						<div class="pf-flow-icon pf-fi-indigo"><?php echo TPMeta_Main_Menu::icon( 'gear' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<div class="pf-flow-step-lbl">Register</div>
 						<div class="pf-flow-step-sub">tp_meta_boxes filter</div>
 					</div>
 					<div class="pf-flow-conn"><div class="pf-conn-line"></div><div class="pf-conn-head"></div></div>
 					<div class="pf-flow-step">
-						<div class="pf-flow-icon pf-fi-green">✏️</div>
+						<div class="pf-flow-icon pf-fi-green"><?php echo TPMeta_Main_Menu::icon( 'pencil' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<div class="pf-flow-step-lbl">Post Editor</div>
 						<div class="pf-flow-step-sub">Metabox renders</div>
 					</div>
 					<div class="pf-flow-conn"><div class="pf-conn-line"></div><div class="pf-conn-head"></div></div>
 					<div class="pf-flow-step">
-						<div class="pf-flow-icon pf-fi-amber">💾</div>
+						<div class="pf-flow-icon pf-fi-amber"><?php echo TPMeta_Main_Menu::icon( 'save' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<div class="pf-flow-step-lbl">User Saves</div>
 						<div class="pf-flow-step-sub">wp_postmeta</div>
 					</div>
 					<div class="pf-flow-conn"><div class="pf-conn-line"></div><div class="pf-conn-head"></div></div>
 					<div class="pf-flow-step">
-						<div class="pf-flow-icon pf-fi-violet">📤</div>
+						<div class="pf-flow-icon pf-fi-violet"><?php echo TPMeta_Main_Menu::icon( 'export-import' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<div class="pf-flow-step-lbl">Read Value</div>
 						<div class="pf-flow-step-sub">tpmeta_field()</div>
 					</div>
@@ -523,14 +523,14 @@ PHP;
 				<!-- Section: Register -->
 				<section class="pf-section" id="mf-flow">
 					<div class="pf-section-hd">
-						<div class="pf-section-ico">⚙️</div>
+						<div class="pf-section-ico"><?php echo TPMeta_Main_Menu::icon( 'gear' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<h2>Register a Metabox</h2>
 					</div>
-					<p class="pf-section-desc">Hook into <code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;font-family:monospace;color:#4338ca">tp_meta_boxes</code> to declare your metabox and its fields. The example below shows the full structure.</p>
+					<p class="pf-section-desc">Hook into <code>tp_meta_boxes</code> to declare your metabox and its fields. The example below shows the full structure.</p>
 					<div class="pf-code-card" id="mf-register">
 						<div class="pf-cc-head">
 							<span class="pf-cc-title">Register Metabox <span class="pf-cc-tag">functions.php</span></span>
-							<button class="pf-copy-btn"><span class="dashicons dashicons-clipboard"></span> Copy</button>
+							<button type="button" class="pf-copy-btn">Copy</button>
 						</div>
 						<pre class="pf-pre" data-lang="php"><?php echo esc_html( $snip['mf_register'] ); ?></pre>
 					</div>
@@ -539,10 +539,10 @@ PHP;
 				<!-- Section: Field Types -->
 				<section class="pf-section" id="mf-field-types">
 					<div class="pf-section-hd">
-						<div class="pf-section-ico">🗂️</div>
+						<div class="pf-section-ico"><?php echo TPMeta_Main_Menu::icon( 'grid' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<h2>All Field Types</h2>
 					</div>
-					<p class="pf-section-desc">Every <code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;font-family:monospace;color:#4338ca">type</code> value you can use inside a field definition.</p>
+					<p class="pf-section-desc">Every <code>type</code> value you can use inside a field definition.</p>
 
 					<div class="pf-chip-grid">
 						<?php
@@ -570,7 +570,7 @@ PHP;
 						foreach ( $field_types as $ft ) :
 						?>
 						<span class="pf-chip">
-							<span class="pf-chip-icon dashicons dashicons-<?php echo esc_attr( $ft[2] ); ?>" style="color:<?php echo esc_attr( $ft[1] ); ?>"></span>
+							<span class="pf-chip-icon dashicons dashicons-<?php echo esc_attr( $ft[2] ); ?>"></span>
 							<?php echo esc_html( $ft[0] ); ?>
 						</span>
 						<?php endforeach; ?>
@@ -579,7 +579,7 @@ PHP;
 					<div class="pf-code-card">
 						<div class="pf-cc-head">
 							<span class="pf-cc-title">Field type quick reference</span>
-							<button class="pf-copy-btn"><span class="dashicons dashicons-clipboard"></span> Copy</button>
+							<button type="button" class="pf-copy-btn">Copy</button>
 						</div>
 						<pre class="pf-pre" data-lang="php"><?php echo esc_html( $snip['mf_fields'] ); ?></pre>
 					</div>
@@ -587,9 +587,9 @@ PHP;
 					<div class="pf-code-card">
 						<div class="pf-cc-head">
 							<span class="pf-cc-title">Conditional logic <span class="pf-cc-tag">show / hide fields</span></span>
-							<button class="pf-copy-btn"><span class="dashicons dashicons-clipboard"></span> Copy</button>
+							<button type="button" class="pf-copy-btn">Copy</button>
 						</div>
-						<div class="pf-cc-desc">Use the <code style="font-family:monospace;font-size:12px">conditional</code> key to show or hide a field based on another field's value.</div>
+						<div class="pf-cc-desc">Use the <code>conditional</code> key to show or hide a field based on another field's value.</div>
 						<pre class="pf-pre" data-lang="php"><?php echo esc_html( $snip['mf_conditional'] ); ?></pre>
 					</div>
 				</section>
@@ -597,14 +597,14 @@ PHP;
 				<!-- Section: Fetch Data -->
 				<section class="pf-section" id="mf-fetch">
 					<div class="pf-section-hd">
-						<div class="pf-section-ico">📤</div>
+						<div class="pf-section-ico"><?php echo TPMeta_Main_Menu::icon( 'export-import' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<h2>Fetch a Field Value</h2>
 					</div>
-					<p class="pf-section-desc">Use <code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;font-family:monospace;color:#4338ca">tpmeta_field()</code> to read any meta value for the current or a specific post.</p>
+					<p class="pf-section-desc">Use <code>tpmeta_field()</code> to read any meta value for the current or a specific post.</p>
 					<div class="pf-code-card">
 						<div class="pf-cc-head">
 							<span class="pf-cc-title">tpmeta_field() <span class="pf-cc-tag green">theme / template</span></span>
-							<button class="pf-copy-btn"><span class="dashicons dashicons-clipboard"></span> Copy</button>
+							<button type="button" class="pf-copy-btn">Copy</button>
 						</div>
 						<pre class="pf-pre" data-lang="php"><?php echo esc_html( $snip['mf_fetch'] ); ?></pre>
 					</div>
@@ -613,62 +613,62 @@ PHP;
 				<!-- Section: Image & Gallery -->
 				<section class="pf-section" id="mf-image">
 					<div class="pf-section-hd">
-						<div class="pf-section-ico">🖼️</div>
+						<div class="pf-section-ico"><?php echo TPMeta_Main_Menu::icon( 'image' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<h2>Image &amp; Gallery</h2>
 					</div>
 					<div class="pf-code-grid">
 						<div class="pf-code-card">
 							<div class="pf-cc-head">
 								<span class="pf-cc-title">tpmeta_image_field() <span class="pf-cc-tag">single image</span></span>
-								<button class="pf-copy-btn"><span class="dashicons dashicons-clipboard"></span> Copy</button>
+								<button type="button" class="pf-copy-btn">Copy</button>
 							</div>
 							<pre class="pf-pre" data-lang="php"><?php echo esc_html( $snip['mf_image'] ); ?></pre>
 						</div>
 						<div class="pf-code-card">
 							<div class="pf-cc-head">
 								<span class="pf-cc-title">tpmeta_gallery_field() <span class="pf-cc-tag">multiple images</span></span>
-								<button class="pf-copy-btn"><span class="dashicons dashicons-clipboard"></span> Copy</button>
+								<button type="button" class="pf-copy-btn">Copy</button>
 							</div>
 							<pre class="pf-pre" data-lang="php"><?php echo esc_html( $snip['mf_gallery'] ); ?></pre>
 						</div>
 					</div>
 					<div class="pf-tip">
-						<span class="pf-tip-icon">💡</span>
-						<span>Both helpers accept any registered WordPress image size as the second argument: <code style="font-family:monospace;font-size:12px">'thumbnail'</code>, <code style="font-family:monospace;font-size:12px">'medium'</code>, <code style="font-family:monospace;font-size:12px">'large'</code>, <code style="font-family:monospace;font-size:12px">'full'</code>, or a custom size slug.</span>
+						<span class="pf-tip-icon"><?php echo TPMeta_Main_Menu::icon( 'tip' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></span>
+						<span>Both helpers accept any registered WordPress image size as the second argument: <code>'thumbnail'</code>, <code>'medium'</code>, <code>'large'</code>, <code>'full'</code>, or a custom size slug.</span>
 					</div>
 				</section>
 
 				<!-- Section: Editor (Rich Text) -->
 				<section class="pf-section" id="mf-editor">
 					<div class="pf-section-hd">
-						<div class="pf-section-ico">📝</div>
+						<div class="pf-section-ico"><?php echo TPMeta_Main_Menu::icon( 'pencil' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<h2>Editor (Rich Text) Data</h2>
 					</div>
-					<p class="pf-section-desc">Editor field values are stored as <strong>HTML</strong>, sanitized at save time with <code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;font-family:monospace;color:#4338ca">wp_kses_post()</code>. Render them with the <code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;font-family:monospace;color:#4338ca">the_content</code> filter so paragraphs and shortcodes work.</p>
+					<p class="pf-section-desc">Editor field values are stored as <strong>HTML</strong>, sanitized at save time with <code>wp_kses_post()</code>. Render them with the <code>the_content</code> filter so paragraphs and shortcodes work.</p>
 					<div class="pf-code-card">
 						<div class="pf-cc-head">
 							<span class="pf-cc-title">Editor field <span class="pf-cc-tag green">retrieve &amp; render</span></span>
-							<button class="pf-copy-btn"><span class="dashicons dashicons-clipboard"></span> Copy</button>
+							<button type="button" class="pf-copy-btn">Copy</button>
 						</div>
 						<pre class="pf-pre" data-lang="php"><?php echo esc_html( $snip['mf_editor'] ); ?></pre>
 					</div>
 					<div class="pf-tip">
-						<span class="pf-tip-icon">💡</span>
-						<span><code style="font-family:monospace;font-size:12px">tpmeta_field( $key )</code> with no 2nd argument reads <code style="font-family:monospace;font-size:12px">$post-&gt;ID</code> from the global <code style="font-family:monospace;font-size:12px">$post</code>. That global is set by The Loop, so calling it at the top of <code style="font-family:monospace;font-size:12px">functions.php</code> returns <code style="font-family:monospace;font-size:12px">false</code>. Inside <code style="font-family:monospace;font-size:12px">single.php</code> / <code style="font-family:monospace;font-size:12px">page.php</code> it just works; everywhere else, pass <code style="font-family:monospace;font-size:12px">get_queried_object_id()</code> as the second argument.</span>
+						<span class="pf-tip-icon"><?php echo TPMeta_Main_Menu::icon( 'tip' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></span>
+						<span><code>tpmeta_field( $key )</code> with no 2nd argument reads <code>$post-&gt;ID</code> from the global <code>$post</code>. That global is set by The Loop, so calling it at the top of <code>functions.php</code> returns <code>false</code>. Inside <code>single.php</code> / <code>page.php</code> it just works; everywhere else, pass <code>get_queried_object_id()</code> as the second argument.</span>
 					</div>
 				</section>
 
 				<!-- Section: Repeater -->
 				<section class="pf-section" id="mf-repeater">
 					<div class="pf-section-hd">
-						<div class="pf-section-ico">🔁</div>
+						<div class="pf-section-ico"><?php echo TPMeta_Main_Menu::icon( 'repeat' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<h2>Repeater Data</h2>
 					</div>
-					<p class="pf-section-desc"><code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;font-family:monospace;color:#4338ca">tpmeta_field()</code> returns an array of row arrays for repeater fields. Each row is keyed by the sub-field ID.</p>
+					<p class="pf-section-desc"><code>tpmeta_field()</code> returns an array of row arrays for repeater fields. Each row is keyed by the sub-field ID.</p>
 					<div class="pf-code-card">
 						<div class="pf-cc-head">
 							<span class="pf-cc-title">Iterate repeater rows <span class="pf-cc-tag violet">includes images</span></span>
-							<button class="pf-copy-btn"><span class="dashicons dashicons-clipboard"></span> Copy</button>
+							<button type="button" class="pf-copy-btn">Copy</button>
 						</div>
 						<pre class="pf-pre" data-lang="php"><?php echo esc_html( $snip['mf_repeater'] ); ?></pre>
 					</div>
@@ -685,31 +685,31 @@ PHP;
 				<!-- Flow -->
 				<div class="pf-flow" id="flow-options">
 					<div class="pf-flow-step">
-						<div class="pf-flow-icon pf-fi-indigo">⚙️</div>
+						<div class="pf-flow-icon pf-fi-indigo"><?php echo TPMeta_Main_Menu::icon( 'gear' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<div class="pf-flow-step-lbl">set_args()</div>
 						<div class="pf-flow-step-sub">Register panel</div>
 					</div>
 					<div class="pf-flow-conn"><div class="pf-conn-line"></div><div class="pf-conn-head"></div></div>
 					<div class="pf-flow-step">
-						<div class="pf-flow-icon pf-fi-cyan">📋</div>
+						<div class="pf-flow-icon pf-fi-cyan"><?php echo TPMeta_Main_Menu::icon( 'list' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<div class="pf-flow-step-lbl">set_section()</div>
 						<div class="pf-flow-step-sub">Add fields</div>
 					</div>
 					<div class="pf-flow-conn"><div class="pf-conn-line"></div><div class="pf-conn-head"></div></div>
 					<div class="pf-flow-step">
-						<div class="pf-flow-icon pf-fi-green">🖥️</div>
+						<div class="pf-flow-icon pf-fi-green"><?php echo TPMeta_Main_Menu::icon( 'monitor' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<div class="pf-flow-step-lbl">Admin Page</div>
 						<div class="pf-flow-step-sub">Auto-created</div>
 					</div>
 					<div class="pf-flow-conn"><div class="pf-conn-line"></div><div class="pf-conn-head"></div></div>
 					<div class="pf-flow-step">
-						<div class="pf-flow-icon pf-fi-amber">💾</div>
+						<div class="pf-flow-icon pf-fi-amber"><?php echo TPMeta_Main_Menu::icon( 'save' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<div class="pf-flow-step-lbl">User Saves</div>
 						<div class="pf-flow-step-sub">theme_mod</div>
 					</div>
 					<div class="pf-flow-conn"><div class="pf-conn-line"></div><div class="pf-conn-head"></div></div>
 					<div class="pf-flow-step">
-						<div class="pf-flow-icon pf-fi-violet">📤</div>
+						<div class="pf-flow-icon pf-fi-violet"><?php echo TPMeta_Main_Menu::icon( 'export-import' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<div class="pf-flow-step-lbl">Read Value</div>
 						<div class="pf-flow-step-sub">tpmeta_get_option()</div>
 					</div>
@@ -718,43 +718,43 @@ PHP;
 				<!-- Section: Create Panel -->
 				<section class="pf-section" id="opt-setup">
 					<div class="pf-section-hd">
-						<div class="pf-section-ico">⚙️</div>
+						<div class="pf-section-ico"><?php echo TPMeta_Main_Menu::icon( 'gear' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<h2>Create an Options Panel</h2>
 					</div>
-					<p class="pf-section-desc">Call <code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;font-family:monospace;color:#4338ca">TPMeta_Options::set_args()</code> and <code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;font-family:monospace;color:#4338ca">set_section()</code> inside an <code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;font-family:monospace;color:#4338ca">init</code> action. The admin page is created automatically.</p>
+					<p class="pf-section-desc">Call <code>TPMeta_Options::set_args()</code> and <code>set_section()</code> inside an <code>init</code> action. The admin page is created automatically.</p>
 
 					<div class="pf-tip">
-						<span class="pf-tip-icon">💡</span>
-						<span>Values are stored as <strong>WordPress theme_mods</strong> — readable anywhere with the standard <code style="font-family:monospace;font-size:12px">get_theme_mod()</code> function, no plugin dependency needed.</span>
+						<span class="pf-tip-icon"><?php echo TPMeta_Main_Menu::icon( 'tip' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></span>
+						<span>Values are stored as <strong>WordPress theme_mods</strong> — readable anywhere with the standard <code>get_theme_mod()</code> function, no plugin dependency needed.</span>
 					</div>
 
 					<div class="pf-code-card">
 						<div class="pf-cc-head">
 							<span class="pf-cc-title">Full panel setup <span class="pf-cc-tag">functions.php</span></span>
-							<button class="pf-copy-btn"><span class="dashicons dashicons-clipboard"></span> Copy</button>
+							<button type="button" class="pf-copy-btn">Copy</button>
 						</div>
 						<pre class="pf-pre" data-lang="php"><?php echo esc_html( $snip['opt_setup'] ); ?></pre>
 					</div>
 
 					<div class="pf-tile-grid">
-						<div class="pf-tile"><span class="pf-tile-icon">🏷️</span><div><div class="pf-tile-lbl">Hook</div><div class="pf-tile-val">init</div></div></div>
-						<div class="pf-tile"><span class="pf-tile-icon">💾</span><div><div class="pf-tile-lbl">Storage</div><div class="pf-tile-val">theme_mod</div></div></div>
-						<div class="pf-tile"><span class="pf-tile-icon">🔑</span><div><div class="pf-tile-lbl">Capability</div><div class="pf-tile-val">manage_options</div></div></div>
-						<div class="pf-tile"><span class="pf-tile-icon">📐</span><div><div class="pf-tile-lbl">Sections</div><div class="pf-tile-val">unlimited</div></div></div>
+						<div class="pf-tile"><span class="pf-tile-icon"><?php echo TPMeta_Main_Menu::icon( 'taxonomies' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></span><div><div class="pf-tile-lbl">Hook</div><div class="pf-tile-val">init</div></div></div>
+						<div class="pf-tile"><span class="pf-tile-icon"><?php echo TPMeta_Main_Menu::icon( 'save' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></span><div><div class="pf-tile-lbl">Storage</div><div class="pf-tile-val">theme_mod</div></div></div>
+						<div class="pf-tile"><span class="pf-tile-icon"><?php echo TPMeta_Main_Menu::icon( 'key' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></span><div><div class="pf-tile-lbl">Capability</div><div class="pf-tile-val">manage_options</div></div></div>
+						<div class="pf-tile"><span class="pf-tile-icon"><?php echo TPMeta_Main_Menu::icon( 'layers' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></span><div><div class="pf-tile-lbl">Sections</div><div class="pf-tile-val">unlimited</div></div></div>
 					</div>
 				</section>
 
 				<!-- Section: Field Types -->
 				<section class="pf-section" id="opt-fields">
 					<div class="pf-section-hd">
-						<div class="pf-section-ico">🗂️</div>
+						<div class="pf-section-ico"><?php echo TPMeta_Main_Menu::icon( 'grid' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<h2>Options Panel Field Types</h2>
 					</div>
-					<p class="pf-section-desc">All the same field types as metafields, plus the <code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;font-family:monospace;color:#4338ca">output</code> key for automatic CSS injection.</p>
+					<p class="pf-section-desc">All the same field types as metafields, plus the <code>output</code> key for automatic CSS injection.</p>
 					<div class="pf-code-card">
 						<div class="pf-cc-head">
 							<span class="pf-cc-title">All supported types</span>
-							<button class="pf-copy-btn"><span class="dashicons dashicons-clipboard"></span> Copy</button>
+							<button type="button" class="pf-copy-btn">Copy</button>
 						</div>
 						<pre class="pf-pre" data-lang="php"><?php echo esc_html( $snip['opt_fields'] ); ?></pre>
 					</div>
@@ -763,21 +763,21 @@ PHP;
 				<!-- Section: Read Values -->
 				<section class="pf-section" id="opt-read">
 					<div class="pf-section-hd">
-						<div class="pf-section-ico">📤</div>
+						<div class="pf-section-ico"><?php echo TPMeta_Main_Menu::icon( 'export-import' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<h2>Read Option Values</h2>
 					</div>
 					<div class="pf-code-grid">
 						<div class="pf-code-card">
 							<div class="pf-cc-head">
 								<span class="pf-cc-title">tpmeta_get_option() <span class="pf-cc-tag green">recommended</span></span>
-								<button class="pf-copy-btn"><span class="dashicons dashicons-clipboard"></span> Copy</button>
+								<button type="button" class="pf-copy-btn">Copy</button>
 							</div>
 							<pre class="pf-pre" data-lang="php"><?php echo esc_html( $snip['opt_read'] ); ?></pre>
 						</div>
 						<div class="pf-code-card">
 							<div class="pf-cc-head">
 								<span class="pf-cc-title">tpmeta_get_repeater_rows() <span class="pf-cc-tag violet">repeater</span></span>
-								<button class="pf-copy-btn"><span class="dashicons dashicons-clipboard"></span> Copy</button>
+								<button type="button" class="pf-copy-btn">Copy</button>
 							</div>
 							<pre class="pf-pre" data-lang="php"><?php echo esc_html( $snip['opt_repeater'] ); ?></pre>
 						</div>
@@ -798,25 +798,25 @@ PHP;
 				<!-- Flow -->
 				<div class="pf-flow" id="flow-builder">
 					<div class="pf-flow-step">
-						<div class="pf-flow-icon pf-fi-indigo">🎨</div>
+						<div class="pf-flow-icon pf-fi-indigo"><?php echo TPMeta_Main_Menu::icon( 'brush' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<div class="pf-flow-step-lbl">Open Builder</div>
 						<div class="pf-flow-step-sub">Options Builder</div>
 					</div>
 					<div class="pf-flow-conn"><div class="pf-conn-line"></div><div class="pf-conn-head"></div></div>
 					<div class="pf-flow-step">
-						<div class="pf-flow-icon pf-fi-cyan">➕</div>
+						<div class="pf-flow-icon pf-fi-cyan"><?php echo TPMeta_Main_Menu::icon( 'plus' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<div class="pf-flow-step-lbl">Add Fields</div>
 						<div class="pf-flow-step-sub">Drag &amp; drop</div>
 					</div>
 					<div class="pf-flow-conn"><div class="pf-conn-line"></div><div class="pf-conn-head"></div></div>
 					<div class="pf-flow-step">
-						<div class="pf-flow-icon pf-fi-green">✅</div>
+						<div class="pf-flow-icon pf-fi-green"><?php echo TPMeta_Main_Menu::icon( 'check' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<div class="pf-flow-step-lbl">Save Panel</div>
 						<div class="pf-flow-step-sub">JSON stored</div>
 					</div>
 					<div class="pf-flow-conn"><div class="pf-conn-line"></div><div class="pf-conn-head"></div></div>
 					<div class="pf-flow-step">
-						<div class="pf-flow-icon pf-fi-violet">🖥️</div>
+						<div class="pf-flow-icon pf-fi-violet"><?php echo TPMeta_Main_Menu::icon( 'monitor' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<div class="pf-flow-step-lbl">Live Page</div>
 						<div class="pf-flow-step-sub">Admin menu</div>
 					</div>
@@ -825,7 +825,7 @@ PHP;
 				<!-- Section: Steps -->
 				<section class="pf-section" id="bld-flow">
 					<div class="pf-section-hd">
-						<div class="pf-section-ico">🚀</div>
+						<div class="pf-section-ico"><?php echo TPMeta_Main_Menu::icon( 'list' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<h2>How to Use the Builder</h2>
 					</div>
 				</section>
@@ -873,10 +873,10 @@ PHP;
 				<!-- Section: Bake to PHP -->
 				<section class="pf-section" id="bld-bake">
 					<div class="pf-section-hd">
-						<div class="pf-section-ico">🥧</div>
+						<div class="pf-section-ico"><?php echo TPMeta_Main_Menu::icon( 'code' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<h2>Bake to PHP</h2>
 					</div>
-					<p class="pf-section-desc">Export any builder panel to a standalone PHP file you can commit into your theme. The exported file uses <code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;font-family:monospace;color:#4338ca">TPMeta_Options::set_args()</code> / <code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;font-family:monospace;color:#4338ca">set_section()</code> directly and works even if the builder is deactivated.</p>
+					<p class="pf-section-desc">Export any builder panel to a standalone PHP file you can commit into your theme. The exported file uses <code>TPMeta_Options::set_args()</code> / <code>set_section()</code> directly and works even if the builder is deactivated.</p>
 
 					<div class="pf-steps">
 						<div class="pf-step">
@@ -903,8 +903,8 @@ PHP;
 					</div>
 
 					<div class="pf-note">
-						<span class="pf-tip-icon">ℹ️</span>
-						<span>The Loader reads both JSON (builder) and PHP registrations. PHP always wins when both exist for the same <code style="font-family:monospace;font-size:12px">opt_name</code> — baked files use priority 8, the loader uses priority 15.</span>
+						<span class="pf-tip-icon"><?php echo TPMeta_Main_Menu::icon( 'info' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></span>
+						<span>The Loader reads both JSON (builder) and PHP registrations. PHP always wins when both exist for the same <code>opt_name</code> — baked files use priority 8, the loader uses priority 15.</span>
 					</div>
 				</section>
 
@@ -919,25 +919,25 @@ PHP;
 				<!-- Flow -->
 				<div class="pf-flow" id="flow-customizer">
 					<div class="pf-flow-step">
-						<div class="pf-flow-icon pf-fi-indigo">🚩</div>
+						<div class="pf-flow-icon pf-fi-indigo"><?php echo TPMeta_Main_Menu::icon( 'flag' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<div class="pf-flow-step-lbl">Enable Flag</div>
 						<div class="pf-flow-step-sub">customizer_integration: true</div>
 					</div>
 					<div class="pf-flow-conn"><div class="pf-conn-line"></div><div class="pf-conn-head"></div></div>
 					<div class="pf-flow-step">
-						<div class="pf-flow-icon pf-fi-green">🖌️</div>
+						<div class="pf-flow-icon pf-fi-green"><?php echo TPMeta_Main_Menu::icon( 'brush' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<div class="pf-flow-step-lbl">Customize</div>
 						<div class="pf-flow-step-sub">Panel appears</div>
 					</div>
 					<div class="pf-flow-conn"><div class="pf-conn-line"></div><div class="pf-conn-head"></div></div>
 					<div class="pf-flow-step">
-						<div class="pf-flow-icon pf-fi-amber">💾</div>
+						<div class="pf-flow-icon pf-fi-amber"><?php echo TPMeta_Main_Menu::icon( 'save' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<div class="pf-flow-step-lbl">Publish</div>
 						<div class="pf-flow-step-sub">theme_mod saved</div>
 					</div>
 					<div class="pf-flow-conn"><div class="pf-conn-line"></div><div class="pf-conn-head"></div></div>
 					<div class="pf-flow-step">
-						<div class="pf-flow-icon pf-fi-violet">📤</div>
+						<div class="pf-flow-icon pf-fi-violet"><?php echo TPMeta_Main_Menu::icon( 'export-import' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<div class="pf-flow-step-lbl">Read Value</div>
 						<div class="pf-flow-step-sub">get_theme_mod()</div>
 					</div>
@@ -946,7 +946,7 @@ PHP;
 				<!-- Section: Enable -->
 				<section class="pf-section" id="cst-flow">
 					<div class="pf-section-hd">
-						<div class="pf-section-ico">🚩</div>
+						<div class="pf-section-ico"><?php echo TPMeta_Main_Menu::icon( 'flag' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<h2>Enable Customizer Integration</h2>
 					</div>
 				</section>
@@ -958,7 +958,7 @@ PHP;
 						<div class="pf-code-card">
 							<div class="pf-cc-head">
 								<span class="pf-cc-title">Via PHP <span class="pf-cc-tag">set_args()</span></span>
-								<button class="pf-copy-btn"><span class="dashicons dashicons-clipboard"></span> Copy</button>
+								<button type="button" class="pf-copy-btn">Copy</button>
 							</div>
 							<pre class="pf-pre" data-lang="php"><?php echo esc_html( $snip['cust_enable_php'] ); ?></pre>
 						</div>
@@ -967,13 +967,13 @@ PHP;
 								<span class="pf-cc-title">Via Visual Builder <span class="pf-cc-tag green">no code</span></span>
 								<button class="pf-copy-btn" style="display:none"></button>
 							</div>
-							<div class="pf-cc-desc" style="padding:16px">
-								<ol style="padding-left:18px;line-height:2;color:#1e293b">
+							<div class="pf-cc-desc pf-cc-steps">
+								<ol>
 									<li>Open any panel in <strong>Option Builder</strong></li>
 									<li>Tick the <strong>Customizer Integration</strong> checkbox in the panel settings</li>
 									<li>Click <strong>Save Panel</strong></li>
 								</ol>
-								<p style="margin-top:10px;font-size:12.5px;color:#64748b">The panel appears in the Customizer immediately — no page reload required.</p>
+								<p>The panel appears in the Customizer immediately — no page reload required.</p>
 							</div>
 						</div>
 					</div>
@@ -982,7 +982,7 @@ PHP;
 				<!-- Section: Supported field types -->
 				<section class="pf-section" id="cst-fields">
 					<div class="pf-section-hd">
-						<div class="pf-section-ico">🗂️</div>
+						<div class="pf-section-ico"><?php echo TPMeta_Main_Menu::icon( 'grid' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<h2>Supported Field Types</h2>
 					</div>
 					<p class="pf-section-desc">All field types render with full UI in the Customizer sidebar.</p>
@@ -1009,7 +1009,7 @@ PHP;
 						foreach ( $cust_types as $ct ) :
 						?>
 						<span class="pf-chip">
-							<span class="pf-chip-icon dashicons dashicons-<?php echo esc_attr( $ct[2] ); ?>" style="color:<?php echo esc_attr( $ct[1] ); ?>"></span>
+							<span class="pf-chip-icon dashicons dashicons-<?php echo esc_attr( $ct[2] ); ?>"></span>
 							<?php echo esc_html( $ct[0] ); ?>
 						</span>
 						<?php endforeach; ?>
@@ -1019,14 +1019,14 @@ PHP;
 				<!-- Section: Read Values -->
 				<section class="pf-section" id="cst-read">
 					<div class="pf-section-hd">
-						<div class="pf-section-ico">📤</div>
+						<div class="pf-section-ico"><?php echo TPMeta_Main_Menu::icon( 'export-import' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<h2>Read Values</h2>
 					</div>
-					<p class="pf-section-desc">Customizer and admin-panel saves go to the same <code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;font-family:monospace;color:#4338ca">theme_mod</code> storage — use either helper interchangeably.</p>
+					<p class="pf-section-desc">Customizer and admin-panel saves go to the same <code>theme_mod</code> storage — use either helper interchangeably.</p>
 					<div class="pf-code-card">
 						<div class="pf-cc-head">
 							<span class="pf-cc-title">Reading in your theme <span class="pf-cc-tag green">same API</span></span>
-							<button class="pf-copy-btn"><span class="dashicons dashicons-clipboard"></span> Copy</button>
+							<button type="button" class="pf-copy-btn">Copy</button>
 						</div>
 						<pre class="pf-pre" data-lang="php"><?php echo esc_html( $snip['cust_read'] ); ?></pre>
 					</div>
@@ -1042,25 +1042,25 @@ PHP;
 				<!-- Flow -->
 				<div class="pf-flow" id="flow-usermeta">
 					<div class="pf-flow-step">
-						<div class="pf-flow-icon pf-fi-indigo">⚙️</div>
+						<div class="pf-flow-icon pf-fi-indigo"><?php echo TPMeta_Main_Menu::icon( 'gear' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<div class="pf-flow-step-lbl">Register</div>
 						<div class="pf-flow-step-sub">tp_user_meta filter</div>
 					</div>
 					<div class="pf-flow-conn"><div class="pf-conn-line"></div><div class="pf-conn-head"></div></div>
 					<div class="pf-flow-step">
-						<div class="pf-flow-icon pf-fi-green">👤</div>
+						<div class="pf-flow-icon pf-fi-green"><?php echo TPMeta_Main_Menu::icon( 'user' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<div class="pf-flow-step-lbl">Profile Screen</div>
 						<div class="pf-flow-step-sub">Fields render</div>
 					</div>
 					<div class="pf-flow-conn"><div class="pf-conn-line"></div><div class="pf-conn-head"></div></div>
 					<div class="pf-flow-step">
-						<div class="pf-flow-icon pf-fi-amber">💾</div>
+						<div class="pf-flow-icon pf-fi-amber"><?php echo TPMeta_Main_Menu::icon( 'save' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<div class="pf-flow-step-lbl">User Saves</div>
 						<div class="pf-flow-step-sub">wp_usermeta</div>
 					</div>
 					<div class="pf-flow-conn"><div class="pf-conn-line"></div><div class="pf-conn-head"></div></div>
 					<div class="pf-flow-step">
-						<div class="pf-flow-icon pf-fi-violet">📤</div>
+						<div class="pf-flow-icon pf-fi-violet"><?php echo TPMeta_Main_Menu::icon( 'export-import' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<div class="pf-flow-step-lbl">Read Value</div>
 						<div class="pf-flow-step-sub">get_user_meta()</div>
 					</div>
@@ -1069,30 +1069,30 @@ PHP;
 				<!-- Section: Register -->
 				<section class="pf-section" id="um-flow">
 					<div class="pf-section-hd">
-						<div class="pf-section-ico">⚙️</div>
+						<div class="pf-section-ico"><?php echo TPMeta_Main_Menu::icon( 'gear' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<h2>Register User Meta Fields</h2>
 					</div>
-					<p class="pf-section-desc">Hook into <code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;font-family:monospace;color:#4338ca">tp_user_meta</code> and push one or more <strong>blocks</strong>. Each block renders as a titled section with its own table of fields on the <strong>Users → Profile</strong> and <strong>Edit User</strong> screens.</p>
+					<p class="pf-section-desc">Hook into <code>tp_user_meta</code> and push one or more <strong>blocks</strong>. Each block renders as a titled section with its own table of fields on the <strong>Users → Profile</strong> and <strong>Edit User</strong> screens.</p>
 					<div class="pf-code-card" id="um-register">
 						<div class="pf-cc-head">
 							<span class="pf-cc-title">Register a user-meta block <span class="pf-cc-tag">functions.php</span></span>
-							<button class="pf-copy-btn"><span class="dashicons dashicons-clipboard"></span> Copy</button>
+							<button type="button" class="pf-copy-btn">Copy</button>
 						</div>
 						<pre class="pf-pre" data-lang="php"><?php echo esc_html( $snip['um_register'] ); ?></pre>
 					</div>
 					<div class="pf-tip">
-						<span class="pf-tip-icon">💡</span>
-						<span>Each field's <code style="font-family:monospace;font-size:12px">id</code> is used verbatim as the <code style="font-family:monospace;font-size:12px">wp_usermeta</code> key — keep it unique and avoid clashing with WordPress core keys like <code style="font-family:monospace;font-size:12px">first_name</code> or <code style="font-family:monospace;font-size:12px">description</code>.</span>
+						<span class="pf-tip-icon"><?php echo TPMeta_Main_Menu::icon( 'tip' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></span>
+						<span>Each field's <code>id</code> is used verbatim as the <code>wp_usermeta</code> key — keep it unique and avoid clashing with WordPress core keys like <code>first_name</code> or <code>description</code>.</span>
 					</div>
 				</section>
 
 				<!-- Section: Field Types -->
 				<section class="pf-section" id="um-field-types">
 					<div class="pf-section-hd">
-						<div class="pf-section-ico">🗂️</div>
+						<div class="pf-section-ico"><?php echo TPMeta_Main_Menu::icon( 'grid' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<h2>All Field Types</h2>
 					</div>
-					<p class="pf-section-desc">Every <code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;font-family:monospace;color:#4338ca">type</code> you can use inside a user-meta field definition.</p>
+					<p class="pf-section-desc">Every <code>type</code> you can use inside a user-meta field definition.</p>
 
 					<div class="pf-chip-grid">
 						<?php
@@ -1118,7 +1118,7 @@ PHP;
 						foreach ( $user_field_types as $ft ) :
 						?>
 						<span class="pf-chip">
-							<span class="pf-chip-icon dashicons dashicons-<?php echo esc_attr( $ft[2] ); ?>" style="color:<?php echo esc_attr( $ft[1] ); ?>"></span>
+							<span class="pf-chip-icon dashicons dashicons-<?php echo esc_attr( $ft[2] ); ?>"></span>
 							<?php echo esc_html( $ft[0] ); ?>
 						</span>
 						<?php endforeach; ?>
@@ -1127,7 +1127,7 @@ PHP;
 					<div class="pf-code-card">
 						<div class="pf-cc-head">
 							<span class="pf-cc-title">Field type quick reference</span>
-							<button class="pf-copy-btn"><span class="dashicons dashicons-clipboard"></span> Copy</button>
+							<button type="button" class="pf-copy-btn">Copy</button>
 						</div>
 						<pre class="pf-pre" data-lang="php"><?php echo esc_html( $snip['um_fields'] ); ?></pre>
 					</div>
@@ -1136,14 +1136,14 @@ PHP;
 				<!-- Section: Read Values -->
 				<section class="pf-section" id="um-read">
 					<div class="pf-section-hd">
-						<div class="pf-section-ico">📤</div>
+						<div class="pf-section-ico"><?php echo TPMeta_Main_Menu::icon( 'export-import' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<h2>Read User Meta Values</h2>
 					</div>
-					<p class="pf-section-desc">Values save straight to the WordPress <code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;font-family:monospace;color:#4338ca">wp_usermeta</code> table — read them anywhere with the standard <code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;font-family:monospace;color:#4338ca">get_user_meta()</code> function, no plugin dependency required.</p>
+					<p class="pf-section-desc">Values save straight to the WordPress <code>wp_usermeta</code> table — read them anywhere with the standard <code>get_user_meta()</code> function, no plugin dependency required.</p>
 					<div class="pf-code-card">
 						<div class="pf-cc-head">
 							<span class="pf-cc-title">get_user_meta() <span class="pf-cc-tag green">theme / template</span></span>
-							<button class="pf-copy-btn"><span class="dashicons dashicons-clipboard"></span> Copy</button>
+							<button type="button" class="pf-copy-btn">Copy</button>
 						</div>
 						<pre class="pf-pre" data-lang="php"><?php echo esc_html( $snip['um_read'] ); ?></pre>
 					</div>
@@ -1152,40 +1152,40 @@ PHP;
 				<!-- Section: Users List Column -->
 				<section class="pf-section" id="um-table">
 					<div class="pf-section-hd">
-						<div class="pf-section-ico">📊</div>
+						<div class="pf-section-ico"><?php echo TPMeta_Main_Menu::icon( 'table' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<h2>Show a Field in the Users List</h2>
 					</div>
-					<p class="pf-section-desc">Set <code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;font-family:monospace;color:#4338ca">show_in_admin_table</code> to <code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;font-family:monospace;color:#4338ca">1</code> and the field value appears as a column on <strong>Users → All Users</strong>.</p>
+					<p class="pf-section-desc">Set <code>show_in_admin_table</code> to <code>1</code> and the field value appears as a column on <strong>Users → All Users</strong>.</p>
 					<div class="pf-code-card">
 						<div class="pf-cc-head">
 							<span class="pf-cc-title">Add a Users table column <span class="pf-cc-tag">show_in_admin_table</span></span>
-							<button class="pf-copy-btn"><span class="dashicons dashicons-clipboard"></span> Copy</button>
+							<button type="button" class="pf-copy-btn">Copy</button>
 						</div>
 						<pre class="pf-pre" data-lang="php"><?php echo esc_html( $snip['um_table'] ); ?></pre>
 					</div>
 					<div class="pf-tip">
-						<span class="pf-tip-icon">💡</span>
-						<span><code style="font-family:monospace;font-size:12px">image</code> fields render their thumbnail in the column automatically; all other types print the raw stored value.</span>
+						<span class="pf-tip-icon"><?php echo TPMeta_Main_Menu::icon( 'tip' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></span>
+						<span><code>image</code> fields render their thumbnail in the column automatically; all other types print the raw stored value.</span>
 					</div>
 				</section>
 
 				<!-- Section: Multiple Blocks -->
 				<section class="pf-section" id="um-multiblock">
 					<div class="pf-section-hd">
-						<div class="pf-section-ico">🧱</div>
+						<div class="pf-section-ico"><?php echo TPMeta_Main_Menu::icon( 'layers' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></div>
 						<h2>Multiple Blocks &amp; Capability Gating</h2>
 					</div>
-					<p class="pf-section-desc">Push more than one block to group fields under separate headings. Add an optional <code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;font-family:monospace;color:#4338ca">capability</code> key to a block so only users with that capability can see and save it.</p>
+					<p class="pf-section-desc">Push more than one block to group fields under separate headings. Add an optional <code>capability</code> key to a block so only users with that capability can see and save it.</p>
 					<div class="pf-code-card">
 						<div class="pf-cc-head">
 							<span class="pf-cc-title">Several blocks on one profile <span class="pf-cc-tag violet">capability gated</span></span>
-							<button class="pf-copy-btn"><span class="dashicons dashicons-clipboard"></span> Copy</button>
+							<button type="button" class="pf-copy-btn">Copy</button>
 						</div>
 						<pre class="pf-pre" data-lang="php"><?php echo esc_html( $snip['um_multiblock'] ); ?></pre>
 					</div>
 					<div class="pf-note">
-						<span class="pf-tip-icon">ℹ️</span>
-						<span>A single block can also be returned in the legacy shape — an array with a top-level <code style="font-family:monospace;font-size:12px">label</code> and <code style="font-family:monospace;font-size:12px">fields</code> key — and it will still render. The array-of-blocks form shown above is recommended for new code.</span>
+						<span class="pf-tip-icon"><?php echo TPMeta_Main_Menu::icon( 'info' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitised in icon(). ?></span>
+						<span>A single block can also be returned in the legacy shape — an array with a top-level <code>label</code> and <code>fields</code> key — and it will still render. The array-of-blocks form shown above is recommended for new code.</span>
 					</div>
 				</section>
 

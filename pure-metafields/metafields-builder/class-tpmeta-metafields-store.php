@@ -35,8 +35,15 @@ class TPMeta_Metafields_Store {
 		return null;
 	}
 
-	/** Insert or update a metabox definition. Returns saved record. */
-	public static function save( array $box ) {
+	/**
+	 * Insert or update a metabox definition. Returns saved record.
+	 *
+	 * @param array $box
+	 * @param bool  $purge_removed Delete stored meta for fields dropped from an
+	 *                             existing definition. Imports pass false so an
+	 *                             older/partial file never wipes live post data.
+	 */
+	public static function save( array $box, $purge_removed = true ) {
 		$box = self::sanitize( $box );
 		if ( empty( $box['metabox_id'] ) ) {
 			return false;
@@ -46,7 +53,9 @@ class TPMeta_Metafields_Store {
 		$found = false;
 		foreach ( $all as &$existing ) {
 			if ( $existing['metabox_id'] === $box['metabox_id'] ) {
-				self::purge_removed_fields( $existing, $box );
+				if ( $purge_removed ) {
+					self::purge_removed_fields( $existing, $box );
+				}
 				$existing = $box;
 				$found    = true;
 				break;
@@ -164,6 +173,11 @@ class TPMeta_Metafields_Store {
 
 	private static function sanitize_sections( array $sections ) {
 		return array_values( array_map( function( $s ) {
+			// Legacy flat section shape (fields directly on the section) — wrap
+			// into a single row, mirroring migrateSection() in the builder JS.
+			if ( empty( $s['rows'] ) && ! empty( $s['fields'] ) && is_array( $s['fields'] ) ) {
+				$s['rows'] = array( array( 'fields' => $s['fields'] ) );
+			}
 			return array(
 				'id'          => sanitize_key( $s['id']          ?? '' ),
 				'title'       => sanitize_text_field( $s['title'] ?? '' ),
@@ -176,9 +190,15 @@ class TPMeta_Metafields_Store {
 
 	private static function sanitize_rows( array $rows ) {
 		return array_values( array_filter( array_map( function( $r ) {
-			if ( ! is_array( $r ) || empty( $r['id'] ) ) return null;
+			if ( ! is_array( $r ) ) return null;
+			$row_id = sanitize_key( $r['id'] ?? '' );
+			if ( '' === $row_id ) {
+				// Hand-written or external JSON may omit row ids — generate one in
+				// the builder's uid() shape instead of dropping the row's fields.
+				$row_id = 'row_' . substr( str_replace( array( '.', '-' ), '', uniqid( '', true ) ), 0, 12 );
+			}
 			return array(
-				'id'        => sanitize_key( $r['id']     ?? '' ),
+				'id'        => $row_id,
 				'layout'    => in_array( $r['layout'] ?? '', array( 'grid', 'flex' ), true ) ? $r['layout'] : 'grid',
 				'columns'   => absint( $r['columns'] ?? 1 ) ?: 1,
 				'direction' => in_array( $r['direction'] ?? '', array( 'row', 'column' ), true ) ? $r['direction'] : 'row',

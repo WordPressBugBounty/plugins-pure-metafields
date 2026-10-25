@@ -2,10 +2,7 @@
 <div class="pf-page tax-page">
 
 	<!-- Page header -->
-	<div class="cpt-page-header cpt-page-header--pink">
-		<div class="cpt-page-header-icon has-logo">
-			<img class="cpt-page-header-logo" src="<?php echo esc_url( TPMETA_URL . 'assets/img/logo.png' ); ?>" alt="" />
-		</div>
+	<div class="cpt-page-header">
 		<div class="cpt-page-header-title">
 			<h1><?php esc_html_e( 'Taxonomies', 'pure-metafields' ); ?></h1>
 			<p><?php esc_html_e( 'Create custom taxonomies and attach them to any post type — no PHP required.', 'pure-metafields' ); ?></p>

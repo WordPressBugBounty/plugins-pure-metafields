@@ -4,8 +4,8 @@ Donate link: https://help.themepure.net/support/
 Tags: Metabox, Meta fields, Post Meta, Page Meta
 Requires PHP: 8.0
 Requires at least: 5.6
-Tested up to: 6.9
-Stable tag: 1.7.0
+Tested up to: 7.1
+Stable tag: 1.7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -860,6 +860,20 @@ Yes, contributions are welcome! If you have any ideas or improvements for the pl
 3. How To Code
 
 == Changelog ==
+
+= 1.7.4 =
+* New: Import button in the Metafield Builder toolbar, so JSON can be imported when metaboxes already exist
+* Fix: Importing metabox JSON no longer deletes saved field values on existing posts when the file has fewer fields than the current metabox
+* Fix: Rows without an ID in imported JSON are kept (an ID is generated) instead of being dropped with their fields
+* Fix: Legacy section format (fields placed directly on a section) is converted to a row on import instead of losing its fields
+* Fix: Export / Import page and Metafield Builder importer now accept a single metabox, a list of metaboxes, or a full export file
+* Fix: Metafield Builder toolbar no longer wraps or overflows when a metabox is attached to many post types
+* Improvement: Option panels in an import file are reported as skipped (requires Pro) instead of a silent success when the Option Builder is unavailable
+* Improvement: Metafield Builder importer saves only the imported metaboxes and reports any that fail
+* Improvement: Redesigned admin UI — Welcome, Metafield Builder, Post Types, Taxonomies, Export / Import, Help and Pro pages now share one type scale, colour palette and SVG icon set
+* Improvement: Welcome page explains what each tool creates, where its data is saved and where it appears, with live counts, install details and license status
+* Improvement: Emoji removed from admin menu labels and the Help page
+* Improvement: Visible keyboard focus and higher-contrast form control borders across admin pages
 
 = 1.7.0 =
 * New: WordPress Customizer integration — any Option Panel can now be mirrored in Appearance → Customize by enabling the `customizer_integration` flag in the builder
